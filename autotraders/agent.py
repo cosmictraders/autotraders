@@ -1,4 +1,4 @@
-from autotraders.ships import get_all_ships
+from autotraders.ship import get_all_ships
 from autotraders.contract import get_all_contracts
 
 
