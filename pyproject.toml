@@ -1,6 +1,7 @@
 [build-system]
 requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
+
 [project]
 name = "autotraders"
 version = "0.3.0"
@@ -16,8 +17,8 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 
-
 [project.urls]
-"Homepage" = "https://github.com/arihant2math/autotraders"
+"Homepage" = "https://arihant2math.github.io/autotraders/"
+"Documentation" = "https://arihant2math.github.io/autotraders/"
 "Bug Tracker" = "https://github.com/arihant2math/autotraders/issues"
 
