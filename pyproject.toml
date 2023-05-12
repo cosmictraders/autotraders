@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "autotraders"
+version = "0.1.0"
+authors = [
+  { name="Ashwin Naren", email="arihant2math@gmail.com" },
+]
+description = "A powerful spacetraders API"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+
+[project.urls]
+"Homepage" = "https://github.com/arihant2math/autotraders"
+"Bug Tracker" = "https://github.com/arihant2math/autotraders/issues"
+
