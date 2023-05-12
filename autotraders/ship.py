@@ -21,14 +21,61 @@ class Cargo:
             self.inventory[symbol["symbol"]] = symbol["units"]
 
 
-class Frame:
+class Requirements:
+    def __init__(self, data):
+        self.power = data["power"]
+        self.crew = data["crew"]
+        self.slots = data["slots"]
+
+
+class ShipComponent:
     def __init__(self, data):
         self.symbol = data["symbol"]
         self.name = data["name"]
         self.description = data["description"]
+        if "condition" in data:
+            self.condition = data["condition"]
+        else:
+            self.condition = 100
+        self.requirements = Requirements(data["requirements"])
+
+
+class Frame(ShipComponent):
+    def __init__(self, data):
+        super().__init__(data)
         self.module_slots = data["moduleSlots"]
         self.mounting_points = data["mountingPoints"]
-        self.condition = data["condition"]
+        self.fuel_capacity = data["fuelCapacity"]
+
+
+class Reactor(ShipComponent):
+    def __init__(self, data):
+        super().__init__(data)
+        self.power_output = data["powerOutput"]
+
+
+class Engine(ShipComponent):
+    def __init__(self, data):
+        super().__init__(data)
+        self.speed = data["speed"]
+
+
+class Module(ShipComponent):
+    def __init__(self, data):
+        super().__init__(data)
+        if "capacity" in data:
+            self.capacity = data["capacity"]
+        if "range" in data:
+            self.range = data["range"]
+
+
+class Mount(ShipComponent):
+    def __init__(self, data):
+        super().__init__(data)
+        if "strength" in data:
+            self.strength = data["strength"]
+        if "deposits" in data:
+            self.deposits = data["deposits"]
 
 
 class Ship:
@@ -46,8 +93,11 @@ class Ship:
             if "error" in r.json():
                 raise IOError(r.json()["error"]["message"])
             data = r.json()["data"]
-        if "frame" in data:
-            self.frame = Frame(data["frame"])
+        self.frame = Frame(data["frame"])
+        self.reactor = Reactor(data["reactor"])
+        self.engine = Engine(data["engine"])
+        self.modules = [Module(d) for d in data["modules"]]
+        self.mounts = [Mount(d) for d in data["mounts"]]
         if "nav" in data:
             self.status = data["nav"]["status"]
             self.location = data["nav"]["waypointSymbol"]
@@ -91,7 +141,9 @@ class Ship:
         self.update(j["data"])
 
     def patch_navigation(self, new_flight_mode):
-        r = self.session.patch("https://api.spacetraders.io/v2/my/ships/" + self.symbol + "/nav")
+        r = self.session.patch(
+            "https://api.spacetraders.io/v2/my/ships/" + self.symbol + "/nav"
+        )
         j = r.json()
         if "error" in j:
             raise IOError(j["error"]["message"])
@@ -218,7 +270,9 @@ class Ship:
         Charts the current waypoint
         :return: The info about the waypoint that has been charted
         """
-        j = self.session.post("https://api.spacetraders.io/v2/my/ships/" + self.symbol + "/chart").json()
+        j = self.session.post(
+            "https://api.spacetraders.io/v2/my/ships/" + self.symbol + "/chart"
+        ).json()
         if "error" in j:
             raise IOError(j["error"]["message"])
         w = Waypoint(j["data"]["waypoint"]["symbol"], self.session, False)
