@@ -1,5 +1,6 @@
 import asyncio
 
+from autotraders.util import parse_time
 from autotraders.waypoint import Waypoint
 
 
@@ -78,6 +79,14 @@ class Mount(ShipComponent):
             self.deposits = data["deposits"]
 
 
+class Route:
+    def __init__(self, data):
+        self.destination = data["destination"]
+        self.departure = data["departure"]["symbol"]
+        self.moving = self.destination == self.departure
+        self.depature_time = parse_time(data["departure_time"])
+        self.arrival = parse_time(data["arrival"])
+
 class Ship:
     def __init__(self, symbol, session, update=True):
         self.symbol = symbol
@@ -101,6 +110,8 @@ class Ship:
         if "nav" in data:
             self.status = data["nav"]["status"]
             self.location = data["nav"]["waypointSymbol"]
+            self.flight_mode = data["nav"]["flightMode"]
+            self.route = Route(data["nav"]["route"])
         if "fuel" in data:
             self.fuel = Fuel(data["fuel"]["current"], data["fuel"]["capacity"])
         if "cargo" in data:
