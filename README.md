@@ -23,13 +23,14 @@ And now you're all set to use they actual API.
 ## Ships
 
 ```python
-from autotraders.ships import Ship, get_all_ships
+from autotraders.ship import Ship, get_all_ships
+
 # create a session here
-ship = Ship("SYMBOL-Here", session) # This makes an API request
-ships = get_all_ships(session) # This also only makes one API request
+ship = Ship("SYMBOL-Here", session)  # This makes an API request
+ships = get_all_ships(session)  # This also only makes one API request
 ship.dock()
 ship.refuel()
-ship.orbit() # All these functions make API calls (one each), but the line below doesn't
+ship.orbit()  # All these functions make API calls (one each), but the line below doesn't
 print(ship.fuel.current + "/" + ship.fuel.total)
 ```
 ## Contract
