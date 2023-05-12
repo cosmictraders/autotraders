@@ -28,6 +28,6 @@ from autotraders.ships import Ship
 ship = Ship("SYMBOL-Here", session) # This makes an API request
 ship.dock()
 ship.refuel()
-ship.orbit()
+ship.orbit() # All these functions make API calls (one each), but the line below doesn't
 print(ship.fuel.current + "/" + ship.fuel.total)
 ```
