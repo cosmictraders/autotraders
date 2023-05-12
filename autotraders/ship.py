@@ -56,7 +56,7 @@ class Ship:
         if "cargo" in data:
             self.cargo = Cargo(data["cargo"])
 
-    async def move_async(self, waypoint):
+    async def navigate_async(self, waypoint):
         """Attempts to move ship to the provided waypoint.
         If the request succeeds, this function waits for the ship to arrive.
             :raise:
@@ -75,7 +75,7 @@ class Ship:
             await asyncio.sleep(5)
             self.update()
 
-    def move(self, waypoint):
+    def navigate(self, waypoint):
         """Attempts to move ship to the provided waypoint.
         If the request succeeds, this function exits immediately, and does not wait the ship to arrive.
             :raise:
@@ -88,7 +88,14 @@ class Ship:
         j = r.json()
         if "error" in j:
             raise IOError(j["error"]["message"])
-        self.update()
+        self.update(j["data"])
+
+    def patch_navigation(self, new_flight_mode):
+        r = self.session.patch("https://api.spacetraders.io/v2/my/ships/" + self.symbol + "/nav")
+        j = r.json()
+        if "error" in j:
+            raise IOError(j["error"]["message"])
+        self.update({"nav": j["data"]})
 
     def dock(self):
         r = self.session.post(
