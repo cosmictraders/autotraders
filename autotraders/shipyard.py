@@ -16,3 +16,9 @@ class Shipyard:
         self.ship_types = []
         for ship_type in data["shipTypes"]:
             self.ship_types.append(ship_type["type"])
+
+    def purchase(self, ship_type: str):
+        self.session.post("https://api.spacetraders.io/v2/my/ships", data={
+            "shipType": ship_type,
+            "waypointSymbol": self.location
+        })
