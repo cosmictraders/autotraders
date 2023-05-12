@@ -1,5 +1,5 @@
 from autotraders.ships import get_all_ships
-from contract import get_all_contracts
+from autotraders.contract import get_all_contracts
 
 
 class Agent:
