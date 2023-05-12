@@ -1,5 +1,7 @@
 import asyncio
 
+from autotraders.waypoint import Waypoint
+
 
 class Fuel:
     def __init__(self, current, total):
@@ -203,6 +205,19 @@ class Ship:
         if "error" in j:
             raise IOError(j["error"]["message"])
         self.update()
+
+    def chart(self):
+        """
+        Charts the current waypoint
+        :return: The info about the waypoint that has been charted
+        """
+        j = self.session.post("https://api.spacetraders.io/v2/my/ships/" + self.symbol + "/chart").json()
+        if "error" in j:
+            raise IOError(j["error"]["message"])
+        w = Waypoint(j["data"]["waypoint"]["symbol"], self.session, False)
+        w.update(j["data"]["waypoint"])
+        self.update()
+        return w
 
 
 def get_all_ships(session):
