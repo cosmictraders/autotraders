@@ -12,6 +12,8 @@ class Waypoint:
     def __init__(self, symbol, session, update=True):
         self.session = session
         self.symbol = symbol
+        self.marketplace = False
+        self.shipyard = False
         if update:
             self.update()
 
@@ -37,6 +39,8 @@ class Waypoint:
         if "traits" in data:
             for trait in data["traits"]:
                 self.traits.append(Trait(trait))
+        self.marketplace = len([trait for trait in self.traits if trait.symbol == "MARKETPLACE"]) > 0
+        self.shipyard = len([trait for trait in self.traits if trait.symbol == "SHIPYARD"]) > 0
 
 
 def get_all_waypoints(system, session):
