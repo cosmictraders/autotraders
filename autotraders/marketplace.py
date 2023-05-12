@@ -12,14 +12,13 @@ class Marketplace:
             waypoint_symbol = self.location
             data = self.session.get("https://api.spacetraders.io/v2/systems/"
                                     + system_symbol + "/waypoints/"
-                                    + waypoint_symbol + "/marketplace").json()["data"]
-            print(data)
+                                    + waypoint_symbol + "/market").json()["data"]
         self.imports = []
         for i in data["imports"]:
-            self.imports.append(data["imports"]["symbol"])
+            self.imports.append(i["symbol"])
         self.exports = []
         for i in data["exports"]:
-            self.exports.append(data["exports"]["symbol"])
+            self.exports.append(i["symbol"])
         self.exchange = []
         for i in data["exchange"]:
-            self.exchange.append(data["exchange"]["symbol"])
+            self.exchange.append(i["symbol"])
