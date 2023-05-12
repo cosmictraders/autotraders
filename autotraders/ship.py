@@ -55,6 +55,11 @@ class Ship:
             self.cargo = Cargo(data["cargo"])
 
     async def move_async(self, waypoint):
+        """Attempts to move ship to the provided waypoint.
+        If the request succeeds, this function waits for the ship to arrive.
+            :raise:
+                IOError: if a server error occurs
+        """
         r = self.session.post(
             "https://api.spacetraders.io/v2/my/ships/" + self.symbol + "/navigate",
             data={"waypointSymbol": waypoint},
@@ -69,6 +74,11 @@ class Ship:
             self.update()
 
     def move(self, waypoint):
+        """Attempts to move ship to the provided waypoint.
+        If the request succeeds, this function exits immediately, and does not wait the ship to arrive.
+            :raise:
+                IOError: if a server error occurs
+        """
         r = self.session.post(
             "https://api.spacetraders.io/v2/my/ships/" + self.symbol + "/navigate",
             data={"waypointSymbol": waypoint},
