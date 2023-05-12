@@ -1,4 +1,4 @@
-from sdk.waypoint import Waypoint
+from autotraders import Waypoint
 
 
 class System:

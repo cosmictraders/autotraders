@@ -39,7 +39,7 @@ class Waypoint:
                 self.traits.append(Trait(trait))
 
 
-def get_waypoints(system, session):
+def get_all_waypoints(system, session):
     r = session.get("https://api.spacetraders.io/v2/systems/" + system + "/waypoints")
     data = r.json()["data"]
     waypoints = []
