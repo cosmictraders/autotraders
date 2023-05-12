@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "autotraders"
-version = "0.3.0"
+version = "0.3.1"
 authors = [
   { name="Ashwin Naren", email="arihant2math@gmail.com" },
 ]
@@ -16,6 +16,10 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
+
+[tool.setuptools.packages.find]
+include = ["autotraders*"]
+exclude = ["source*", "tests*", "venv*"]
 
 [project.urls]
 "Homepage" = "https://arihant2math.github.io/autotraders/"
