@@ -32,8 +32,12 @@ class Waypoint:
         if "traits" in data:
             for trait in data["traits"]:
                 self.traits.append(Trait(trait))
-        self.marketplace = len([trait for trait in self.traits if trait.symbol == "MARKETPLACE"]) > 0
-        self.shipyard = len([trait for trait in self.traits if trait.symbol == "SHIPYARD"]) > 0
+        self.marketplace = (
+            len([trait for trait in self.traits if trait.symbol == "MARKETPLACE"]) > 0
+        )
+        self.shipyard = (
+            len([trait for trait in self.traits if trait.symbol == "SHIPYARD"]) > 0
+        )
 
 
 def get_all_waypoints(system, session):

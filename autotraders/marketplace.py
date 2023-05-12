@@ -10,9 +10,13 @@ class Marketplace:
             split = self.location.split("-")
             system_symbol = split[0] + "-" + split[1]
             waypoint_symbol = self.location
-            data = self.session.get("https://api.spacetraders.io/v2/systems/"
-                                    + system_symbol + "/waypoints/"
-                                    + waypoint_symbol + "/market").json()["data"]
+            data = self.session.get(
+                "https://api.spacetraders.io/v2/systems/"
+                + system_symbol
+                + "/waypoints/"
+                + waypoint_symbol
+                + "/market"
+            ).json()["data"]
         self.imports = []
         for i in data["imports"]:
             self.imports.append(i["symbol"])

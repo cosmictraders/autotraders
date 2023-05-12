@@ -10,7 +10,9 @@ class Faction:
 
     def update(self, data=None):
         if data is None:
-            r = self.session.get("https://api.spacetraders.io/v2/factions/" + self.symbol)
+            r = self.session.get(
+                "https://api.spacetraders.io/v2/factions/" + self.symbol
+            )
             data = r.json()["data"]
         self.name = data["name"]
         self.description = data["description"]
