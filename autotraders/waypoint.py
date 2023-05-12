@@ -4,9 +4,9 @@ class Trait:
         self.name = data["name"]
         self.description = data["description"]
 
-
     def __str__(self):
         return self.name
+
 
 class Waypoint:
     def __init__(self, symbol, session, update=True):
@@ -20,7 +20,12 @@ class Waypoint:
             split = self.symbol.split("-")
             system_symbol = split[0] + "-" + split[1]
             waypoint_symbol = self.symbol
-            data = self.session.get("https://api.spacetraders.io/v2/systems/" + system_symbol + "/waypoints/" + waypoint_symbol).json()["data"]
+            data = self.session.get(
+                "https://api.spacetraders.io/v2/systems/"
+                + system_symbol
+                + "/waypoints/"
+                + waypoint_symbol
+            ).json()["data"]
         self.waypoint_type = data["type"]
         self.x = data["x"]
         self.y = data["y"]

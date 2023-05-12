@@ -11,7 +11,9 @@ class System:
 
     def update(self, data=None):
         if data is None:
-            r = self.session.get("https://api.spacetraders.io/v2/systems/" + self.symbol)
+            r = self.session.get(
+                "https://api.spacetraders.io/v2/systems/" + self.symbol
+            )
             data = r.json()["data"]
         self.waypoints = []
         self.x = data["x"]
@@ -24,7 +26,7 @@ class System:
 
 
 def list_systems(session, page=1) -> (list[System], int):
-    r = session.get("https://api.spacetraders.io/v2/systems?limit=20&page="+str(page))
+    r = session.get("https://api.spacetraders.io/v2/systems?limit=20&page=" + str(page))
     j = r.json()["data"]
     systems = []
     for system in j:

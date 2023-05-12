@@ -38,7 +38,9 @@ class Ship:
 
     def update(self, data: dict = None):
         if data is None:
-            r = self.session.get("https://api.spacetraders.io/v2/my/ships/" + self.symbol)
+            r = self.session.get(
+                "https://api.spacetraders.io/v2/my/ships/" + self.symbol
+            )
             if "error" in r.json():
                 raise IOError(r.json()["error"]["message"])
             data = r.json()["data"]
@@ -53,9 +55,10 @@ class Ship:
             self.cargo = Cargo(data["cargo"])
 
     async def move_async(self, waypoint):
-        r = self.session.post("https://api.spacetraders.io/v2/my/ships/" + self.symbol + "/navigate", data={
-            "waypointSymbol": waypoint
-        })
+        r = self.session.post(
+            "https://api.spacetraders.io/v2/my/ships/" + self.symbol + "/navigate",
+            data={"waypointSymbol": waypoint},
+        )
         j = r.json()
         if "error" in j:
             raise j["error"]["message"]
@@ -66,71 +69,87 @@ class Ship:
             self.update()
 
     def move(self, waypoint):
-        r = self.session.post("https://api.spacetraders.io/v2/my/ships/" + self.symbol + "/navigate", data={
-            "waypointSymbol": waypoint
-        })
+        r = self.session.post(
+            "https://api.spacetraders.io/v2/my/ships/" + self.symbol + "/navigate",
+            data={"waypointSymbol": waypoint},
+        )
         j = r.json()
         if "error" in j:
             raise IOError(j["error"]["message"])
         self.update()
 
     def dock(self):
-        r = self.session.post("https://api.spacetraders.io/v2/my/ships/" + self.symbol + "/dock")
+        r = self.session.post(
+            "https://api.spacetraders.io/v2/my/ships/" + self.symbol + "/dock"
+        )
         j = r.json()
         if "error" in j:
             raise IOError(j["error"]["message"])
         self.update(j)
 
     def orbit(self):
-        r = self.session.post("https://api.spacetraders.io/v2/my/ships/" + self.symbol + "/orbit")
+        r = self.session.post(
+            "https://api.spacetraders.io/v2/my/ships/" + self.symbol + "/orbit"
+        )
         j = r.json()
         if "error" in j:
             raise IOError(j["error"]["message"])
         self.update(j)
 
     def extract(self):
-        r = self.session.post("https://api.spacetraders.io/v2/my/ships/" + self.symbol + "/extract")
+        r = self.session.post(
+            "https://api.spacetraders.io/v2/my/ships/" + self.symbol + "/extract"
+        )
         j = r.json()
         if "error" in j:
             if j["error"]["code"] == 4000:
-                raise IOError("Ship is still in cooldown, " + str(
-                    j["error"]["data"]["cooldown"]["remainingSeconds"]) + " seconds out of "
-                              + str(j["error"]["data"]["cooldown"]["totalSeconds"]) + " seconds remaining")
+                raise IOError(
+                    "Ship is still in cooldown, "
+                    + str(j["error"]["data"]["cooldown"]["remainingSeconds"])
+                    + " seconds out of "
+                    + str(j["error"]["data"]["cooldown"]["totalSeconds"])
+                    + " seconds remaining"
+                )
             else:
                 raise IOError(j["error"]["message"])
         self.update(j)
 
     def refuel(self):
-        r = self.session.post("https://api.spacetraders.io/v2/my/ships/" + self.symbol + "/refuel")
+        r = self.session.post(
+            "https://api.spacetraders.io/v2/my/ships/" + self.symbol + "/refuel"
+        )
         j = r.json()
         if "error" in j:
             raise IOError(j["error"]["message"])
         self.update(j)
 
     def sell(self, cargo_symbol, quantity):
-        j = self.session.post("https://api.spacetraders.io/v2/my/ships/" + self.symbol + "/sell", data={
-            "symbol": cargo_symbol,
-            "units": quantity
-        }).json()
+        j = self.session.post(
+            "https://api.spacetraders.io/v2/my/ships/" + self.symbol + "/sell",
+            data={"symbol": cargo_symbol, "units": quantity},
+        ).json()
         if "error" in j:
             raise IOError(j["error"]["message"])
         self.update()
 
     def buy(self, cargo_symbol, quantity):
-        j = self.session.post("https://api.spacetraders.io/v2/my/ships/" + self.symbol + "/purchase", data={
-            "symbol": cargo_symbol,
-            "units": quantity
-        }).json()
+        j = self.session.post(
+            "https://api.spacetraders.io/v2/my/ships/" + self.symbol + "/purchase",
+            data={"symbol": cargo_symbol, "units": quantity},
+        ).json()
         if "error" in j:
             raise IOError(j["error"]["message"])
         self.update()
 
     def transfer(self, destination: str, cargo_symbol: str, quantity: int):
-        j = self.session.post("https://api.spacetraders.io/v2/my/ships/" + self.symbol + "/transfer", data={
-            "tradeSymbol": cargo_symbol,
-            "units": quantity,
-            "shipSymbol": destination
-        }).json()
+        j = self.session.post(
+            "https://api.spacetraders.io/v2/my/ships/" + self.symbol + "/transfer",
+            data={
+                "tradeSymbol": cargo_symbol,
+                "units": quantity,
+                "shipSymbol": destination,
+            },
+        ).json()
         if "error" in j:
             raise IOError(j["error"]["message"])
         self.update()
