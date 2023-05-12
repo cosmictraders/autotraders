@@ -186,6 +186,15 @@ class Ship:
             raise IOError(j["error"]["message"])
         self.update()
 
+    def jettison(self, cargo_symbol: str, quantity: int):
+        j = self.session.post(
+            "https://api.spacetraders.io/v2/my/ships/" + self.symbol + "/jettison",
+            data={"symbol": cargo_symbol, "units": quantity},
+        ).json()
+        if "error" in j:
+            raise IOError(j["error"]["message"])
+        self.update()
+
 
 def get_all_ships(session):
     r = session.get("https://api.spacetraders.io/v2/my/ships")
