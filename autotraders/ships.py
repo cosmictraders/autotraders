@@ -154,6 +154,28 @@ class Ship:
             raise IOError(j["error"]["message"])
         self.update()
 
+    def jump(self, destination: str):
+        j = self.session.post(
+            "https://api.spacetraders.io/v2/my/ships/" + self.symbol + "/jump",
+            data={
+                "systemSymbol": destination,
+            },
+        ).json()
+        if "error" in j:
+            raise IOError(j["error"]["message"])
+        self.update()
+
+    def warp(self, destination: str):
+        j = self.session.post(
+            "https://api.spacetraders.io/v2/my/ships/" + self.symbol + "/warp",
+            data={
+                "waypointSymbol": destination,
+            },
+        ).json()
+        if "error" in j:
+            raise IOError(j["error"]["message"])
+        self.update()
+
 
 def get_all_ships(session):
     r = session.get("https://api.spacetraders.io/v2/my/ships")
