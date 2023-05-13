@@ -88,6 +88,15 @@ class Route:
         self.depature_time = parse_time(data["departure_time"])
         self.arrival = parse_time(data["arrival"])
 
+
+class Nav:
+    def __init__(self, data):
+        self.status = data["status"]
+        self.location = data["waypointSymbol"]
+        self.flight_mode = data["flightMode"]
+        self.route = Route(data["route"])
+
+
 class Ship:
     def __init__(self, symbol, session, update=True):
         self.symbol = symbol
@@ -109,10 +118,7 @@ class Ship:
         self.modules = [Module(d) for d in data["modules"]]
         self.mounts = [Mount(d) for d in data["mounts"]]
         if "nav" in data:
-            self.status = data["nav"]["status"]
-            self.location = data["nav"]["waypointSymbol"]
-            self.flight_mode = data["nav"]["flightMode"]
-            self.route = Route(data["nav"]["route"])
+            self.nav = Nav(data["nav"])
         if "fuel" in data:
             self.fuel = Fuel(data["fuel"]["current"], data["fuel"]["capacity"])
         if "cargo" in data:
