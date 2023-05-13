@@ -4,7 +4,7 @@ from autotraders.util import parse_time
 class Deliver:
     def __init__(self, data):
         self.trade_symbol = data["tradeSymbol"]
-        self.destinationSymbol = data["destinationSymbol"]
+        self.destination_symbol = data["destinationSymbol"]
         self.units_required = data["unitsRequired"]
         self.units_fulfilled = data["unitsFulfilled"]
 
@@ -29,7 +29,7 @@ class Contract:
         self.deadline = parse_time(data["terms"]["deadline"])
         if "deliver" in data:
             self.contract_type = "deliver"
-            self.contract_data = Deliver(data["deliver"])
+            self.contract_data = [Deliver(d) for d in data["deliver"]]
 
     def accept(self):
         j = self.session.post(
