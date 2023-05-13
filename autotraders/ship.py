@@ -102,10 +102,15 @@ class Ship:
     def __init__(self, symbol, session, update=True):
         self.symbol = symbol
         self.session = session
+        self.frame = None
+        self.reactor = None
+        self.engine = None
+        self.modules = None
+        self.mounts = None
         if update:
             self.update()
 
-    def update(self, data: dict = None):
+    def update(self, data: dict = None, hard=False):
         if data is None:
             r = self.session.get(
                 "https://api.spacetraders.io/v2/my/ships/" + self.symbol
@@ -113,11 +118,16 @@ class Ship:
             if "error" in r.json():
                 raise IOError(r.json()["error"]["message"])
             data = r.json()["data"]
-        self.frame = Frame(data["frame"])
-        self.reactor = Reactor(data["reactor"])
-        self.engine = Engine(data["engine"])
-        self.modules = [Module(d) for d in data["modules"]]
-        self.mounts = [Mount(d) for d in data["mounts"]]
+        if self.frame is None and not hard:
+            self.frame = Frame(data["frame"])
+        if self.reactor is None and not hard:
+            self.reactor = Reactor(data["reactor"])
+        if self.engine is None and not hard:
+            self.engine = Engine(data["engine"])
+        if self.modules is None and not hard:
+            self.modules = [Module(d) for d in data["modules"]]
+        if self.mounts is None and not hard:
+            self.mounts = [Mount(d) for d in data["mounts"]]
         if "nav" in data:
             self.nav = Nav(data["nav"])
         if "fuel" in data:
@@ -312,6 +322,43 @@ class Ship:
             surveys.append(Survey(survey))
         self.reactor.cooldown = parse_time(j["cooldown"]["expiration"])
         return surveys
+
+    def scan_systems(self):
+        j = self.session.post(
+            "https://api.spacetraders.io/v2/my/ships/" + self.symbol + "/scan/systems"
+        ).json()
+        if "error" in j:
+            raise IOError(j["error"]["message"])
+        self.reactor.cooldown = parse_time(j["cooldown"]["expiration"])
+        raise NotImplementedError
+
+    def scan_waypoints(self):
+        j = self.session.post(
+            "https://api.spacetraders.io/v2/my/ships/" + self.symbol + "/scan/waypoints"
+        ).json()
+        if "error" in j:
+            raise IOError(j["error"]["message"])
+        waypoints = []
+        for waypoint in j["systems"]:
+            s = Waypoint(waypoint["symbol"], self.session, False)
+            s.update(waypoint)
+            waypoints.append(s)
+        self.reactor.cooldown = parse_time(j["cooldown"]["expiration"])
+        return waypoints
+
+    def scan_ships(self):
+        j = self.session.post(
+            "https://api.spacetraders.io/v2/my/ships/" + self.symbol + "/scan/ships"
+        ).json()
+        if "error" in j:
+            raise IOError(j["error"]["message"])
+        ships = []
+        for ship in j["data"]["ships"]:
+            s = Ship(ship["data"], self.session, False)
+            s.update(ship)
+            ships.append(s)
+        self.reactor.cooldown = parse_time(j["cooldown"]["expiration"])
+        return ships
 
 
 def get_all_ships(session):
