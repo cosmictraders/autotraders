@@ -1,5 +1,6 @@
 import asyncio
 
+from autotraders.survey import Survey
 from autotraders.util import parse_time
 from autotraders.waypoint import Waypoint
 
@@ -139,7 +140,7 @@ class Ship:
             raise j["error"]["message"]
         await asyncio.sleep(5)
         self.update()
-        while self.status == "IN_TRANSIT":
+        while self.nav.status == "IN_TRANSIT":
             await asyncio.sleep(5)
             self.update()
 
@@ -229,7 +230,7 @@ class Ship:
         ).json()
         if "error" in j:
             raise IOError(j["error"]["message"])
-        self.update()
+        self.update(j["data"])
 
     def transfer(self, destination: str, cargo_symbol: str, quantity: int):
         j = self.session.post(
@@ -242,7 +243,7 @@ class Ship:
         ).json()
         if "error" in j:
             raise IOError(j["error"]["message"])
-        self.update()
+        self.update(j["data"])
 
     def jump(self, destination: str):
         j = self.session.post(
@@ -253,7 +254,8 @@ class Ship:
         ).json()
         if "error" in j:
             raise IOError(j["error"]["message"])
-        self.update()
+        self.update(j["data"])
+        self.reactor.cooldown = parse_time(j["cooldown"]["expiration"])
 
     def warp(self, destination: str):
         j = self.session.post(
@@ -264,7 +266,7 @@ class Ship:
         ).json()
         if "error" in j:
             raise IOError(j["error"]["message"])
-        self.update()
+        self.update(j["data"])
 
     def jettison(self, cargo_symbol: str, quantity: int):
         j = self.session.post(
@@ -273,7 +275,7 @@ class Ship:
         ).json()
         if "error" in j:
             raise IOError(j["error"]["message"])
-        self.update()
+        self.update(j["data"])
 
     def refine(self, output_symbol: str):
         j = self.session.post(
@@ -298,6 +300,18 @@ class Ship:
         w.update(j["data"]["waypoint"])
         self.update()
         return w
+
+    def survey(self):
+        j = self.session.post(
+            "https://api.spacetraders.io/v2/my/ships/" + self.symbol + "/survey"
+        ).json()
+        if "error" in j:
+            raise IOError(j["error"]["message"])
+        surveys = []
+        for survey in j["data"]["surveys"]:
+            surveys.append(Survey(survey))
+        self.reactor.cooldown = parse_time(j["cooldown"]["expiration"])
+        return surveys
 
 
 def get_all_ships(session):
