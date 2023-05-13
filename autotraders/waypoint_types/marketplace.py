@@ -1,3 +1,6 @@
+import requests
+
+
 class TradeGood:
     def __init__(self, data):
         self.symbol = data["symbol"]
@@ -8,7 +11,7 @@ class TradeGood:
 
 
 class Marketplace:
-    def __init__(self, waypoint: str, session, update=True):
+    def __init__(self, waypoint: str, session: requests.Session, update=True):
         self.location = waypoint
         self.session = session
         if update:

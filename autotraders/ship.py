@@ -1,5 +1,7 @@
 import asyncio
 
+import requests
+
 from autotraders.survey import Survey
 from autotraders.util import parse_time
 from autotraders.waypoint import Waypoint
@@ -99,7 +101,7 @@ class Nav:
 
 
 class Ship:
-    def __init__(self, symbol, session, update=True):
+    def __init__(self, symbol, session: requests.Session, update=True):
         self.symbol = symbol
         self.session = session
         self.frame = None

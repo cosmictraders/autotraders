@@ -1,3 +1,5 @@
+import requests
+
 from autotraders.util import parse_time
 
 
@@ -10,7 +12,7 @@ class Deliver:
 
 
 class Contract:
-    def __init__(self, contract_id, session, update=True):
+    def __init__(self, contract_id, session: requests.Session, update=True):
         self.contract_id = contract_id
         self.session = session
         if update:

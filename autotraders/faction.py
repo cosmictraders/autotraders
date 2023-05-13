@@ -1,8 +1,10 @@
+import requests
+
 from autotraders.trait import Trait
 
 
 class Faction:
-    def __init__(self, symbol, session, update=True):
+    def __init__(self, symbol, session: requests.Session, update=True):
         self.symbol = symbol
         self.session = session
         if update:

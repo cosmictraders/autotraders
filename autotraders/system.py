@@ -1,8 +1,10 @@
+import requests
+
 from autotraders.waypoint import Waypoint
 
 
 class System:
-    def __init__(self, symbol, session, update=True):
+    def __init__(self, symbol, session: requests.Session, update=True):
         self.session = session
         self.symbol = symbol
         self.waypoints = []

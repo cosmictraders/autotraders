@@ -1,9 +1,11 @@
+import requests
+
 from autotraders.ship import get_all_ships
 from autotraders.contract import get_all_contracts
 
 
 class Agent:
-    def __init__(self, session, update=True):
+    def __init__(self, session: requests.Session, update=True):
         self.session = session
         if update:
             self.update()

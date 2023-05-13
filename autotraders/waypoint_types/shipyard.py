@@ -1,3 +1,5 @@
+import requests
+
 from autotraders.ship import Frame, Reactor, Engine, Module, Mount
 
 
@@ -15,7 +17,7 @@ class ShipyardShip:
 
 
 class Shipyard:
-    def __init__(self, waypoint: str, session, update=True):
+    def __init__(self, waypoint: str, session: requests.Session, update=True):
         self.location = waypoint
         self.session = session
         if update:
