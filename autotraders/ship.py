@@ -53,6 +53,7 @@ class Reactor(ShipComponent):
     def __init__(self, data):
         super().__init__(data)
         self.power_output = data["powerOutput"]
+        self.cooldown = 0
 
 
 class Engine(ShipComponent):
@@ -195,6 +196,7 @@ class Ship:
             else:
                 raise IOError(j["error"]["message"])
         self.update(j)
+        self.reactor.cooldown = parse_time(j["cooldown"]["expiration"])
 
     def refuel(self):
         r = self.session.post(
