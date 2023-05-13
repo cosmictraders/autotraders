@@ -1,3 +1,12 @@
+class TradeGood:
+    def __init__(self, data):
+        self.symbol = data['symbol']
+        self.trade_volume = data['tradeVolume']
+        self.supply = data['supply']
+        self.purchase_price = data['purchasePrice']
+        self.sell_price = data['sellPrice']
+
+
 class Marketplace:
     def __init__(self, waypoint: str, session, update=True):
         self.location = waypoint
@@ -26,3 +35,9 @@ class Marketplace:
         self.exchange = []
         for i in data["exchange"]:
             self.exchange.append(i["symbol"])
+
+        self.trade_goods = None
+        if "tradeGoods" in data:
+            self.trade_goods = []
+            for i in data["tradeGoods"]:
+                self.trade_goods.append(TradeGood(i))
