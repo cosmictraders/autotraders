@@ -1,6 +1,14 @@
 from autotraders.util import parse_time
 
 
+class Deliver:
+    def __init__(self, data):
+        self.trade_symbol = data["tradeSymbol"]
+        self.destinationSymbol = data["destinationSymbol"]
+        self.units_required = data["unitsRequired"]
+        self.units_fulfilled = data["unitsFulfilled"]
+
+
 class Contract:
     def __init__(self, contract_id, session, update=True):
         self.contract_id = contract_id
@@ -19,6 +27,9 @@ class Contract:
         self.accepted = data["accepted"]
         self.fulfilled = data["fulfilled"]
         self.deadline = parse_time(data["terms"]["deadline"])
+        if "deliver" in data:
+            self.contract_type = "deliver"
+            self.contract_data = Deliver(data["deliver"])
 
     def accept(self):
         j = self.session.post(
