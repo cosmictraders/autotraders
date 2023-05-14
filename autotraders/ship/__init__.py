@@ -32,8 +32,9 @@ class Route:
         self.destination = data["destination"]
         self.departure = data["departure"]["symbol"]
         self.moving = self.destination == self.departure
-        self.depature_time = parse_time(data["departure_time"])
-        self.arrival = parse_time(data["arrival"])
+        if self.moving:
+            self.depature_time = parse_time(data["departure_time"])
+            self.arrival = parse_time(data["arrival"])
 
 
 class Nav:
@@ -159,7 +160,7 @@ class Ship:
             else:
                 raise IOError(j["error"]["message"])
         self.update(j)
-        self.reactor.cooldown = parse_time(j["cooldown"]["expiration"])
+        self.reactor.cooldown = parse_time(j["data"]["cooldown"]["expiration"])
 
     def refuel(self):
         r = self.session.post(
