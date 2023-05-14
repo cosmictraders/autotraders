@@ -132,7 +132,7 @@ class Ship:
         j = r.json()
         if "error" in j:
             raise IOError(j["error"]["message"])
-        self.update(j)
+        self.update(j['data'])
 
     def orbit(self):
         r = self.session.post(
@@ -141,7 +141,7 @@ class Ship:
         j = r.json()
         if "error" in j:
             raise IOError(j["error"]["message"])
-        self.update(j)
+        self.update(j["data"])
 
     def extract(self):
         r = self.session.post(
@@ -159,7 +159,7 @@ class Ship:
                 )
             else:
                 raise IOError(j["error"]["message"])
-        self.update(j)
+        self.update(j["data"])
         self.reactor.cooldown = parse_time(j["data"]["cooldown"]["expiration"])
 
     def refuel(self):
@@ -169,7 +169,7 @@ class Ship:
         j = r.json()
         if "error" in j:
             raise IOError(j["error"]["message"])
-        self.update(j)
+        self.update(j["data"])
 
     def sell(self, cargo_symbol, quantity):
         j = self.session.post(
