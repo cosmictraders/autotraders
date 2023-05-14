@@ -1,7 +1,9 @@
 class Requirements:
     def __init__(self, data):
-        self.power = data["power"]
-        self.crew = data["crew"]
+        if "power" in data:
+            self.power = data["power"]
+        if "crew" in data:
+            self.crew = data["crew"]
         if "slots" in data:
             self.slots = data["slots"]
 
