@@ -10,7 +10,8 @@ Welcome to Autotraders's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   api
+   quickstart
+   api/autotraders
 
 
 

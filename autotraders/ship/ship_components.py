@@ -2,7 +2,8 @@ class Requirements:
     def __init__(self, data):
         self.power = data["power"]
         self.crew = data["crew"]
-        self.slots = data["slots"]
+        if "slots" in data:
+            self.slots = data["slots"]
 
 
 class ShipComponent:

@@ -15,7 +15,7 @@ class Fuel:
         self.total = total
 
     def __str__(self):
-        print(str(self.current) + "/" + str(self.total))
+        return str(self.current) + "/" + str(self.total)
 
 
 class Cargo:
