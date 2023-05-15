@@ -21,6 +21,7 @@ class System:
         self.x = data["x"]
         self.y = data["y"]
         self.factions = data["factions"]
+        self.star_type = data["type"]
         for w in data["waypoints"]:
             waypoint = Waypoint(w["symbol"], self.session, False)
             waypoint.update(w)
