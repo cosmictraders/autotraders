@@ -23,8 +23,10 @@ class Cargo:
         self.capacity = j["capacity"]
         inventory = j["inventory"]
         self.inventory = {}
+        self.current = 0
         for symbol in inventory:
             self.inventory[symbol["symbol"]] = symbol["units"]
+            self.current += symbol["units"]
 
 
 class Route:
@@ -307,15 +309,19 @@ class Ship:
         self.reactor.cooldown = parse_time(j["cooldown"]["expiration"])
         return ships
 
+    @staticmethod
+    def all(session):
+        r = session.get("https://api.spacetraders.io/v2/my/ships")
+        j = r.json()
+        if "error" in j:
+            raise IOError(j["error"]["message"])
+        ships = []
+        for ship in j["data"]:
+            s = Ship(ship["symbol"], session, False)
+            s.update(ship)
+            ships.append(s)
+        return ships
+
 
 def get_all_ships(session):
-    r = session.get("https://api.spacetraders.io/v2/my/ships")
-    j = r.json()
-    if "error" in j:
-        raise IOError(j["error"]["message"])
-    ships = []
-    for ship in j["data"]:
-        s = Ship(ship["symbol"], session, False)
-        s.update(ship)
-        ships.append(s)
-    return ships
+    return Ship.all(session)

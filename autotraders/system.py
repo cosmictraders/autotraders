@@ -27,13 +27,17 @@ class System:
             waypoint.update(w)
             self.waypoints.append(waypoint)
 
+    @staticmethod
+    def all(session, page=1):
+        r = session.get("https://api.spacetraders.io/v2/systems?limit=20&page=" + str(page))
+        j = r.json()["data"]
+        systems = []
+        for system in j:
+            s = System(system["symbol"], session, False)
+            s.update(system)
+            systems.append(s)
+        return systems, r.json()["meta"]["total"]
+
 
 def list_systems(session, page=1) -> (list[System], int):
-    r = session.get("https://api.spacetraders.io/v2/systems?limit=20&page=" + str(page))
-    j = r.json()["data"]
-    systems = []
-    for system in j:
-        s = System(system["symbol"], session, False)
-        s.update(system)
-        systems.append(s)
-    return systems, r.json()["meta"]["total"]
+    System.all(session, page)

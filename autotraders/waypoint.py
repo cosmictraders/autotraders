@@ -35,19 +35,23 @@ class Waypoint:
             for trait in data["traits"]:
                 self.traits.append(Trait(trait))
         self.marketplace = (
-            len([trait for trait in self.traits if trait.symbol == "MARKETPLACE"]) > 0
+                len([trait for trait in self.traits if trait.symbol == "MARKETPLACE"]) > 0
         )
         self.shipyard = (
-            len([trait for trait in self.traits if trait.symbol == "SHIPYARD"]) > 0
+                len([trait for trait in self.traits if trait.symbol == "SHIPYARD"]) > 0
         )
+
+    @staticmethod
+    def all(system, session):
+        r = session.get("https://api.spacetraders.io/v2/systems/" + system + "/waypoints")
+        data = r.json()["data"]
+        waypoints = []
+        for w in data:
+            waypoint = Waypoint(w["symbol"], session, False)
+            waypoint.update(w)
+            waypoints.append(waypoint)
+        return waypoints
 
 
 def get_all_waypoints(system, session):
-    r = session.get("https://api.spacetraders.io/v2/systems/" + system + "/waypoints")
-    data = r.json()["data"]
-    waypoints = []
-    for w in data:
-        waypoint = Waypoint(w["symbol"], session, False)
-        waypoint.update(w)
-        waypoints.append(waypoint)
-    return waypoints
+    return Waypoint.all(system, session)

@@ -23,15 +23,19 @@ class Faction:
         for trait in data["traits"]:
             self.traits.append(Trait(trait))
 
+    @staticmethod
+    def all(session):
+        r = session.get("https://api.spacetraders.io/v2/factions")
+        j = r.json()
+        if "error" in j:
+            raise IOError(j["error"]["message"])
+        factions = []
+        for f in j["data"]:
+            faction = Faction(f["symbol"], session, False)
+            faction.update(f)
+            factions.append(faction)
+        return factions
+
 
 def get_all_factions(session):
-    r = session.get("https://api.spacetraders.io/v2/factions")
-    j = r.json()
-    if "error" in j:
-        raise IOError(j["error"]["message"])
-    factions = []
-    for f in j["data"]:
-        faction = Faction(f["symbol"], session, False)
-        faction.update(f)
-        factions.append(faction)
-    return factions
+    return Faction.all(session)

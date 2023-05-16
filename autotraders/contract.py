@@ -62,13 +62,17 @@ class Contract:
         if "error" in j:
             raise IOError(j["error"]["message"])
 
+    @staticmethod
+    def all(session):
+        r = session.get("https://api.spacetraders.io/v2/my/contracts")
+        j = r.json()
+        contracts = []
+        for contract in j["data"]:
+            c = Contract(contract["id"], session, False)
+            c.update(contract)
+            contracts.append(c)
+        return contracts
+
 
 def get_all_contracts(session):
-    r = session.get("https://api.spacetraders.io/v2/my/contracts")
-    j = r.json()
-    contracts = []
-    for contract in j["data"]:
-        c = Contract(contract["id"], session, False)
-        c.update(contract)
-        contracts.append(c)
-    return contracts
+    return Contract.all(session)
