@@ -11,6 +11,7 @@ Welcome to Autotraders's documentation!
    :caption: Contents:
 
    quickstart
+   notes
    api/autotraders
 
 

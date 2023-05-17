@@ -24,5 +24,7 @@ To make sure your token works, try to check how many credits you have:
 Minimal API Request Model
 ---------------------------
 Once an object is initialized, no api requests are made until a function is called.
-The general update function to refresh the client state is called `update()`.
+The general update function to refresh the client state is called `.update()`.
 
+You can use `.all()` to get all of your objects of that type `Ships.all()` returns all your ships for example,
+`.all()` is paginated, so it returns the list and the page number.
