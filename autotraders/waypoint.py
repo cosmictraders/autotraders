@@ -7,19 +7,18 @@ class Waypoint:
     def __init__(self, symbol, session: requests.Session, update=True):
         self.session = session
         self.symbol = symbol
-        self.marketplace = False
-        self.shipyard = False
         if update:
             self.update()
 
     def update(self, data=None):
         if data is None:
             split = self.symbol.split("-")
-            system_symbol = split[0] + "-" + split[1]
+            self.sector = split[0]
+            self.system_symbol = split[0] + "-" + split[1]
             waypoint_symbol = self.symbol
             data = self.session.get(
                 "https://api.spacetraders.io/v2/systems/"
-                + system_symbol
+                + self.system_symbol
                 + "/waypoints/"
                 + waypoint_symbol
             ).json()["data"]

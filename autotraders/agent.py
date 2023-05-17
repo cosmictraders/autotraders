@@ -1,3 +1,5 @@
+import math
+
 import requests
 
 from autotraders.ship import get_all_ships
@@ -7,10 +9,12 @@ from autotraders.contract import get_all_contracts
 class Agent:
     def __init__(self, session: requests.Session, update=True):
         self.session = session
+        self.credits = math.nan
         if update:
             self.update()
 
     def update(self, data=None):
+        """Uses 3 API requests to get all agent details"""
         if data is None:
             r = self.session.get("https://api.spacetraders.io/v2/my/agent")
             j = r.json()

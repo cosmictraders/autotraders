@@ -1,3 +1,5 @@
+import math
+
 import requests
 
 from autotraders.waypoint import Waypoint
@@ -7,7 +9,8 @@ class System:
     def __init__(self, symbol, session: requests.Session, update=True):
         self.session = session
         self.symbol = symbol
-        self.waypoints = []
+        self.x = math.nan
+        self.y = math.nan
         if update:
             self.update()
 
