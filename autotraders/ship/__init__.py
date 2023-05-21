@@ -310,8 +310,8 @@ class Ship:
         return ships
 
     @staticmethod
-    def all(session):
-        r = session.get("https://api.spacetraders.io/v2/my/ships")
+    def all(session, page: int = 1):
+        r = session.get("https://api.spacetraders.io/v2/my/ships?page="+str(page))
         j = r.json()
         if "error" in j:
             raise IOError(j["error"]["message"])
@@ -320,8 +320,8 @@ class Ship:
             s = Ship(ship["symbol"], session, False)
             s.update(ship)
             ships.append(s)
-        return ships
+        return ships, r.json()["meta"]["total"]
 
 
 def get_all_ships(session):
-    return Ship.all(session)
+    return Ship.all(session)[0]
