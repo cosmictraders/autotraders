@@ -10,6 +10,8 @@ class Agent:
     def __init__(self, session: requests.Session, update=True):
         self.session = session
         self.credits = math.nan
+        self.ships = None
+        self.headquarters = None
         if update:
             self.update()
 

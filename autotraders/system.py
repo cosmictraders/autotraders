@@ -31,7 +31,7 @@ class System:
             self.waypoints.append(waypoint)
 
     @staticmethod
-    def all(session, page=1):
+    def all(session, page=1) -> (list, int):
         r = session.get("https://api.spacetraders.io/v2/systems?limit=20&page=" + str(page))
         j = r.json()["data"]
         systems = []

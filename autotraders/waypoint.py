@@ -1,3 +1,5 @@
+import math
+
 import requests
 
 from autotraders.trait import Trait
@@ -7,14 +9,17 @@ class Waypoint:
     def __init__(self, symbol, session: requests.Session, update=True):
         self.session = session
         self.symbol = symbol
+        self.x = math.nan
+        self.y = math.nan
+        split = self.symbol.split("-")
+        self.sector = split[0]
+        self.system_symbol = split[0] + "-" + split[1]
+
         if update:
             self.update()
 
     def update(self, data=None):
         if data is None:
-            split = self.symbol.split("-")
-            self.sector = split[0]
-            self.system_symbol = split[0] + "-" + split[1]
             waypoint_symbol = self.symbol
             data = self.session.get(
                 "https://api.spacetraders.io/v2/systems/"
