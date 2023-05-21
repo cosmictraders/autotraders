@@ -10,8 +10,14 @@ class BearerAuth(requests.auth.AuthBase):
         return r
 
 
+class AutoTradersSession(requests.Session):
+    def __init__(self, base_url="https://api.spacetraders.io/v2/"):
+        super().__init__()
+        self.base_url = base_url
+
+
 def get_session(token):
     """Creates a session with the provided token."""
-    s = requests.Session()
+    s = AutoTradersSession()
     s.auth = BearerAuth(token)
     return s

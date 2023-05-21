@@ -1,8 +1,8 @@
-import requests
+from autotraders.session import AutoTradersSession
 
 
 class JumpGate:
-    def __init__(self, waypoint: str, session: requests.Session, update=True):
+    def __init__(self, waypoint: str, session: AutoTradersSession, update=True):
         self.location = waypoint
         self.session = session
         self.faction_symbol = ""
@@ -15,7 +15,8 @@ class JumpGate:
             system_symbol = split[0] + "-" + split[1]
             waypoint_symbol = self.location
             data = self.session.get(
-                "https://api.spacetraders.io/v2/systems/"
+                self.session.base_url
+                + "systems/"
                 + system_symbol
                 + "/waypoints/"
                 + waypoint_symbol

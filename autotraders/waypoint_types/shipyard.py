@@ -1,5 +1,4 @@
-import requests
-
+from autotraders.session import AutoTradersSession
 from autotraders.ship import Frame, Reactor, Engine, Module, Mount
 
 
@@ -17,7 +16,7 @@ class ShipyardShip:
 
 
 class Shipyard:
-    def __init__(self, waypoint: str, session: requests.Session, update=True):
+    def __init__(self, waypoint: str, session: AutoTradersSession, update=True):
         self.location = waypoint
         self.session = session
         if update:
@@ -29,7 +28,8 @@ class Shipyard:
             system_symbol = split[0] + "-" + split[1]
             waypoint_symbol = self.location
             data = self.session.get(
-                "https://api.spacetraders.io/v2/systems/"
+                self.session.base_url
+                + "systems/"
                 + system_symbol
                 + "/waypoints/"
                 + waypoint_symbol
@@ -46,6 +46,6 @@ class Shipyard:
 
     def purchase(self, ship_type: str):
         self.session.post(
-            "https://api.spacetraders.io/v2/my/ships",
+            self.session.base_url + "my/ships",
             data={"shipType": ship_type, "waypointSymbol": self.location},
         )

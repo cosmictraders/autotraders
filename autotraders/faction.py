@@ -1,10 +1,9 @@
-import requests
-
+from autotraders.session import AutoTradersSession
 from autotraders.trait import Trait
 
 
 class Faction:
-    def __init__(self, symbol, session: requests.Session, update=True):
+    def __init__(self, symbol, session: AutoTradersSession, update=True):
         self.symbol = symbol
         self.session = session
         if update:
@@ -12,9 +11,7 @@ class Faction:
 
     def update(self, data=None):
         if data is None:
-            r = self.session.get(
-                "https://api.spacetraders.io/v2/factions/" + self.symbol
-            )
+            r = self.session.get(self.session.base_url + "factions/" + self.symbol)
             data = r.json()["data"]
         self.name = data["name"]
         self.description = data["description"]
@@ -25,7 +22,7 @@ class Faction:
 
     @staticmethod
     def all(session):
-        r = session.get("https://api.spacetraders.io/v2/factions")
+        r = session.get(session.base_url + "factions")
         j = r.json()
         if "error" in j:
             raise IOError(j["error"]["message"])

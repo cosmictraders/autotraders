@@ -1,12 +1,11 @@
 import math
 
-import requests
-
+from autotraders.session import AutoTradersSession
 from autotraders.waypoint import Waypoint
 
 
 class System:
-    def __init__(self, symbol, session: requests.Session, update=True):
+    def __init__(self, symbol, session: AutoTradersSession, update=True):
         self.session = session
         self.symbol = symbol
         self.x = math.nan
@@ -16,9 +15,7 @@ class System:
 
     def update(self, data=None):
         if data is None:
-            r = self.session.get(
-                "https://api.spacetraders.io/v2/systems/" + self.symbol
-            )
+            r = self.session.get(self.session.base_url + "systems/" + self.symbol)
             data = r.json()["data"]
         self.waypoints = []
         self.x = data["x"]
@@ -32,7 +29,7 @@ class System:
 
     @staticmethod
     def all(session, page=1) -> (list, int):
-        r = session.get("https://api.spacetraders.io/v2/systems?limit=20&page=" + str(page))
+        r = session.get(session.base_url + "systems?limit=20&page=" + str(page))
         j = r.json()["data"]
         systems = []
         for system in j:

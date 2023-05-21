@@ -1,5 +1,4 @@
-import requests
-
+from autotraders.session import AutoTradersSession
 from autotraders.util import parse_time
 
 
@@ -12,7 +11,7 @@ class Deliver:
 
 
 class Contract:
-    def __init__(self, contract_id, session: requests.Session, update=True):
+    def __init__(self, contract_id, session: AutoTradersSession, update=True):
         self.contract_id = contract_id
         self.session = session
         if update:
@@ -21,7 +20,7 @@ class Contract:
     def update(self, data=None):
         if data is None:
             r = self.session.get(
-                "https://api.spacetraders.io/v2/my/contracts/" + self.contract_id
+                self.session.base_url + "my/contracts/" + self.contract_id
             )
             data = r.json()["data"]
         self.on_accepted = data["terms"]["payment"]["onAccepted"]
@@ -35,18 +34,14 @@ class Contract:
 
     def accept(self):
         j = self.session.post(
-            "https://api.spacetraders.io/v2/my/contracts/"
-            + self.contract_id
-            + "/accept"
+            self.session.base_url + "my/contracts/" + self.contract_id + "/accept"
         ).json()
         if "error" in j:
             raise IOError(j["error"]["message"])
 
     def deliver(self, symbol, cargo_symbol, amount):
         j = self.session.post(
-            "https://api.spacetraders.io/v2/my/contracts/"
-            + self.contract_id
-            + "/deliver",
+            self.session.base_url + "my/contracts/" + self.contract_id + "/deliver",
             data={"shipSymbol": symbol, "tradeSymbol": cargo_symbol, "units": amount},
         ).json()
         if "error" in j:
@@ -55,16 +50,14 @@ class Contract:
 
     def fulfill(self):
         j = self.session.post(
-            "https://api.spacetraders.io/v2/my/contracts/"
-            + self.contract_id
-            + "/fulfill"
+            self.session.base_url + "my/contracts/" + self.contract_id + "/fulfill"
         ).json()
         if "error" in j:
             raise IOError(j["error"]["message"])
 
     @staticmethod
     def all(session, page: int = 1):
-        r = session.get("https://api.spacetraders.io/v2/my/contracts?page=" + str(page))
+        r = session.get(session.base_url + "my/contracts?page=" + str(page))
         j = r.json()
         contracts = []
         for contract in j["data"]:
