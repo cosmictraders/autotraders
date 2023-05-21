@@ -19,6 +19,7 @@ class Faction:
         self.traits = []
         for trait in data["traits"]:
             self.traits.append(Trait(trait))
+        self.is_recruting = data["isRecruiting"]
 
     @staticmethod
     def all(session):

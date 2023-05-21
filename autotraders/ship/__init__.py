@@ -1,5 +1,6 @@
 import asyncio
 
+from autotraders.contract import Contract
 from autotraders.session import AutoTradersSession
 from autotraders.ship.ship_components import Frame, Reactor, Engine, Module, Mount
 from autotraders.ship.survey import Survey
@@ -45,6 +46,15 @@ class Nav:
         self.route = Route(data["route"])
 
 
+class Crew:
+    def __init__(self, data):
+        self.current = data["current"]
+        self.required = data["required"]
+        self.capacity = data["capacity"]
+        self.morale = data["morale"]
+        self.wages = data["wages"]
+
+
 class Ship:
     def __init__(self, symbol, session: AutoTradersSession, update=True):
         self.symbol = symbol
@@ -54,6 +64,7 @@ class Ship:
         self.engine = None
         self.modules = None
         self.mounts = None
+        self.crew = None
         if update:
             self.update()
 
@@ -63,6 +74,8 @@ class Ship:
             if "error" in r.json():
                 raise IOError(r.json()["error"]["message"])
             data = r.json()["data"]
+        if self.crew is None and not hard:
+            self.crew = Crew(data["crew"])
         if self.frame is None and not hard:
             self.frame = Frame(data["frame"])
         if self.reactor is None and not hard:
@@ -117,7 +130,7 @@ class Ship:
     def patch_navigation(self, new_flight_mode):
         r = self.session.patch(
             self.session.base_url + "my/ships/" + self.symbol + "/nav",
-            data={ # TODO: Test
+            data={  # TODO: Test
                 "flightMode": new_flight_mode
             }
         )
@@ -307,6 +320,14 @@ class Ship:
             ships.append(s)
         self.reactor.cooldown = parse_time(j["cooldown"]["expiration"])
         return ships
+
+    def update_ship_cooldown(self):
+        j = self.session.post(
+            self.session.base_url + "my/ships/" + self.symbol + "/cooldown"
+        ).json()
+        if "error" in j:
+            raise IOError(j["error"]["message"])
+        self.reactor.cooldown = parse_time(j["data"]["expiration"])
 
     @staticmethod
     def all(session, page: int = 1):

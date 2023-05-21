@@ -23,14 +23,16 @@ class Contract:
                 self.session.base_url + "my/contracts/" + self.contract_id
             )
             data = r.json()["data"]
+        self.faction = data["faction"]
         self.on_accepted = data["terms"]["payment"]["onAccepted"]
         self.on_fulfilled = data["terms"]["payment"]["onFulfilled"]
         self.accepted = data["accepted"]
         self.fulfilled = data["fulfilled"]
         self.deadline = parse_time(data["terms"]["deadline"])
-        if "deliver" in data:
-            self.contract_type = "deliver"
-            self.contract_data = [Deliver(d) for d in data["deliver"]]
+        self.accept_deadline = parse_time(data["deadlineToAccept"])
+        self.contract_type = data["type"]
+        if "deliver" in data["terms"]:
+            self.contract_data = [Deliver(d) for d in data["terms"]["deliver"]]
 
     def accept(self):
         j = self.session.post(
@@ -47,6 +49,16 @@ class Contract:
         if "error" in j:
             raise IOError(j["error"]["message"])
         self.update()
+
+    def negotiate(self, ship_symbol):
+        j = self.session.post(
+            self.session.base_url + "my/ships/" + ship_symbol + "/negotiate/contract"
+        ).json()
+        if "error" in j:
+            raise IOError(j["error"]["message"])
+        c = Contract(j["data"]["id"], self.session, False)
+        c.update(j["data"])
+        return c
 
     def fulfill(self):
         j = self.session.post(

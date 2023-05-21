@@ -27,5 +27,6 @@ class Agent:
         self.symbol = data["symbol"]
         self.headquarters = data["headquarters"]
         self.credits = data["credits"]
+        self.starting_faction = data["startingFaction"]
         self.ships = get_all_ships(self.session)
         self.contracts = get_all_contracts(self.session)
