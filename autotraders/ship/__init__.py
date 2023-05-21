@@ -1,6 +1,5 @@
 import asyncio
 
-from autotraders.contract import Contract
 from autotraders.session import AutoTradersSession
 from autotraders.ship.ship_components import Frame, Reactor, Engine, Module, Mount
 from autotraders.ship.survey import Survey
