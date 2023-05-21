@@ -24,7 +24,7 @@ class Waypoint:
             data = self.session.get(
                 "https://api.spacetraders.io/v2/systems/"
                 + self.system_symbol
-                + "/waypoints/"
+                + "/waypoints/?limit=20"
                 + waypoint_symbol
             ).json()["data"]
         self.waypoint_type = data["type"]
