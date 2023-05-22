@@ -9,11 +9,11 @@ class MapSymbol:
             s = str(s)
         split = s.split("-")
         self.sector = split[0]
-        if len(split) > 1:
-            self.system = split[0] + "-" + split[1]
         if len(split) == 2:
+            self.system = split[0] + "-" + split[1]
+        if len(split) == 3:
             self.waypoint = split[0] + "-" + split[1] + "-" + split[2]
-        if len(split) > 2:
+        if len(split) > 3:
             raise ValueError("Invalid map symbol")
         self.raw = s
 
