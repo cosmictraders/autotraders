@@ -22,5 +22,8 @@ class MapSymbol:
         return self.raw
 
     def __div__(self, other):
-        """Concatenates with a "-", TODO: sanity checks"""
+        """Concatenates with a '-'"""
+        assert isinstance(other, str)
+        if other[0] == "-":
+            other = other[1:]
         return MapSymbol(str(self) + "-" + other)
