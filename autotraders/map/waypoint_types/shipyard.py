@@ -1,3 +1,4 @@
+from autotraders.map.waypoint_types import WaypointType
 from autotraders.session import AutoTradersSession
 from autotraders.ship import Frame, Reactor, Engine, Module, Mount
 
@@ -15,24 +16,20 @@ class ShipyardShip:
         self.mounts = [Mount(d) for d in data["mounts"]]
 
 
-class Shipyard:
+class Shipyard(WaypointType):
     def __init__(self, waypoint: str, session: AutoTradersSession, update=True):
-        self.location = waypoint
-        self.session = session
-        if update:
-            self.update()
+        super().__init__(waypoint, "shipyard", session, update)
+        self.ship_types = None
+        self.ships = None
 
     def update(self, data: dict = None):
         if data is None:
-            split = self.location.split("-")
-            system_symbol = split[0] + "-" + split[1]
-            waypoint_symbol = self.location
             data = self.session.get(
                 self.session.base_url
                 + "systems/"
-                + system_symbol
+                + self.location.system
                 + "/waypoints/"
-                + waypoint_symbol
+                + self.location.waypoint
                 + "/shipyard"
             ).json()["data"]
         self.ship_types = []

@@ -1,3 +1,4 @@
+from autotraders.map.waypoint_types import WaypointType
 from autotraders.session import AutoTradersSession
 
 
@@ -10,24 +11,22 @@ class TradeGood:
         self.sell_price = data["sellPrice"]
 
 
-class Marketplace:
+class Marketplace(WaypointType):
     def __init__(self, waypoint: str, session: AutoTradersSession, update=True):
-        self.location = waypoint
-        self.session = session
-        if update:
-            self.update()
+        super().__init__(waypoint, "market", session, update)
+        self.imports = None
+        self.exports = None
+        self.exchange = None
+        self.trade_goods = None
 
     def update(self, data: dict = None):
         if data is None:
-            split = self.location.split("-")
-            system_symbol = split[0] + "-" + split[1]
-            waypoint_symbol = self.location
             data = self.session.get(
                 self.session.base_url
                 + "systems/"
-                + system_symbol
+                + self.location.system
                 + "/waypoints/"
-                + waypoint_symbol
+                + self.location.waypoint
                 + "/market"
             ).json()["data"]
         self.imports = []

@@ -1,22 +1,26 @@
 import math
 
+from autotraders import SpaceTradersEntity
 from autotraders.session import AutoTradersSession
-from autotraders.waypoint import Waypoint
+from autotraders.map.waypoint import Waypoint
+from autotraders.shared_models.map_symbol import MapSymbol
 
 
-class System:
+class System(SpaceTradersEntity):
     def __init__(self, symbol, session: AutoTradersSession, update=True):
-        self.session = session
-        self.symbol = symbol
+        self.symbol = MapSymbol(symbol)
         self.x = math.nan
         self.y = math.nan
-        if update:
-            self.update()
+        self.waypoints = None
+        self.factions = None
+        self.star_type = None
+        super().__init__(
+            session, update, session.base_url + "systems/" + str(self.symbol) + "/"
+        )
 
     def update(self, data=None):
         if data is None:
-            r = self.session.get(self.session.base_url + "systems/" + self.symbol)
-            data = r.json()["data"]
+            data = self.get("")["data"]
         self.waypoints = []
         self.x = data["x"]
         self.y = data["y"]

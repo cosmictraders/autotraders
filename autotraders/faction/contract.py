@@ -1,29 +1,35 @@
+import math
+
+from autotraders import SpaceTradersEntity
 from autotraders.session import AutoTradersSession
+from autotraders.shared_models.map_symbol import MapSymbol
 from autotraders.util import parse_time
 
 
 class Deliver:
     def __init__(self, data):
-        self.trade_symbol = data["tradeSymbol"]
-        self.destination_symbol = data["destinationSymbol"]
+        self.trade_symbol = MapSymbol(data["tradeSymbol"])
+        self.destination_symbol = MapSymbol(data["destinationSymbol"])
         self.units_required = data["unitsRequired"]
         self.units_fulfilled = data["unitsFulfilled"]
 
 
-class Contract:
+class Contract(SpaceTradersEntity):
     def __init__(self, contract_id, session: AutoTradersSession, update=True):
+        self.contract_data = None
+        self.accepted = None
+        self.fulfilled = None
+        self.deadline = None
+        self.accept_deadline = None
+        self.contract_type = None
+        self.on_fulfilled = math.nan
+        self.on_accepted = math.nan
         self.contract_id = contract_id
-        self.session = session
-        if update:
-            self.update()
+        super().__init__(session, update, session.base_url + "my/contracts/" + self.contract_id)
 
     def update(self, data=None):
         if data is None:
-            r = self.session.get(
-                self.session.base_url + "my/contracts/" + self.contract_id
-            )
-            data = r.json()["data"]
-        self.faction = data["faction"]
+            data = self.get()["data"]
         self.on_accepted = data["terms"]["payment"]["onAccepted"]
         self.on_fulfilled = data["terms"]["payment"]["onFulfilled"]
         self.accepted = data["accepted"]
@@ -35,23 +41,17 @@ class Contract:
             self.contract_data = [Deliver(d) for d in data["terms"]["deliver"]]
 
     def accept(self):
-        j = self.session.post(
-            self.session.base_url + "my/contracts/" + self.contract_id + "/accept"
-        ).json()
-        if "error" in j:
-            raise IOError(j["error"]["message"])
-
-    def deliver(self, symbol, cargo_symbol, amount):
-        j = self.session.post(
-            self.session.base_url + "my/contracts/" + self.contract_id + "/deliver",
-            data={"shipSymbol": symbol, "tradeSymbol": cargo_symbol, "units": amount},
-        ).json()
-        if "error" in j:
-            raise IOError(j["error"]["message"])
+        j = self.post("accept")
         self.update()
 
-    def negotiate(self, ship_symbol):
-        j = self.session.post(
+    def deliver(self, symbol, cargo_symbol, amount):
+        j = self.post("deliver",
+                      data={"shipSymbol": symbol, "tradeSymbol": cargo_symbol, "units": amount},
+                      )
+        self.update()
+
+    def negotiate(self, ship_symbol, session):
+        j = session.post(
             self.session.base_url + "my/ships/" + ship_symbol + "/negotiate/contract"
         ).json()
         if "error" in j:

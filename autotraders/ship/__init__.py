@@ -1,10 +1,12 @@
 import asyncio
 
+from autotraders import SpaceTradersEntity
 from autotraders.session import AutoTradersSession
+from autotraders.shared_models.map_symbol import MapSymbol
 from autotraders.ship.ship_components import Frame, Reactor, Engine, Module, Mount
 from autotraders.ship.survey import Survey
 from autotraders.util import parse_time
-from autotraders.waypoint import Waypoint
+from autotraders.map.waypoint import Waypoint
 
 
 class Fuel:
@@ -29,8 +31,8 @@ class Cargo:
 
 class Route:
     def __init__(self, data):
-        self.destination = data["destination"]
-        self.departure = data["departure"]["symbol"]
+        self.destination = MapSymbol(data["destination"]["symbol"])
+        self.departure = MapSymbol(data["departure"]["symbol"])
         self.moving = self.destination == self.departure
         if self.moving:
             self.depature_time = parse_time(data["departure_time"])
@@ -40,7 +42,7 @@ class Route:
 class Nav:
     def __init__(self, data):
         self.status = data["status"]
-        self.location = data["waypointSymbol"]
+        self.location = MapSymbol(data["waypointSymbol"])
         self.flight_mode = data["flightMode"]
         self.route = Route(data["route"])
 
@@ -54,25 +56,25 @@ class Crew:
         self.wages = data["wages"]
 
 
-class Ship:
+class Ship(SpaceTradersEntity):
     def __init__(self, symbol, session: AutoTradersSession, update=True):
+        self.cargo = None
+        self.fuel = None
+        self.nav = None
         self.symbol = symbol
-        self.session = session
         self.frame = None
         self.reactor = None
         self.engine = None
         self.modules = None
         self.mounts = None
         self.crew = None
-        if update:
-            self.update()
+        super().__init__(
+            session, update, session.base_url + "my/ships/" + self.symbol + "/"
+        )
 
     def update(self, data: dict = None, hard=False):
         if data is None:
-            r = self.session.get(self.session.base_url + "my/ships/" + self.symbol)
-            if "error" in r.json():
-                raise IOError(r.json()["error"]["message"])
-            data = r.json()["data"]
+            data = self.get("")["data"]  # TODO: This is a hack (sort of)
         if self.crew is None and not hard:
             self.crew = Crew(data["crew"])
         if self.frame is None and not hard:
@@ -98,15 +100,8 @@ class Ship:
             :raise:
                 IOError: if a server error occurs
         """
-        r = self.session.post(
-            self.session.base_url + "my/ships/" + self.symbol + "/navigate",
-            data={"waypointSymbol": waypoint},
-        )
-        j = r.json()
-        if "error" in j:
-            raise j["error"]["message"]
-        await asyncio.sleep(5)
-        self.update()
+        j = self.post("navigate", data={"waypointSymbol": waypoint})
+        self.update(j["data"])
         while self.nav.status == "IN_TRANSIT":
             await asyncio.sleep(5)
             self.update()
@@ -117,21 +112,13 @@ class Ship:
             :raise:
                 IOError: if a server error occurs
         """
-        r = self.session.post(
-            self.session.base_url + "my/ships/" + self.symbol + "/navigate",
-            data={"waypointSymbol": waypoint},
-        )
-        j = r.json()
-        if "error" in j:
-            raise IOError(j["error"]["message"])
+        j = self.post("navigate", data={"waypointSymbol": waypoint})
         self.update(j["data"])
 
     def patch_navigation(self, new_flight_mode):
         r = self.session.patch(
             self.session.base_url + "my/ships/" + self.symbol + "/nav",
-            data={  # TODO: Test
-                "flightMode": new_flight_mode
-            }
+            data={"flightMode": new_flight_mode},  # TODO: Test
         )
         j = r.json()
         if "error" in j:
@@ -139,28 +126,17 @@ class Ship:
         self.update({"nav": j["data"]})
 
     def dock(self):
-        r = self.session.post(
-            self.session.base_url + "my/ships/" + self.symbol + "/dock"
-        )
-        j = r.json()
-        if "error" in j:
-            raise IOError(j["error"]["message"])
+        j = self.post("dock")
         self.update(j["data"])
 
     def orbit(self):
-        r = self.session.post(
-            self.session.base_url + "my/ships/" + self.symbol + "/orbit"
-        )
-        j = r.json()
-        if "error" in j:
-            raise IOError(j["error"]["message"])
+        j = self.post("orbit")
         self.update(j["data"])
 
     def extract(self):
-        r = self.session.post(
+        j = self.session.post(
             self.session.base_url + "my/ships/" + self.symbol + "/extract"
-        )
-        j = r.json()
+        ).json()
         if "error" in j:
             if j["error"]["code"] == 4000:
                 raise IOError(
@@ -176,107 +152,75 @@ class Ship:
         self.reactor.cooldown = parse_time(j["data"]["cooldown"]["expiration"])
 
     def refuel(self):
-        r = self.session.post(
-            self.session.base_url + "my/ships/" + self.symbol + "/refuel"
-        )
-        j = r.json()
-        if "error" in j:
-            raise IOError(j["error"]["message"])
+        j = self.post("refuel")
         self.update(j["data"])
 
     def sell(self, cargo_symbol, quantity):
-        j = self.session.post(
-            self.session.base_url + "my/ships/" + self.symbol + "/sell",
-            data={"symbol": cargo_symbol, "units": quantity},
-        ).json()
-        if "error" in j:
-            raise IOError(j["error"]["message"])
-        self.update()
+        j = self.post("sell", data={"symbol": cargo_symbol, "units": quantity})
+        self.update(j["data"])
 
     def buy(self, cargo_symbol, quantity):
-        j = self.session.post(
-            self.session.base_url + "my/ships/" + self.symbol + "/purchase",
-            data={"symbol": cargo_symbol, "units": quantity},
-        ).json()
-        if "error" in j:
-            raise IOError(j["error"]["message"])
+        j = self.post("purchase", data={"symbol": cargo_symbol, "units": quantity})
         self.update(j["data"])
 
     def transfer(self, destination: str, cargo_symbol: str, quantity: int):
-        j = self.session.post(
-            self.session.base_url + "my/ships/" + self.symbol + "/transfer",
+        j = self.post(
+            "transfer",
             data={
                 "tradeSymbol": cargo_symbol,
                 "units": quantity,
                 "shipSymbol": destination,
             },
-        ).json()
-        if "error" in j:
-            raise IOError(j["error"]["message"])
+        )
         self.update(j["data"])
 
     def jump(self, destination: str):
-        j = self.session.post(
-            self.session.base_url + "my/ships/" + self.symbol + "/jump",
+        j = self.post(
+            "jump",
             data={
                 "systemSymbol": destination,
             },
-        ).json()
-        if "error" in j:
-            raise IOError(j["error"]["message"])
+        )
         self.update(j["data"])
         self.reactor.cooldown = parse_time(j["cooldown"]["expiration"])
 
     def warp(self, destination: str):
-        j = self.session.post(
-            self.session.base_url + "my/ships/" + self.symbol + "/warp",
+        j = self.post(
+            "warp",
             data={
                 "waypointSymbol": destination,
             },
-        ).json()
-        if "error" in j:
-            raise IOError(j["error"]["message"])
+        )
         self.update(j["data"])
 
     def jettison(self, cargo_symbol: str, quantity: int):
-        j = self.session.post(
-            self.session.base_url + "my/ships/" + self.symbol + "/jettison",
+        j = self.post(
+            "jettison",
             data={"symbol": cargo_symbol, "units": quantity},
-        ).json()
-        if "error" in j:
-            raise IOError(j["error"]["message"])
+        )
         self.update(j["data"])
 
     def refine(self, output_symbol: str):
-        j = self.session.post(
-            self.session.base_url + "my/ships/" + self.symbol + "/refine",
+        j = self.post(  # TODO: Fix
+            "refine",
             data={"produce": output_symbol},
-        ).json()
-        if "error" in j:
-            raise IOError(j["error"]["message"])
-        self.update()
+        )
+        self.update(j["data"])
+        self.reactor.cooldown = parse_time(j["cooldown"]["expiration"])
 
-    def chart(self):
+    def chart(self) -> Waypoint:
         """
         Charts the current waypoint
         :return: The info about the waypoint that has been charted
         """
-        j = self.session.post(
-            self.session.base_url + "my/ships/" + self.symbol + "/chart"
-        ).json()
-        if "error" in j:
-            raise IOError(j["error"]["message"])
+        j = self.post("chart")
         w = Waypoint(j["data"]["waypoint"]["symbol"], self.session, False)
         w.update(j["data"]["waypoint"])
-        self.update()
+        self.update()  # TODO: Fix
         return w
 
-    def survey(self):
-        j = self.session.post(
-            self.session.base_url + "my/ships/" + self.symbol + "/survey"
-        ).json()
-        if "error" in j:
-            raise IOError(j["error"]["message"])
+    def survey(self) -> list[Survey]:
+        j = self.post("survey")
         surveys = []
         for s in j["data"]["surveys"]:
             surveys.append(Survey(s))
@@ -284,20 +228,12 @@ class Ship:
         return surveys
 
     def scan_systems(self):
-        j = self.session.post(
-            self.session.base_url + "my/ships/" + self.symbol + "/scan/systems"
-        ).json()
-        if "error" in j:
-            raise IOError(j["error"]["message"])
+        j = self.post("scan/systems")
         self.reactor.cooldown = parse_time(j["cooldown"]["expiration"])
-        raise NotImplementedError
+        raise NotImplementedError  # TODO: Fix
 
     def scan_waypoints(self):
-        j = self.session.post(
-            self.session.base_url + "my/ships/" + self.symbol + "/scan/waypoints"
-        ).json()
-        if "error" in j:
-            raise IOError(j["error"]["message"])
+        j = self.post("scan/waypoints")
         waypoints = []
         for waypoint in j["systems"]:
             s = Waypoint(waypoint["symbol"], self.session, False)
@@ -307,11 +243,7 @@ class Ship:
         return waypoints
 
     def scan_ships(self):
-        j = self.session.post(
-            self.session.base_url + "my/ships/" + self.symbol + "/scan/ships"
-        ).json()
-        if "error" in j:
-            raise IOError(j["error"]["message"])
+        j = self.post("scan/ships")
         ships = []
         for ship in j["data"]["ships"]:
             s = Ship(ship["data"], self.session, False)
@@ -321,11 +253,7 @@ class Ship:
         return ships
 
     def update_ship_cooldown(self):
-        j = self.session.post(
-            self.session.base_url + "my/ships/" + self.symbol + "/cooldown"
-        ).json()
-        if "error" in j:
-            raise IOError(j["error"]["message"])
+        j = self.get("cooldown")
         self.reactor.cooldown = parse_time(j["data"]["expiration"])
 
     @staticmethod

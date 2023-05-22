@@ -1,21 +1,25 @@
+from autotraders import SpaceTradersEntity
 from autotraders.session import AutoTradersSession
-from autotraders.trait import Trait
+from autotraders.shared_models.map_symbol import MapSymbol
+from autotraders.shared_models.trait import Trait
 
 
-class Faction:
+class Faction(SpaceTradersEntity):
     def __init__(self, symbol, session: AutoTradersSession, update=True):
+        self.is_recruting = None
+        self.traits = None
+        self.headquarters = None
+        self.description = None
+        self.name = None
         self.symbol = symbol
-        self.session = session
-        if update:
-            self.update()
+        super().__init__(session, update, session.base_url + "factions/" + self.symbol)
 
     def update(self, data=None):
         if data is None:
-            r = self.session.get(self.session.base_url + "factions/" + self.symbol)
-            data = r.json()["data"]
+            data = self.get("")["data"]
         self.name = data["name"]
         self.description = data["description"]
-        self.headquarters = data["headquarters"]
+        self.headquarters = MapSymbol(data["headquarters"])
         self.traits = []
         for trait in data["traits"]:
             self.traits.append(Trait(trait))
