@@ -20,7 +20,6 @@ class Agent(SpaceTradersEntity):
     def update(self, data=None):
         """Uses 3 API requests to get all agent details"""
         if data is None:
-            print(self.get(""))
             data = self.get("")["data"]
         self.account_id = data["accountId"]
         self.symbol = data["symbol"]

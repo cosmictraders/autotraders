@@ -49,16 +49,12 @@ class SpaceTradersEntity:
         return j
 
     def post(self, action: str, data=None) -> dict:
-        print(self.action_url + action)
-        print(data)
-        print(type(data))
         self.session.headers["Content-Type"] = "application/json"
         r = self.session.post(
             self.action_url + action,
             data=data,
         )
         j = r.json()
-        print(j)
         if "error" in j:
             raise IOError(j["error"]["message"])
         return j
