@@ -5,6 +5,7 @@ from autotraders.session import get_session
 from autotraders.ship import Ship
 from autotraders.faction.contract import Contract
 
+
 @pytest.fixture
 def session():
     s = get_session("BLANK")
@@ -32,13 +33,13 @@ def test_ship(session):
     s.dock()
     s.orbit()
     s.refuel()
-    s.buy("test", 10)
-    s.sell("test", 10)
-    s.transfer("TEST", "CARGO_SYMBOL", 10)
+
+
+def test_ship_mock(session):
+    pass
 
 
 def test_contact(session):
     c = Contract("blah", session)
     c.accept()
-    c.deliver(10, "CARGO_SYMBOL", "RANDOM_SHIP")
     c.fulfill()

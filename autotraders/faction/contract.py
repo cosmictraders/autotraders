@@ -42,13 +42,13 @@ class Contract(SpaceTradersEntity):
 
     def accept(self):
         j = self.post("accept")
-        self.update()
+        self.update(j["data"]["contract"])
 
     def deliver(self, symbol, cargo_symbol, amount):
         j = self.post("deliver",
                       data={"shipSymbol": symbol, "tradeSymbol": cargo_symbol, "units": amount},
                       )
-        self.update()
+        self.update(j["data"]["contract"])
 
     def negotiate(self, ship_symbol, session):
         j = session.post(

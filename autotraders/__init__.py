@@ -48,11 +48,10 @@ class SpaceTradersEntity:
         return j
 
     def post(self, action: str, data=None) -> dict:
-        if data is None:
-            data = {}
         print(self.action_url + action)
         print(data)
-        print(self.session.headers)
+        print(type(data))
+        self.session.headers["Content-Type"] = "application/json"
         r = self.session.post(
             self.action_url + action,
             data=data,
