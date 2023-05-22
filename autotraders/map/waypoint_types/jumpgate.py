@@ -12,7 +12,7 @@ class JumpGate(WaypointType):
 
     def update(self, data: dict = None):
         if data is None:
-            data = self.get("")["data"]
+            data = self.get()["data"]
         self.jump_range = data["jumpRange"]
         if "factionSymbol" in data:
             self.faction_symbol = data["factionSymbol"]

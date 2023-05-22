@@ -16,7 +16,7 @@ class Faction(SpaceTradersEntity):
 
     def update(self, data=None):
         if data is None:
-            data = self.get("")["data"]
+            data = self.get()["data"]
         self.name = data["name"]
         self.description = data["description"]
         self.headquarters = MapSymbol(data["headquarters"])

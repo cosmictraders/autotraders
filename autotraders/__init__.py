@@ -75,8 +75,8 @@ class SpaceTradersEntity:
         if update:
             self.update()
 
-    def get(self, action: str = "") -> dict:
-        if action == "":
+    def get(self, action: str = None) -> dict:
+        if action is None:
             r = self.session.get(self.action_url[0: len(self.action_url) - 1])
         else:
             r = self.session.get(

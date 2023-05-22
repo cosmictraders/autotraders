@@ -20,7 +20,7 @@ class System(SpaceTradersEntity):
 
     def update(self, data=None):
         if data is None:
-            data = self.get("")["data"]
+            data = self.get()["data"]
         self.waypoints = []
         self.x = data["x"]
         self.y = data["y"]

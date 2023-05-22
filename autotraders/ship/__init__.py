@@ -1,6 +1,7 @@
 import asyncio
 
 from autotraders import SpaceTradersEntity
+from autotraders.map.system import System
 from autotraders.session import AutoTradersSession
 from autotraders.shared_models.map_symbol import MapSymbol
 from autotraders.ship.ship_components import Frame, Reactor, Engine, Module, Mount
@@ -74,7 +75,7 @@ class Ship(SpaceTradersEntity):
 
     def update(self, data: dict = None, hard=False):
         if data is None:
-            data = self.get("")["data"]  # TODO: This is a hack (sort of)
+            data = self.get()["data"]
         if self.crew is None and not hard:
             self.crew = Crew(data["crew"])
         if self.frame is None and not hard:
@@ -118,7 +119,7 @@ class Ship(SpaceTradersEntity):
     def patch_navigation(self, new_flight_mode):
         r = self.session.patch(
             self.session.base_url + "my/ships/" + self.symbol + "/nav",
-            data={"flightMode": new_flight_mode},  # TODO: Test
+            data={"flightMode": new_flight_mode}
         )
         j = r.json()
         if "error" in j:
@@ -201,7 +202,7 @@ class Ship(SpaceTradersEntity):
         self.update(j["data"])
 
     def refine(self, output_symbol: str):
-        j = self.post(  # TODO: Fix
+        j = self.post(
             "refine",
             data={"produce": output_symbol},
         )
@@ -216,7 +217,6 @@ class Ship(SpaceTradersEntity):
         j = self.post("chart")
         w = Waypoint(j["data"]["waypoint"]["symbol"], self.session, False)
         w.update(j["data"]["waypoint"])
-        self.update()  # TODO: Fix
         return w
 
     def survey(self) -> list[Survey]:
@@ -229,13 +229,18 @@ class Ship(SpaceTradersEntity):
 
     def scan_systems(self):
         j = self.post("scan/systems")
+        systems = []
+        for system in j["systems"]:
+            s = System(system["symbol"], self.session, False)
+            s.update(system)
+            systems.append(s)
         self.reactor.cooldown = parse_time(j["cooldown"]["expiration"])
-        raise NotImplementedError  # TODO: Fix
+        return systems
 
     def scan_waypoints(self):
         j = self.post("scan/waypoints")
         waypoints = []
-        for waypoint in j["systems"]:
+        for waypoint in j["waypoints"]:
             s = Waypoint(waypoint["symbol"], self.session, False)
             s.update(waypoint)
             waypoints.append(s)
