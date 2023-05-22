@@ -34,11 +34,6 @@ def test_ship(session):
     s.orbit()
     s.refuel()
 
-
-def test_ship_mock(session):
-    pass
-
-
 def test_contact(session):
     c = Contract("blah", session)
     c.accept()
