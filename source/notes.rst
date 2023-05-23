@@ -4,6 +4,7 @@ Just some FAQs and notes about pitfalls etc.
 
 - Errors are always thrown then the API request fails (usually an ``IoError``)
 - If a object has a value of ``None`` is it likely the object hasn't synced that part of its state from the server
+- Python 3.9 or higher necessary
 
 Versioning
 _______________
