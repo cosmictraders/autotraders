@@ -9,6 +9,8 @@ class MapSymbol:
             s = str(s)
         split = s.split("-")
         self.sector = split[0]
+        self.system = None
+        self.waypoint = None
         if len(split) > 1:
             self.system = split[0] + "-" + split[1]
         if len(split) > 2:
