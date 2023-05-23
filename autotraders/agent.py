@@ -1,6 +1,6 @@
 import math
 
-from autotraders import SpaceTradersEntity
+from autotraders.space_traders_entity import SpaceTradersEntity
 from autotraders.faction.contract import get_all_contracts
 from autotraders.session import AutoTradersSession
 from autotraders.ship import get_all_ships

@@ -1,6 +1,6 @@
 import math
 
-from autotraders import SpaceTradersEntity
+from autotraders.space_traders_entity import SpaceTradersEntity
 from autotraders.session import AutoTradersSession
 from autotraders.map.waypoint import Waypoint
 from autotraders.shared_models.map_symbol import MapSymbol

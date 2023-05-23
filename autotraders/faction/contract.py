@@ -1,6 +1,6 @@
 import math
 
-from autotraders import SpaceTradersEntity
+from autotraders.space_traders_entity import SpaceTradersEntity
 from autotraders.session import AutoTradersSession
 from autotraders.shared_models.map_symbol import MapSymbol
 from autotraders.util import parse_time

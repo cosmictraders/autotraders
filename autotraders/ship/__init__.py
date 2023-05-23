@@ -1,6 +1,6 @@
 import asyncio
 
-from autotraders import SpaceTradersEntity
+from autotraders.space_traders_entity import SpaceTradersEntity
 from autotraders.map.system import System
 from autotraders.session import AutoTradersSession
 from autotraders.shared_models.map_symbol import MapSymbol
