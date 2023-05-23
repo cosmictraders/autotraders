@@ -1,4 +1,4 @@
-API Documentation
+autotraders package
 ===================
 
 Subpackages
@@ -7,6 +7,8 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
+   autotraders.faction
+   autotraders.map
    autotraders.ship
 
 Submodules
@@ -20,22 +22,6 @@ autotraders.agent module
    :undoc-members:
    :show-inheritance:
 
-autotraders.contract module
----------------------------
-
-.. automodule:: autotraders.contract
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-autotraders.faction module
---------------------------
-
-.. automodule:: autotraders.faction
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 autotraders.session module
 --------------------------
 
@@ -44,18 +30,10 @@ autotraders.session module
    :undoc-members:
    :show-inheritance:
 
-autotraders.system module
--------------------------
+autotraders.transaction module
+------------------------------
 
-.. automodule:: autotraders.system
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-autotraders.trait module
-------------------------
-
-.. automodule:: autotraders.trait
+.. automodule:: autotraders.transaction
    :members:
    :undoc-members:
    :show-inheritance:
@@ -64,14 +42,6 @@ autotraders.util module
 -----------------------
 
 .. automodule:: autotraders.util
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-autotraders.waypoint module
----------------------------
-
-.. automodule:: autotraders.waypoint
    :members:
    :undoc-members:
    :show-inheritance:
