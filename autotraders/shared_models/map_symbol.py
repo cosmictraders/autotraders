@@ -27,3 +27,6 @@ class MapSymbol:
         if other[0] == "-":
             other = other[1:]
         return MapSymbol(str(self) + "-" + other)
+
+    def __eq__(self, other):
+        return self.sector == other.sector and self.system == other.system and self.waypoint == other.waypoint
