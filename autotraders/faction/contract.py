@@ -22,8 +22,8 @@ class Contract(SpaceTradersEntity):
         self.deadline = None
         self.accept_deadline = None
         self.contract_type = None
-        self.on_fulfilled = math.nan
-        self.on_accepted = math.nan
+        self.on_fulfilled = None
+        self.on_accepted = None
         self.contract_id = contract_id
         super().__init__(session, update, session.base_url + "my/contracts/" + self.contract_id)
 

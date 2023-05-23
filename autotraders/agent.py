@@ -12,7 +12,7 @@ class Agent(SpaceTradersEntity):
         self.starting_faction = None
         self.symbol = None
         self.account_id = None
-        self.credits = math.nan
+        self.credits = None
         self.ships = None
         self.headquarters = None
         super().__init__(session, update, session.base_url + "my/agent")

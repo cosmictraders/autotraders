@@ -15,8 +15,8 @@ class Waypoint:
         self.shipyard = None
         self.session = session
         self.symbol = MapSymbol(symbol)
-        self.x = math.nan
-        self.y = math.nan
+        self.x = None
+        self.y = None
 
         if update:
             self.update()
