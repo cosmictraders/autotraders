@@ -2,6 +2,7 @@ import pytest
 
 from autotraders.agent import Agent
 from autotraders.session import get_session
+from autotraders.shared_models.map_symbol import MapSymbol
 from autotraders.ship import Ship
 from autotraders.faction.contract import Contract
 
@@ -39,3 +40,10 @@ def test_contact(session):
     c = Contract("blah", session)
     c.accept()
     c.fulfill()
+
+def test_map_symbol():
+    s = MapSymbol("X1-TEST")
+    s1 = MapSymbol("X1-TEST2")
+    s2 = MapSymbol("X1-TEST")
+    assert s != s1
+    assert s == s2
