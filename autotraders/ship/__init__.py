@@ -34,7 +34,7 @@ class Route:
     def __init__(self, data):
         self.destination = MapSymbol(data["destination"]["symbol"])
         self.departure = MapSymbol(data["departure"]["symbol"])
-        self.moving = self.destination == self.departure
+        self.moving = self.destination != self.departure
         if self.moving:
             self.depature_time = parse_time(data["departure_time"])
             self.arrival = parse_time(data["arrival"])
