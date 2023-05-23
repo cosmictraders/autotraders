@@ -36,7 +36,7 @@ class Route:
         self.departure = MapSymbol(data["departure"]["symbol"])
         self.moving = self.destination != self.departure
         if self.moving:
-            self.depature_time = parse_time(data["departure_time"])
+            self.departure_time = parse_time(data["departureTime"])
             self.arrival = parse_time(data["arrival"])
 
 
