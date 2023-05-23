@@ -7,8 +7,8 @@ Just some FAQs and notes about pitfalls etc.
 
 Odd Values
 ____________
-``math.nan`` - When an int hasn't been updated to a value yet.
-``None`` -  When any other type hasn't been updated to a value yet.
+- ``math.nan`` - When an int hasn't been updated to a value yet.
+- ``None`` -  When any other type hasn't been updated to a value yet.
 
 Versioning
 _______________
