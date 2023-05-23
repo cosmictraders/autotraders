@@ -76,17 +76,21 @@ class Ship(SpaceTradersEntity):
     def update(self, data: dict = None, hard=False):
         if data is None:
             data = self.get()["data"]
-        if self.crew is None and not hard:
+
+        def go_for_update(d, s):
+            return s in data and (d is None or hard)
+
+        if go_for_update(self.crew, "crew"):
             self.crew = Crew(data["crew"])
-        if self.frame is None and not hard:
+        if go_for_update(self.frame, "frame"):
             self.frame = Frame(data["frame"])
-        if self.reactor is None and not hard:
+        if go_for_update(self.reactor, "reactor"):
             self.reactor = Reactor(data["reactor"])
-        if self.engine is None and not hard:
+        if go_for_update(self.engine, "engine"):
             self.engine = Engine(data["engine"])
-        if self.modules is None and not hard:
+        if go_for_update(self.modules, "modules"):
             self.modules = [Module(d) for d in data["modules"]]
-        if self.mounts is None and not hard:
+        if go_for_update(self.mounts, "mounts"):
             self.mounts = [Mount(d) for d in data["mounts"]]
         if "nav" in data:
             self.nav = Nav(data["nav"])
