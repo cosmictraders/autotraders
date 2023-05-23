@@ -12,7 +12,7 @@ class SpaceTradersEntity:
 
     def get(self, action: str = None) -> dict:
         if action is None:
-            r = self.session.get(self.action_url[0: len(self.action_url) - 1])
+            r = self.session.get(self.action_url[0 : len(self.action_url) - 1])
         else:
             r = self.session.get(
                 self.action_url + action,

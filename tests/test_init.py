@@ -34,6 +34,7 @@ def test_ship(session):
     s.orbit()
     s.refuel()
 
+
 def test_contact(session):
     c = Contract("blah", session)
     c.accept()

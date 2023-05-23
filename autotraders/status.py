@@ -58,7 +58,9 @@ def get_status() -> Status:
     s.reset_frequency = j["serverResets"]["frequency"]
     s.announcements = []
     for announcement in j["announcements"]:
-        s.announcements.append(Announcement(title=announcement["title"], body=announcement["body"]))
+        s.announcements.append(
+            Announcement(title=announcement["title"], body=announcement["body"])
+        )
     s.links = []
     for link in j["links"]:
         s.links.append(Link(name=link["name"], url=link["url"]))

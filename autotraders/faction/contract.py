@@ -25,7 +25,9 @@ class Contract(SpaceTradersEntity):
         self.on_fulfilled = None
         self.on_accepted = None
         self.contract_id = contract_id
-        super().__init__(session, update, session.base_url + "my/contracts/" + self.contract_id)
+        super().__init__(
+            session, update, session.base_url + "my/contracts/" + self.contract_id
+        )
 
     def update(self, data=None):
         if data is None:
@@ -45,9 +47,10 @@ class Contract(SpaceTradersEntity):
         self.update(j["data"]["contract"])
 
     def deliver(self, symbol, cargo_symbol, amount):
-        j = self.post("deliver",
-                      data={"shipSymbol": symbol, "tradeSymbol": cargo_symbol, "units": amount},
-                      )
+        j = self.post(
+            "deliver",
+            data={"shipSymbol": symbol, "tradeSymbol": cargo_symbol, "units": amount},
+        )
         self.update(j["data"]["contract"])
 
     def negotiate(self, ship_symbol, session):

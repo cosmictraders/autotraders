@@ -119,7 +119,7 @@ class Ship(SpaceTradersEntity):
     def patch_navigation(self, new_flight_mode):
         r = self.session.patch(
             self.session.base_url + "my/ships/" + self.symbol + "/nav",
-            data={"flightMode": new_flight_mode}
+            data={"flightMode": new_flight_mode},
         )
         j = r.json()
         if "error" in j:
