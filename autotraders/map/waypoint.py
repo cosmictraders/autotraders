@@ -58,6 +58,9 @@ class Waypoint:
             waypoints.append(waypoint)
         return waypoints
 
+    def __eq__(self, other):
+        return self.symbol == other.symbol
+
 
 def get_all_waypoints(system, session):
     return Waypoint.all(system, session)
