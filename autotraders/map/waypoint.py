@@ -1,5 +1,3 @@
-import math
-
 from autotraders.session import AutoTradersSession
 from autotraders.shared_models.trait import Trait
 

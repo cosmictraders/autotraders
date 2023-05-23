@@ -1,5 +1,3 @@
-import math
-
 from autotraders.map.waypoint_types import WaypointType
 from autotraders.session import AutoTradersSession
 

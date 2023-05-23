@@ -1,4 +1,4 @@
 """A spacetraders api"""
 
-from autotraders.session import AutoTradersSession
-from autotraders.status import get_status
+from autotraders.session import AutoTradersSession # noqa F401
+from autotraders.status import get_status # noqa F401
