@@ -30,23 +30,34 @@ def test_agent(session):
 
 
 def test_ship(session):
+    Ship("TEST", session)
+
+
+def test_ship_functions(session):
     s = Ship("TEST", session)
     s.dock()
     s.orbit()
     s.refuel()
+    s.extract()
+
+
+def test_ship_param_functions(session):
+    s = Ship("TEST-1", session)
     s.navigate("X1-TEST-TEST")
+    s.jump(MapSymbol("X1-TEST-TEST"))
+    s.warp("X1-TEST-TEST")
+    s.sell("FUEL", 42)
+    s.buy("FUEL", 42)
+    s.refine("FUEL")
+    s.transfer("TEST-2", "FUEL", 42)
 
 
 def test_contact(session):
+    Contract("blah", session)
+
+
+def test_contact_functions(session):
     c = Contract("blah", session)
     c.accept()
     c.fulfill()
     c.deliver("TEST-1", "GOLD", 5)
-
-
-def test_map_symbol():
-    s = MapSymbol("X1-TEST")
-    s1 = MapSymbol("X1-TEST2")
-    s2 = MapSymbol("X1-TEST")
-    assert s != s1
-    assert s == s2

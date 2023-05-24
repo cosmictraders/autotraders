@@ -1,4 +1,5 @@
 import asyncio
+from typing import Union, Optional
 
 from autotraders.space_traders_entity import SpaceTradersEntity
 from autotraders.map.system import System
@@ -59,16 +60,16 @@ class Crew:
 
 class Ship(SpaceTradersEntity):
     def __init__(self, symbol, session: AutoTradersSession, update=True):
-        self.cargo = None
-        self.fuel = None
-        self.nav = None
-        self.symbol = symbol
-        self.frame = None
-        self.reactor = None
-        self.engine = None
-        self.modules = None
-        self.mounts = None
-        self.crew = None
+        self.cargo: Optional[Cargo] = None
+        self.fuel: Optional[Fuel] = None
+        self.nav: Optional[Nav] = None
+        self.symbol: str = symbol
+        self.frame: Optional[Frame] = None
+        self.reactor: Optional[Reactor] = None
+        self.engine: Optional[Engine] = None
+        self.modules: Optional[list[Module]] = None
+        self.mounts: Optional[list[Mount]] = None
+        self.crew: Optional[Crew] = None
         super().__init__(
             session, update, session.base_url + "my/ships/" + self.symbol + "/"
         )
@@ -99,7 +100,7 @@ class Ship(SpaceTradersEntity):
         if "cargo" in data:
             self.cargo = Cargo(data["cargo"])
 
-    async def navigate_async(self, waypoint):
+    async def navigate_async(self, waypoint: Union[str, MapSymbol]):
         """Attempts to move ship to the provided waypoint.
         If the request succeeds, this function waits for the ship to arrive.
             :raise:
@@ -111,7 +112,7 @@ class Ship(SpaceTradersEntity):
             await asyncio.sleep(5)
             self.update()
 
-    def navigate(self, waypoint):
+    def navigate(self, waypoint: Union[str, MapSymbol]):
         """Attempts to move ship to the provided waypoint.
         If the request succeeds, this function exits immediately, and does not wait the ship to arrive.
             :raise:
@@ -160,11 +161,11 @@ class Ship(SpaceTradersEntity):
         j = self.post("refuel")
         self.update(j["data"])
 
-    def sell(self, cargo_symbol, quantity):
+    def sell(self, cargo_symbol: str, quantity: int):
         j = self.post("sell", data={"symbol": cargo_symbol, "units": quantity})
         self.update(j["data"])
 
-    def buy(self, cargo_symbol, quantity):
+    def buy(self, cargo_symbol: str, quantity: int):
         j = self.post("purchase", data={"symbol": cargo_symbol, "units": quantity})
         self.update(j["data"])
 
@@ -179,7 +180,7 @@ class Ship(SpaceTradersEntity):
         )
         self.update(j["data"])
 
-    def jump(self, destination: str):
+    def jump(self, destination: Union[str, MapSymbol]):
         j = self.post(
             "jump",
             data={
@@ -187,9 +188,9 @@ class Ship(SpaceTradersEntity):
             },
         )
         self.update(j["data"])
-        self.reactor.cooldown = parse_time(j["cooldown"]["expiration"])
+        self.reactor.cooldown = parse_time(j["data"]["cooldown"]["expiration"])
 
-    def warp(self, destination: str):
+    def warp(self, destination: Union[str, MapSymbol]):
         j = self.post(
             "warp",
             data={
@@ -210,8 +211,9 @@ class Ship(SpaceTradersEntity):
             "refine",
             data={"produce": output_symbol},
         )
+        print(j)
         self.update(j["data"])
-        self.reactor.cooldown = parse_time(j["cooldown"]["expiration"])
+        self.reactor.cooldown = parse_time(j["data"]["cooldown"]["expiration"])
 
     def chart(self) -> Waypoint:
         """
@@ -228,7 +230,7 @@ class Ship(SpaceTradersEntity):
         surveys = []
         for s in j["data"]["surveys"]:
             surveys.append(Survey(s))
-        self.reactor.cooldown = parse_time(j["cooldown"]["expiration"])
+        self.reactor.cooldown = parse_time(j["data"]["cooldown"]["expiration"])
         return surveys
 
     def scan_systems(self):
@@ -238,7 +240,7 @@ class Ship(SpaceTradersEntity):
             s = System(system["symbol"], self.session, False)
             s.update(system)
             systems.append(s)
-        self.reactor.cooldown = parse_time(j["cooldown"]["expiration"])
+        self.reactor.cooldown = parse_time(j["data"]["cooldown"]["expiration"])
         return systems
 
     def scan_waypoints(self):
@@ -248,7 +250,7 @@ class Ship(SpaceTradersEntity):
             s = Waypoint(waypoint["symbol"], self.session, False)
             s.update(waypoint)
             waypoints.append(s)
-        self.reactor.cooldown = parse_time(j["cooldown"]["expiration"])
+        self.reactor.cooldown = parse_time(j["data"]["cooldown"]["expiration"])
         return waypoints
 
     def scan_ships(self):
@@ -258,7 +260,7 @@ class Ship(SpaceTradersEntity):
             s = Ship(ship["data"], self.session, False)
             s.update(ship)
             ships.append(s)
-        self.reactor.cooldown = parse_time(j["cooldown"]["expiration"])
+        self.reactor.cooldown = parse_time(j["data"]["cooldown"]["expiration"])
         return ships
 
     def update_ship_cooldown(self):
@@ -266,7 +268,7 @@ class Ship(SpaceTradersEntity):
         self.reactor.cooldown = parse_time(j["data"]["expiration"])
 
     @staticmethod
-    def all(session, page: int = 1):
+    def all(session, page: int = 1) -> (str, int):
         r = session.get(session.base_url + "my/ships?page=" + str(page))
         j = r.json()
         if "error" in j:

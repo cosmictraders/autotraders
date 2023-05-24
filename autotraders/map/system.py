@@ -1,3 +1,5 @@
+from typing import Optional
+
 from autotraders.space_traders_entity import SpaceTradersEntity
 from autotraders.session import AutoTradersSession
 from autotraders.map.waypoint import Waypoint
@@ -7,11 +9,11 @@ from autotraders.shared_models.map_symbol import MapSymbol
 class System(SpaceTradersEntity):
     def __init__(self, symbol, session: AutoTradersSession, update=True):
         self.symbol = MapSymbol(symbol)
-        self.x = None
-        self.y = None
-        self.waypoints = None
-        self.factions = None
-        self.star_type = None
+        self.x: Optional[int] = None
+        self.y: Optional[int] = None
+        self.waypoints: Optional[list[Waypoint]] = None
+        self.factions: Optional[list[str]] = None
+        self.star_type: Optional[str] = None
         super().__init__(
             session, update, session.base_url + "systems/" + str(self.symbol) + "/"
         )

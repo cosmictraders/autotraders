@@ -1,3 +1,4 @@
+from autotraders.shared_models.map_symbol import MapSymbol
 from autotraders.util import parse_time
 
 
@@ -8,3 +9,11 @@ def test_time_parser():
     assert parse_time("2023-05-21T00:07:07.475Z").hour == 0
     assert parse_time("2023-05-21T00:07:07.475Z").minute == 7
     assert parse_time("2023-05-21T00:07:07.475Z").second == 7
+
+
+def test_map_symbol():
+    s = MapSymbol("X1-TEST")
+    s1 = MapSymbol("X1-TEST2")
+    s2 = MapSymbol("X1-TEST")
+    assert s != s1
+    assert s == s2

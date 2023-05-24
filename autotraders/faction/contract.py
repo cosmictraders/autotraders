@@ -1,3 +1,5 @@
+from typing import Optional
+
 from autotraders.space_traders_entity import SpaceTradersEntity
 from autotraders.session import AutoTradersSession
 from autotraders.shared_models.map_symbol import MapSymbol
@@ -15,13 +17,13 @@ class Deliver:
 class Contract(SpaceTradersEntity):
     def __init__(self, contract_id, session: AutoTradersSession, update=True):
         self.contract_data = None
-        self.accepted = None
-        self.fulfilled = None
+        self.accepted: Optional[bool] = None
+        self.fulfilled: Optional[bool] = None
         self.deadline = None
         self.accept_deadline = None
         self.contract_type = None
-        self.on_fulfilled = None
-        self.on_accepted = None
+        self.on_fulfilled: Optional[str] = None
+        self.on_accepted: Optional[str] = None
         self.contract_id = contract_id
         super().__init__(
             session, update, session.base_url + "my/contracts/" + self.contract_id
