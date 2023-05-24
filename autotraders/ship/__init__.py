@@ -105,7 +105,7 @@ class Ship(SpaceTradersEntity):
             :raise:
                 IOError: if a server error occurs
         """
-        j = self.post("navigate", data={"waypointSymbol": waypoint})
+        j = self.post("navigate", data={"waypointSymbol": str(waypoint)})
         self.update(j["data"])
         while self.nav.status == "IN_TRANSIT":
             await asyncio.sleep(5)
@@ -117,7 +117,7 @@ class Ship(SpaceTradersEntity):
             :raise:
                 IOError: if a server error occurs
         """
-        j = self.post("navigate", data={"waypointSymbol": waypoint})
+        j = self.post("navigate", data={"waypointSymbol": str(waypoint)})
         self.update(j["data"])
 
     def patch_navigation(self, new_flight_mode):
@@ -183,7 +183,7 @@ class Ship(SpaceTradersEntity):
         j = self.post(
             "jump",
             data={
-                "systemSymbol": destination,
+                "systemSymbol": str(destination),
             },
         )
         self.update(j["data"])
@@ -193,7 +193,7 @@ class Ship(SpaceTradersEntity):
         j = self.post(
             "warp",
             data={
-                "waypointSymbol": destination,
+                "waypointSymbol": str(destination),
             },
         )
         self.update(j["data"])

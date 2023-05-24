@@ -34,12 +34,15 @@ def test_ship(session):
     s.dock()
     s.orbit()
     s.refuel()
+    s.navigate("X1-TEST-TEST")
 
 
 def test_contact(session):
     c = Contract("blah", session)
     c.accept()
     c.fulfill()
+    c.deliver("TEST-1", "GOLD", 5)
+
 
 def test_map_symbol():
     s = MapSymbol("X1-TEST")

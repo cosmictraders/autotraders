@@ -1,3 +1,5 @@
+import json
+
 from autotraders import AutoTradersSession
 
 
@@ -24,10 +26,13 @@ class SpaceTradersEntity:
 
     def post(self, action: str, data=None) -> dict:
         self.session.headers["Content-Type"] = "application/json"
-        r = self.session.post(
-            self.action_url + action,
-            data=data,
-        )
+        if data is not None:
+            r = self.session.post(
+                self.action_url + action,
+                data=json.dumps(data),
+            )
+        else:
+            r = self.session.post(self.action_url + action)
         j = r.json()
         if "error" in j:
             raise IOError(j["error"]["message"])
