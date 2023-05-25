@@ -61,5 +61,5 @@ def test_contact_functions(session):
 
 
 def test_contact_param_functions(session):
-    c = Contract("blah", session)
+    c = Contract.negotiate("TEST-1", session)
     c.deliver("TEST-1", "GOLD", 5)

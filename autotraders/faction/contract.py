@@ -53,22 +53,20 @@ class Contract(SpaceTradersEntity):
         )
         self.update(j["data"]["contract"])
 
-    def negotiate(self, ship_symbol, session):
+    @staticmethod
+    def negotiate(ship_symbol, session):
         j = session.post(
-            self.session.base_url + "my/ships/" + ship_symbol + "/negotiate/contract"
+            session.base_url + "my/ships/" + ship_symbol + "/negotiate/contract"
         ).json()
         if "error" in j:
             raise IOError(j["error"]["message"])
-        c = Contract(j["data"]["id"], self.session, False)
-        c.update(j["data"])
+        print(j)
+        c = Contract(j["data"]["contract"]["id"], session, False)
+        c.update(j["data"]["contract"])
         return c
 
     def fulfill(self):
-        j = self.session.post(
-            self.session.base_url + "my/contracts/" + self.contract_id + "/fulfill"
-        ).json()
-        if "error" in j:
-            raise IOError(j["error"]["message"])
+        j = self.post("fulfill")
         self.update(j["data"]["contract"])
 
     @staticmethod
