@@ -13,7 +13,7 @@ class Agent(SpaceTradersEntity):
         self.credits = None
         self.ships = None
         self.headquarters = None
-        super().__init__(session, update, session.base_url + "my/agent")
+        super().__init__(session, update, "my/agent")
 
     def update(self, data=None):
         """Uses 3 API requests to get all agent details"""

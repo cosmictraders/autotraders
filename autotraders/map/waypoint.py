@@ -17,8 +17,7 @@ class Waypoint(SpaceTradersEntity):
         self.symbol = MapSymbol(symbol)
         self.x: Optional[int] = None
         self.y: Optional[int] = None
-        super().__init__(session, update, session.base_url
-                         + "systems/"
+        super().__init__(session, update, "systems/"
                          + self.symbol.system
                          + "/waypoints/"
                          + self.symbol.waypoint)

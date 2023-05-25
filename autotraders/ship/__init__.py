@@ -71,7 +71,7 @@ class Ship(SpaceTradersEntity):
         self.mounts: Optional[list[Mount]] = None
         self.crew: Optional[Crew] = None
         super().__init__(
-            session, update, session.base_url + "my/ships/" + self.symbol + "/"
+            session, update, "my/ships/" + self.symbol + "/"
         )
 
     def update(self, data: dict = None, hard=False):

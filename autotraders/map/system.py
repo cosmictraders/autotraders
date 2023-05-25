@@ -15,7 +15,7 @@ class System(SpaceTradersEntity):
         self.factions: Optional[list[str]] = None
         self.star_type: Optional[str] = None
         super().__init__(
-            session, update, session.base_url + "systems/" + str(self.symbol) + "/"
+            session, update, "systems/" + str(self.symbol) + "/"
         )
 
     def update(self, data=None):

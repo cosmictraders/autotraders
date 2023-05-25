@@ -12,7 +12,7 @@ class Faction(SpaceTradersEntity):
         self.description = None
         self.name = None
         self.symbol = symbol
-        super().__init__(session, update, session.base_url + "factions/" + self.symbol)
+        super().__init__(session, update, "factions/" + self.symbol)
 
     def update(self, data=None):
         if data is None:

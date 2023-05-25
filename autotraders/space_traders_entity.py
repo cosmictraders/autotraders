@@ -6,7 +6,7 @@ from autotraders import AutoTradersSession
 class SpaceTradersEntity:
     def __init__(self, session: AutoTradersSession, update, action_url):
         self.session: AutoTradersSession = session
-        self.action_url = action_url  # TODO: Better get() and post() methods
+        self.action_url = session.base_url + action_url  # TODO: Better get() and post() methods
         if self.action_url[-1] != "/":
             self.action_url += "/"
         if update:

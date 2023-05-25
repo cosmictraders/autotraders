@@ -11,8 +11,7 @@ class WaypointType(SpaceTradersEntity):
         super().__init__(
             session,
             update,
-            session.base_url
-            + "systems/"
+            "systems/"
             + self.location.system
             + "/waypoints/"
             + self.location.waypoint

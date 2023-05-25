@@ -26,7 +26,7 @@ class Contract(SpaceTradersEntity):
         self.on_accepted: Optional[str] = None
         self.contract_id = contract_id
         super().__init__(
-            session, update, session.base_url + "my/contracts/" + self.contract_id
+            session, update, "my/contracts/" + self.contract_id
         )
 
     def update(self, data=None):
