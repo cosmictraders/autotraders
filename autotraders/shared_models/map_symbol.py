@@ -9,6 +9,9 @@ class MapSymbol:
             s = str(s)
         split = s.split("-")
         self.sector = split[0]
+        # TODO: Wait till stoplight is fixed
+        # if len(self.sector) != 2:
+        #     raise ValueError("Invalid map symbol")
         self.system = None
         self.waypoint = None
         if len(split) > 1:
@@ -23,7 +26,7 @@ class MapSymbol:
         """Returns the input that was passed as a string."""
         return self.raw
 
-    def __div__(self, other):
+    def __truediv__(self, other):
         """Concatenates with a '-'"""
         assert isinstance(other, str)
         if other[0] == "-":

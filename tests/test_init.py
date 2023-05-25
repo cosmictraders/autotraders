@@ -1,6 +1,8 @@
 import pytest
 
+from autotraders import get_status
 from autotraders.agent import Agent
+from autotraders.faction import Faction
 from autotraders.session import get_session
 from autotraders.shared_models.map_symbol import MapSymbol
 from autotraders.ship import Ship
@@ -23,6 +25,11 @@ def test_invalid_api_key():
         assert type(e) is IOError
 
 
+def test_get_status():
+    status = get_status()
+    assert status.version == "v2"
+
+
 def test_agent(session):
     Agent(session)
 
@@ -33,6 +40,7 @@ def test_ship(session):
 
 def test_ship_functions(session):
     s = Ship("TEST", session)
+    s.update_ship_cooldown()
     s.dock()
     s.orbit()
     s.refuel()
@@ -42,12 +50,14 @@ def test_ship_functions(session):
 def test_ship_param_functions(session):
     s = Ship("TEST-1", session)
     s.navigate("X1-TEST-TEST")
+    s.patch_navigation("DRIFT")
     s.jump(MapSymbol("X1-TEST-TEST"))
     s.warp("X1-TEST-TEST")
     s.sell("FUEL", 42)
     s.buy("FUEL", 42)
     s.refine("FUEL")
     s.transfer("TEST-2", "FUEL", 42)
+    s.jettison("FUEL", 42)
 
 
 def test_contact(session):
@@ -63,3 +73,7 @@ def test_contact_functions(session):
 def test_contact_param_functions(session):
     c = Contract.negotiate("TEST-1", session)
     c.deliver("TEST-1", "GOLD", 5)
+
+
+def test_faction(session):
+    Faction.all(session)
