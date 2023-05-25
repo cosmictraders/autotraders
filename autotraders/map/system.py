@@ -47,4 +47,4 @@ class System(SpaceTradersEntity):
 
 
 def list_systems(session, page=1) -> (list[System], int):
-    System.all(session, page)
+    return System.all(session, page)
