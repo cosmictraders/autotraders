@@ -2,6 +2,8 @@ from datetime import datetime
 
 import requests
 
+from autotraders.util import parse_time
+
 
 class LeaderboardPlayer:
     symbol: str
@@ -54,7 +56,7 @@ def get_status() -> Status:
     s.reset_date = j["resetDate"]
     s.description = j["description"]
     s.stats = j["stats"]
-    s.next_reset = j["serverResets"]["nextReset"]
+    s.next_reset = parse_time(j["serverResets"]["next"])
     s.reset_frequency = j["serverResets"]["frequency"]
     s.announcements = []
     for announcement in j["announcements"]:
