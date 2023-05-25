@@ -14,6 +14,7 @@ class AutoTradersSession(requests.Session):
     def __init__(self, base_url="https://api.spacetraders.io/v2/"):
         super().__init__()
         self.base_url = base_url
+        self.headers.update({"Prefer": "dynamic=true"})
 
 
 def get_session(token):

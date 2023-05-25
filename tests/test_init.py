@@ -24,9 +24,7 @@ def test_invalid_api_key():
 
 
 def test_agent(session):
-    a = Agent(session)
-    assert a.credits == 0
-    assert a.symbol == "string"
+    Agent(session)
 
 
 def test_ship(session):
@@ -60,4 +58,8 @@ def test_contact_functions(session):
     c = Contract("blah", session)
     c.accept()
     c.fulfill()
+
+
+def test_contact_param_functions(session):
+    c = Contract("blah", session)
     c.deliver("TEST-1", "GOLD", 5)

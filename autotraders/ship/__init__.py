@@ -257,7 +257,7 @@ class Ship(SpaceTradersEntity):
         j = self.post("scan/ships")
         ships = []
         for ship in j["data"]["ships"]:
-            s = Ship(ship["data"], self.session, False)
+            s = Ship(ship, self.session, False)
             s.update(ship)
             ships.append(s)
         self.reactor.cooldown = parse_time(j["data"]["cooldown"]["expiration"])
