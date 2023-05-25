@@ -69,6 +69,7 @@ class Contract(SpaceTradersEntity):
         ).json()
         if "error" in j:
             raise IOError(j["error"]["message"])
+        self.update(j["data"]["contract"])
 
     @staticmethod
     def all(session, page: int = 1):
