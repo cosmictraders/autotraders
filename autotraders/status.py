@@ -53,7 +53,7 @@ def get_status() -> Status:
     s = Status()
     s.status = j["status"]
     s.version = j["version"]
-    s.reset_date = j["resetDate"]
+    s.reset_date = parse_time(j["resetDate"])
     s.description = j["description"]
     s.stats = j["stats"]
     s.next_reset = parse_time(j["serverResets"]["next"])
