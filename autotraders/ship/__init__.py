@@ -268,7 +268,7 @@ class Ship(SpaceTradersEntity):
 
     @staticmethod
     def all(session, page: int = 1) -> (str, int):
-        r = session.get(session.base_url + "my/ships?page=" + str(page))
+        r = session.get(session.base_url + "my/ships?limit=20&page=" + str(page))
         j = r.json()
         if "error" in j:
             raise IOError(j["error"]["message"])
