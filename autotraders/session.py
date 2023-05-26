@@ -16,10 +16,7 @@ class BearerAuth(requests.auth.AuthBase):
 
 class AutoTradersSession(LimiterSession):
     def __init__(self, base_url="https://api.spacetraders.io/v2/"):
-        second_rate = RequestRate(2, Duration.SECOND)
-        burst_rate = RequestRate(10, Duration.SECOND * 10)
-        limiter = Limiter(second_rate, burst_rate)
-        super().__init__(limiter=limiter, limit_statuses=[429, 502])
+        super().__init__(per_second=2, burst_rate=10, limit_statuses=[429, 502])
         self.base_url = base_url
         self.headers.update({"Prefer": "dynamic=true"})
 
