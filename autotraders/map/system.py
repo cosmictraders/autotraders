@@ -8,7 +8,7 @@ from autotraders.shared_models.map_symbol import MapSymbol
 
 class System(SpaceTradersEntity):
     def __init__(self, symbol, session: AutoTradersSession, update=True):
-        self.symbol = MapSymbol(symbol)
+        self.symbol: MapSymbol = MapSymbol(symbol)
         self.x: Optional[int] = None
         self.y: Optional[int] = None
         self.waypoints: Optional[list[Waypoint]] = None

@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Optional
 
 from autotraders.space_traders_entity import SpaceTradersEntity
@@ -15,16 +16,16 @@ class Deliver:
 
 
 class Contract(SpaceTradersEntity):
-    def __init__(self, contract_id, session: AutoTradersSession, update=True):
+    def __init__(self, contract_id: str, session: AutoTradersSession, update=True):
         self.contract_data = None
         self.accepted: Optional[bool] = None
         self.fulfilled: Optional[bool] = None
-        self.deadline = None
-        self.accept_deadline = None
+        self.deadline: Optional[datetime] = None
+        self.accept_deadline: Optional[datetime] = None
         self.contract_type = None
         self.on_fulfilled: Optional[str] = None
         self.on_accepted: Optional[str] = None
-        self.contract_id = contract_id
+        self.contract_id: str = contract_id
         super().__init__(session, update, "my/contracts/" + self.contract_id)
 
     def update(self, data=None):

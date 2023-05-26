@@ -1,3 +1,5 @@
+from typing import Optional
+
 from autotraders.map.waypoint_types import WaypointType
 from autotraders.session import AutoTradersSession
 from autotraders.ship import Frame, Reactor, Engine, Module, Mount
@@ -18,8 +20,8 @@ class ShipyardShip:
 
 class Shipyard(WaypointType):
     def __init__(self, waypoint: str, session: AutoTradersSession, update=True):
-        self.ship_types = None
-        self.ships = None
+        self.ship_types: Optional[list[str]] = None
+        self.ships: Optional[list[ShipyardShip]] = None
         super().__init__(waypoint, "shipyard", session, update)
 
     def update(self, data: dict = None):

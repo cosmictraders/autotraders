@@ -10,8 +10,8 @@ from autotraders.space_traders_entity import SpaceTradersEntity
 class Waypoint(SpaceTradersEntity):
     def __init__(self, symbol, session: AutoTradersSession, update=True):
         self.waypoint_type: Optional[str] = None
-        self.faction = None
-        self.traits = None
+        self.faction: Optional[str] = None
+        self.traits: Optional[list[Trait]] = []
         self.marketplace: Optional[bool] = None
         self.shipyard: Optional[bool] = None
         self.symbol = MapSymbol(symbol)

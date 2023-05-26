@@ -7,7 +7,7 @@ class WaypointType(SpaceTradersEntity):
     def __init__(
         self, waypoint: str, trait: str, session: AutoTradersSession, update=True
     ):
-        self.location = MapSymbol(waypoint)
+        self.location: MapSymbol = MapSymbol(waypoint)
         super().__init__(
             session,
             update,

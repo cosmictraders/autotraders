@@ -1,11 +1,13 @@
+from typing import Optional
+
 from autotraders.map.waypoint_types import WaypointType
 from autotraders.session import AutoTradersSession
 
 
 class JumpGate(WaypointType):
     def __init__(self, waypoint: str, session: AutoTradersSession, update=True):
-        self.faction_symbol = ""
-        self.jump_range = None
+        self.faction_symbol: Optional[str] = ""
+        self.jump_range: Optional[int] = None
         super().__init__(waypoint, "jump-gate", session, update)
 
     def update(self, data: dict = None):
