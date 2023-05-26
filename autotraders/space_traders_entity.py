@@ -17,8 +17,8 @@ class SpaceTradersEntity:
     def get(self, action: str = None) -> dict:
         if action is None:
             r = self.session.get(
-                self.action_url[0 : len(self.action_url) - 1]
-            )  # noqa E203
+                self.action_url[0 : len(self.action_url) - 1]  # noqa E203
+            )
         else:
             r = self.session.get(
                 self.action_url + action,
