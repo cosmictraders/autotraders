@@ -8,7 +8,7 @@ class SpaceTradersEntity:
         self.session: AutoTradersSession = session
         self.action_url = (
             session.base_url + action_url
-        )  # TODO: Better get() and post() methods
+        )
         if self.action_url[-1] != "/":
             self.action_url += "/"
         if update:
