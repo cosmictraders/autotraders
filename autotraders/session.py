@@ -21,7 +21,7 @@ class AutoTradersSession(LimiterSession):
         self.headers.update({"Prefer": "dynamic=true"})
 
 
-def get_session(token: Optional[str]) -> AutoTradersSession:
+def get_session(token: Optional[str] = None) -> AutoTradersSession:
     """Creates a session with the provided token."""
     s = AutoTradersSession()
     if token is not None:
