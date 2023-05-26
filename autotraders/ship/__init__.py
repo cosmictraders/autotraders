@@ -1,4 +1,5 @@
 import asyncio
+from datetime import datetime, timezone
 from typing import Union, Optional
 
 from autotraders.space_traders_entity import SpaceTradersEntity
@@ -35,10 +36,9 @@ class Route:
     def __init__(self, data):
         self.destination = MapSymbol(data["destination"]["symbol"])
         self.departure = MapSymbol(data["departure"]["symbol"])
-        self.moving = self.destination != self.departure
-        if self.moving:
-            self.departure_time = parse_time(data["departureTime"])
-            self.arrival = parse_time(data["arrival"])
+        self.departure_time = parse_time(data["departureTime"])
+        self.arrival = parse_time(data["arrival"])
+        self.moving = self.arrival > datetime.now(timezone.utc)
 
 
 class Nav:
@@ -47,6 +47,7 @@ class Nav:
         self.location = MapSymbol(data["waypointSymbol"])
         self.flight_mode = data["flightMode"]
         self.route = Route(data["route"])
+        self.moving = self.route.moving
 
 
 class Crew:

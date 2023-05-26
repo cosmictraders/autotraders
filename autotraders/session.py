@@ -1,7 +1,6 @@
 from typing import Optional
 
 import requests
-from pyrate_limiter import Limiter, RequestRate, Duration
 from requests_ratelimiter import LimiterSession
 
 
