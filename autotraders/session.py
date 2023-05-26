@@ -1,4 +1,5 @@
 import requests
+from requests_ratelimiter import LimiterSession
 
 
 class BearerAuth(requests.auth.AuthBase):
@@ -10,9 +11,9 @@ class BearerAuth(requests.auth.AuthBase):
         return r
 
 
-class AutoTradersSession(requests.Session):
+class AutoTradersSession(LimiterSession):
     def __init__(self, base_url="https://api.spacetraders.io/v2/"):
-        super().__init__()
+        super().__init__(per_second=2, burst=10)
         self.base_url = base_url
         self.headers.update({"Prefer": "dynamic=true"})
 

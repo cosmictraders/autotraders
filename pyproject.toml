@@ -17,7 +17,8 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "requests>=2.20"
+    "requests>=2.20",
+    "requests-ratelimiter >=0.4"
 ]
 
 [tool.setuptools.packages.find]
