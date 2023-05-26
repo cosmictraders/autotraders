@@ -46,10 +46,15 @@ class Status:
     links: list[Link]
 
 
-def get_status() -> Status:
+def get_status(session=None) -> Status:
     """returns the API status, with reset dates, see the Status class for more info."""
-    r = requests.get("https://api.spacetraders.io/v2/")
+    if session is None:
+        r = requests.get("https://api.spacetraders.io/v2/")
+    else:
+        r = session.get("https://api.spacetraders.io/v2/")
     j = r.json()
+    if "error" in j:
+        raise IOError(j["error"]["message"])
     s = Status()
     s.status = j["status"]
     s.version = j["version"]
