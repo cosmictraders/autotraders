@@ -9,6 +9,9 @@ def parse_time(time: str) -> datetime:
         try:
             d = datetime.strptime(time, "%Y-%m-%dT%H:%M:%S.%fZ")
         except ValueError:
-            d = datetime.strptime(time, "%Y-%m-%dT%H:%M:%SZ")
+            try:
+                d = datetime.strptime(time, "%Y-%m-%dT%H:%M:%SZ")
+            except ValueError:
+                d = datetime.fromisoformat(time)
         d = d.replace(tzinfo=timezone.utc)
         return d
