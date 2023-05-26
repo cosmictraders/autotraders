@@ -1,4 +1,7 @@
 .idea/*
 build/*
 venv/*
-/.coverage
+.coverage
+htmlcov/*
+*/.pytest_cache/*
+*.pyc

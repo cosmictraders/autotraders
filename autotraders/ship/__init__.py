@@ -70,9 +70,7 @@ class Ship(SpaceTradersEntity):
         self.modules: Optional[list[Module]] = None
         self.mounts: Optional[list[Mount]] = None
         self.crew: Optional[Crew] = None
-        super().__init__(
-            session, update, "my/ships/" + self.symbol + "/"
-        )
+        super().__init__(session, update, "my/ships/" + self.symbol + "/")
 
     def update(self, data: dict = None, hard=False):
         if data is None:

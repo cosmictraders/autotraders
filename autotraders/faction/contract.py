@@ -25,9 +25,7 @@ class Contract(SpaceTradersEntity):
         self.on_fulfilled: Optional[str] = None
         self.on_accepted: Optional[str] = None
         self.contract_id = contract_id
-        super().__init__(
-            session, update, "my/contracts/" + self.contract_id
-        )
+        super().__init__(session, update, "my/contracts/" + self.contract_id)
 
     def update(self, data=None):
         if data is None:

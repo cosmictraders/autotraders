@@ -17,10 +17,11 @@ class Waypoint(SpaceTradersEntity):
         self.symbol = MapSymbol(symbol)
         self.x: Optional[int] = None
         self.y: Optional[int] = None
-        super().__init__(session, update, "systems/"
-                         + self.symbol.system
-                         + "/waypoints/"
-                         + self.symbol.waypoint)
+        super().__init__(
+            session,
+            update,
+            "systems/" + self.symbol.system + "/waypoints/" + self.symbol.waypoint,
+        )
 
     def update(self, data=None):
         if data is None:
@@ -37,10 +38,10 @@ class Waypoint(SpaceTradersEntity):
             for trait in data["traits"]:
                 self.traits.append(Trait(trait))
         self.marketplace = (
-                len([trait for trait in self.traits if trait.symbol == "MARKETPLACE"]) > 0
+            len([trait for trait in self.traits if trait.symbol == "MARKETPLACE"]) > 0
         )
         self.shipyard = (
-                len([trait for trait in self.traits if trait.symbol == "SHIPYARD"]) > 0
+            len([trait for trait in self.traits if trait.symbol == "SHIPYARD"]) > 0
         )
 
     @staticmethod

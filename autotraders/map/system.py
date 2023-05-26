@@ -14,9 +14,7 @@ class System(SpaceTradersEntity):
         self.waypoints: Optional[list[Waypoint]] = None
         self.factions: Optional[list[str]] = None
         self.star_type: Optional[str] = None
-        super().__init__(
-            session, update, "systems/" + str(self.symbol) + "/"
-        )
+        super().__init__(session, update, "systems/" + str(self.symbol) + "/")
 
     def update(self, data=None):
         if data is None:

@@ -6,7 +6,9 @@ from autotraders import AutoTradersSession
 class SpaceTradersEntity:
     def __init__(self, session: AutoTradersSession, update, action_url):
         self.session: AutoTradersSession = session
-        self.action_url = session.base_url + action_url  # TODO: Better get() and post() methods
+        self.action_url = (
+            session.base_url + action_url
+        )  # TODO: Better get() and post() methods
         if self.action_url[-1] != "/":
             self.action_url += "/"
         if update:
@@ -14,7 +16,9 @@ class SpaceTradersEntity:
 
     def get(self, action: str = None) -> dict:
         if action is None:
-            r = self.session.get(self.action_url[0 : len(self.action_url) - 1]) # noqa E203
+            r = self.session.get(
+                self.action_url[0 : len(self.action_url) - 1]
+            )  # noqa E203
         else:
             r = self.session.get(
                 self.action_url + action,
