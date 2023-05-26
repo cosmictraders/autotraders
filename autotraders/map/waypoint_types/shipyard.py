@@ -18,9 +18,9 @@ class ShipyardShip:
 
 class Shipyard(WaypointType):
     def __init__(self, waypoint: str, session: AutoTradersSession, update=True):
-        super().__init__(waypoint, "shipyard", session, update)
         self.ship_types = None
         self.ships = None
+        super().__init__(waypoint, "shipyard", session, update)
 
     def update(self, data: dict = None):
         if data is None:

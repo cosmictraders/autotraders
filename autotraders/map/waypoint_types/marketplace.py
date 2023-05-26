@@ -13,11 +13,11 @@ class TradeGood:
 
 class Marketplace(WaypointType):
     def __init__(self, waypoint: str, session: AutoTradersSession, update=True):
-        super().__init__(waypoint, "market", session, update)
         self.imports = None
         self.exports = None
         self.exchange = None
         self.trade_goods = None
+        super().__init__(waypoint, "market", session, update)
 
     def update(self, data: dict = None):
         if data is None:
