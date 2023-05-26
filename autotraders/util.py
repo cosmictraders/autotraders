@@ -1,11 +1,14 @@
-from datetime import datetime
+import sys
+from datetime import datetime, timezone
 
 
 def parse_time(time: str) -> datetime:
-    try:
+    if sys.version_info.minor >= 11:
         return datetime.fromisoformat(time)
-    except:
+    else:
         try:
-            return datetime.strptime(time, "%Y-%m-%dT%H:%M:%S.%fZ")
+            d = datetime.strptime(time, "%Y-%m-%dT%H:%M:%S.%fZ")
         except ValueError:
-            return datetime.strptime(time, "%Y-%m-%dT%H:%M:%SZ")
+            d = datetime.strptime(time, "%Y-%m-%dT%H:%M:%SZ")
+        d = d.replace(tzinfo=timezone.utc)
+        return d
