@@ -7,14 +7,14 @@ from autotraders.shared_models.trait import Trait
 
 
 class Faction(SpaceTradersEntity):
-    def __init__(self, symbol, session: AutoTradersSession, update=True):
+    def __init__(self, symbol, session: AutoTradersSession, data=None):
         self.is_recruiting: Optional[bool] = None
         self.traits: Optional[list[Trait]] = None
         self.headquarters: Optional[MapSymbol] = None
         self.description: Optional[str] = None
         self.name: Optional[str] = None
         self.symbol: str = symbol
-        super().__init__(session, update, "factions/" + self.symbol)
+        super().__init__(session, "factions/" + self.symbol, data)
 
     def update(self, data=None):
         if data is None:
@@ -35,8 +35,7 @@ class Faction(SpaceTradersEntity):
             raise IOError(j["error"]["message"])
         factions = []
         for f in j["data"]:
-            faction = Faction(f["symbol"], session, False)
-            faction.update(f)
+            faction = Faction(f["symbol"], session, f)
             factions.append(faction)
         return factions
 

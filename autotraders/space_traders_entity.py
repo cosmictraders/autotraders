@@ -4,13 +4,12 @@ from autotraders import AutoTradersSession
 
 
 class SpaceTradersEntity:
-    def __init__(self, session: AutoTradersSession, update, action_url):
+    def __init__(self, session: AutoTradersSession, action_url, data=None):
         self.session: AutoTradersSession = session
         self.action_url = session.base_url + action_url
         if self.action_url[-1] != "/":
             self.action_url += "/"
-        if update:
-            self.update()
+        self.update(data)
 
     def get(self, action: str = None) -> dict:
         if action is None:
@@ -40,5 +39,5 @@ class SpaceTradersEntity:
             raise IOError(j["error"]["message"])
         return j
 
-    def update(self):
+    def update(self, data: dict=None):
         pass

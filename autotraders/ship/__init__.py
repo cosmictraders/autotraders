@@ -61,7 +61,7 @@ class Crew:
 
 
 class Ship(SpaceTradersEntity):
-    def __init__(self, symbol, session: AutoTradersSession, update=True):
+    def __init__(self, symbol, session: AutoTradersSession, data=None):
         self.cargo: Optional[Cargo] = None
         self.fuel: Optional[Fuel] = None
         self.nav: Optional[Nav] = None
@@ -72,7 +72,7 @@ class Ship(SpaceTradersEntity):
         self.modules: Optional[list[Module]] = None
         self.mounts: Optional[list[Mount]] = None
         self.crew: Optional[Crew] = None
-        super().__init__(session, update, "my/ships/" + self.symbol + "/")
+        super().__init__(session, "my/ships/" + self.symbol + "/", None)
 
     def update(self, data: dict = None, hard=False):
         if data is None:
@@ -223,8 +223,7 @@ class Ship(SpaceTradersEntity):
         :return: The info about the waypoint that has been charted
         """
         j = self.post("chart")
-        w = Waypoint(j["data"]["waypoint"]["symbol"], self.session, False)
-        w.update(j["data"]["waypoint"])
+        w = Waypoint(j["data"]["waypoint"]["symbol"], self.session, j["data"]["waypoint"])
         return w
 
     def survey(self) -> list[Survey]:
@@ -239,8 +238,7 @@ class Ship(SpaceTradersEntity):
         j = self.post("scan/systems")
         systems = []
         for system in j["systems"]:
-            s = System(system["symbol"], self.session, False)
-            s.update(system)
+            s = System(system["symbol"], self.session, system)
             systems.append(s)
         self.reactor.cooldown = parse_time(j["data"]["cooldown"]["expiration"])
         return systems
@@ -249,9 +247,8 @@ class Ship(SpaceTradersEntity):
         j = self.post("scan/waypoints")
         waypoints = []
         for waypoint in j["waypoints"]:
-            s = Waypoint(waypoint["symbol"], self.session, False)
-            s.update(waypoint)
-            waypoints.append(s)
+            w = Waypoint(waypoint["symbol"], self.session, waypoint)
+            waypoints.append(w)
         self.reactor.cooldown = parse_time(j["data"]["cooldown"]["expiration"])
         return waypoints
 
@@ -259,8 +256,7 @@ class Ship(SpaceTradersEntity):
         j = self.post("scan/ships")
         ships = []
         for ship in j["data"]["ships"]:
-            s = Ship(ship, self.session, False)
-            s.update(ship)
+            s = Ship(ship["symbol"], self.session, ship)
             ships.append(s)
         self.reactor.cooldown = parse_time(j["data"]["cooldown"]["expiration"])
         return ships
@@ -277,8 +273,7 @@ class Ship(SpaceTradersEntity):
             raise IOError(j["error"]["message"])
         ships = []
         for ship in j["data"]:
-            s = Ship(ship["symbol"], session, False)
-            s.update(ship)
+            s = Ship(ship["symbol"], session, ship)
             ships.append(s)
         return ships, r.json()["meta"]["total"]
 

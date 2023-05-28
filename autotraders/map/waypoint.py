@@ -8,7 +8,7 @@ from autotraders.space_traders_entity import SpaceTradersEntity
 
 
 class Waypoint(SpaceTradersEntity):
-    def __init__(self, symbol, session: AutoTradersSession, update=True):
+    def __init__(self, symbol, session: AutoTradersSession, data=None):
         self.waypoint_type: Optional[str] = None
         self.faction: Optional[str] = None
         self.traits: Optional[list[Trait]] = []
@@ -19,8 +19,7 @@ class Waypoint(SpaceTradersEntity):
         self.y: Optional[int] = None
         super().__init__(
             session,
-            update,
-            "systems/" + self.symbol.system + "/waypoints/" + self.symbol.waypoint,
+            "systems/" + self.symbol.system + "/waypoints/" + self.symbol.waypoint, data
         )
 
     def update(self, data=None):
@@ -50,8 +49,7 @@ class Waypoint(SpaceTradersEntity):
         data = r.json()["data"]
         waypoints = []
         for w in data:
-            waypoint = Waypoint(w["symbol"], session, False)
-            waypoint.update(w)
+            waypoint = Waypoint(w["symbol"], session, w)
             waypoints.append(waypoint)
         return waypoints, r.json()["meta"]["total"]
 

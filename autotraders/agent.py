@@ -8,7 +8,7 @@ from autotraders.ship import get_all_ships, Ship
 
 
 class Agent(SpaceTradersEntity):
-    def __init__(self, session: AutoTradersSession, update=True):
+    def __init__(self, session: AutoTradersSession, data=None):
         self.contracts: Optional[list[Contract]] = None
         self.starting_faction: Optional[str] = None
         self.symbol: Optional[str] = None
@@ -16,7 +16,7 @@ class Agent(SpaceTradersEntity):
         self.credits: Optional[int] = None
         self.ships: Optional[Ship] = None
         self.headquarters: Optional[MapSymbol] = None
-        super().__init__(session, update, "my/agent")
+        super().__init__(session, "my/agent", data)
 
     def update(self, data=None):
         """Uses 3 API requests to get all agent details"""

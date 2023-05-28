@@ -16,7 +16,7 @@ class Deliver:
 
 
 class Contract(SpaceTradersEntity):
-    def __init__(self, contract_id: str, session: AutoTradersSession, update=True):
+    def __init__(self, contract_id: str, session: AutoTradersSession, data=None):
         self.contract_data = None
         self.accepted: Optional[bool] = None
         self.fulfilled: Optional[bool] = None
@@ -26,7 +26,7 @@ class Contract(SpaceTradersEntity):
         self.on_fulfilled: Optional[str] = None
         self.on_accepted: Optional[str] = None
         self.contract_id: str = contract_id
-        super().__init__(session, update, "my/contracts/" + self.contract_id)
+        super().__init__(session, "my/contracts/" + self.contract_id, data)
 
     def update(self, data=None):
         if data is None:
@@ -59,8 +59,7 @@ class Contract(SpaceTradersEntity):
         ).json()
         if "error" in j:
             raise IOError(j["error"]["message"])
-        c = Contract(j["data"]["contract"]["id"], session, False)
-        c.update(j["data"]["contract"])
+        c = Contract(j["data"]["contract"]["id"], session, j["data"]["contract"])
         return c
 
     def fulfill(self):
@@ -73,8 +72,7 @@ class Contract(SpaceTradersEntity):
         j = r.json()
         contracts = []
         for contract in j["data"]:
-            c = Contract(contract["id"], session, False)
-            c.update(contract)
+            c = Contract(contract["id"], session, contract)
             contracts.append(c)
         return contracts, r.json()["meta"]["total"]
 

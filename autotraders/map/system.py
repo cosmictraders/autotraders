@@ -7,14 +7,14 @@ from autotraders.shared_models.map_symbol import MapSymbol
 
 
 class System(SpaceTradersEntity):
-    def __init__(self, symbol, session: AutoTradersSession, update=True):
+    def __init__(self, symbol, session: AutoTradersSession, data=None):
         self.symbol: MapSymbol = MapSymbol(symbol)
         self.x: Optional[int] = None
         self.y: Optional[int] = None
         self.waypoints: Optional[list[Waypoint]] = None
         self.factions: Optional[list[str]] = None
         self.star_type: Optional[str] = None
-        super().__init__(session, update, "systems/" + str(self.symbol) + "/")
+        super().__init__(session, "systems/" + str(self.symbol) + "/", data)
 
     def update(self, data=None):
         if data is None:
@@ -25,8 +25,7 @@ class System(SpaceTradersEntity):
         self.factions = data["factions"]
         self.star_type = data["type"]
         for w in data["waypoints"]:
-            waypoint = Waypoint(w["symbol"], self.session, False)
-            waypoint.update(w)
+            waypoint = Waypoint(w["symbol"], self.session, w)
             self.waypoints.append(waypoint)
 
     @staticmethod
@@ -35,8 +34,7 @@ class System(SpaceTradersEntity):
         j = r.json()["data"]
         systems = []
         for system in j:
-            s = System(system["symbol"], session, False)
-            s.update(system)
+            s = System(system["symbol"], session, system)
             systems.append(s)
         return systems, r.json()["meta"]["total"]
 

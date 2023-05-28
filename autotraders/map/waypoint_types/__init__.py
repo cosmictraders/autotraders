@@ -5,12 +5,11 @@ from autotraders.shared_models.map_symbol import MapSymbol
 
 class WaypointType(SpaceTradersEntity):
     def __init__(
-        self, waypoint: str, trait: str, session: AutoTradersSession, update=True
+        self, waypoint: str, trait: str, session: AutoTradersSession, data=None
     ):
         self.location: MapSymbol = MapSymbol(waypoint)
         super().__init__(
             session,
-            update,
             "systems/"
             + self.location.system
             + "/waypoints/"
@@ -18,4 +17,5 @@ class WaypointType(SpaceTradersEntity):
             + "/"
             + trait
             + "/",
+            data
         )
