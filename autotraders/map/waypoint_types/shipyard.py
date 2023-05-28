@@ -2,6 +2,7 @@ from typing import Optional
 
 from autotraders.map.waypoint_types import WaypointType
 from autotraders.session import AutoTradersSession
+from autotraders.shared_models.transaction import ShipyardTransaction
 from autotraders.ship import Frame, Reactor, Engine, Module, Mount
 
 
@@ -26,14 +27,7 @@ class Shipyard(WaypointType):
 
     def update(self, data: dict = None):
         if data is None:
-            data = self.session.get(
-                self.session.base_url
-                + "systems/"
-                + self.location.system
-                + "/waypoints/"
-                + self.location.waypoint
-                + "/shipyard"
-            ).json()["data"]
+            data = self.get()["data"]
         self.ship_types = []
         for ship_type in data["shipTypes"]:
             self.ship_types.append(ship_type["type"])
@@ -44,7 +38,8 @@ class Shipyard(WaypointType):
                 self.ships.append(ShipyardShip(ship))
 
     def purchase(self, ship_type: str):
-        self.session.post(
+        j = self.session.post(
             self.session.base_url + "my/ships",
             data={"shipType": ship_type, "waypointSymbol": self.location},
-        )
+        ).json()
+        return ShipyardTransaction(j["data"]["transaction"])

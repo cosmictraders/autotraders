@@ -2,6 +2,7 @@ import asyncio
 from datetime import datetime, timezone
 from typing import Union, Optional
 
+from autotraders.shared_models.transaction import MarketTransaction
 from autotraders.space_traders_entity import SpaceTradersEntity
 from autotraders.map.system import System
 from autotraders.session import AutoTradersSession
@@ -163,10 +164,12 @@ class Ship(SpaceTradersEntity):
     def sell(self, cargo_symbol: str, quantity: int):
         j = self.post("sell", data={"symbol": cargo_symbol, "units": quantity})
         self.update(j["data"])
+        return MarketTransaction(j["data"]["transaction"])
 
     def buy(self, cargo_symbol: str, quantity: int):
         j = self.post("purchase", data={"symbol": cargo_symbol, "units": quantity})
         self.update(j["data"])
+        return MarketTransaction(j["data"]["transaction"])
 
     def transfer(self, destination: str, cargo_symbol: str, quantity: int):
         j = self.post(
