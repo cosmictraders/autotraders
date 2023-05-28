@@ -59,7 +59,6 @@ class Contract(SpaceTradersEntity):
         ).json()
         if "error" in j:
             raise IOError(j["error"]["message"])
-        print(j)
         c = Contract(j["data"]["contract"]["id"], session, False)
         c.update(j["data"]["contract"])
         return c

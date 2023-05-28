@@ -210,7 +210,6 @@ class Ship(SpaceTradersEntity):
             "refine",
             data={"produce": output_symbol},
         )
-        print(j)
         self.update(j["data"])
         self.reactor.cooldown = parse_time(j["data"]["cooldown"]["expiration"])
 
