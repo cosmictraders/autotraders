@@ -37,5 +37,3 @@ def travel_time(distance, ship_speed, mode):
         return 15 + 5 * distance / ship_speed
     elif mode == "STEALTH":
         return 15 + 20 * distance / ship_speed
-
-
