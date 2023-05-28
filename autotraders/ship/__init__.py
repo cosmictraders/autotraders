@@ -160,6 +160,7 @@ class Ship(SpaceTradersEntity):
     def refuel(self):
         j = self.post("refuel")
         self.update(j["data"])
+        return MarketTransaction(j["data"]["transaction"])
 
     def sell(self, cargo_symbol: str, quantity: int):
         j = self.post("sell", data={"symbol": cargo_symbol, "units": quantity})
