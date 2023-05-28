@@ -23,7 +23,7 @@ print(ship.fuel.current + "/" + ship.fuel.total)
 ```
 ## Contract
 ```python
-from autotraders.contract import Contract, get_all_contracts
+from autotraders.faction.contract import Contract, get_all_contracts
 # create a session here
 contract = Contract("id-here", session)
 contracts = get_all_contracts(session)
