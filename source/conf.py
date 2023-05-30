@@ -10,9 +10,9 @@ sys.path.insert(0, os.path.abspath(".."))  # Make autodoc work
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = "Autotraders"
-copyright = "2023, Ashwin Naren"
-author = "Ashwin Naren"
-release = "1.1.5"
+copyright = "2023, cosmictraders"
+author = "cosmictraders"
+release = "1.2.4"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

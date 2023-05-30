@@ -1,4 +1,7 @@
 # Autotraders
+[![Downloads](https://static.pepy.tech/badge/autotraders)](https://pepy.tech/project/autotraders)
+[![Python package](https://github.com/cosmictraders/autotraders/actions/workflows/python-package.yml/badge.svg)](https://github.com/cosmictraders/autotraders/actions/workflows/python-package.yml)
+
 A spacetraders API focused on automation and ease of use
 ## Usage
 First you need a client, which can be generated 

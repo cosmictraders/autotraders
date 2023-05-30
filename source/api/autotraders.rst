@@ -30,6 +30,22 @@ autotraders.session module
    :undoc-members:
    :show-inheritance:
 
+autotraders.space\_traders\_entity module
+-----------------------------------------
+
+.. automodule:: autotraders.space_traders_entity
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+autotraders.status module
+-------------------------
+
+.. automodule:: autotraders.status
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 autotraders.transaction module
 ------------------------------
 

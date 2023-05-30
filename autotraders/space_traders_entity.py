@@ -14,7 +14,7 @@ class SpaceTradersEntity:
     def get(self, action: str = None) -> dict:
         if action is None:
             r = self.session.get(
-                self.action_url[0 : len(self.action_url) - 1]  # noqa E203
+                self.action_url[0: len(self.action_url) - 1]  # noqa E203
             )
         else:
             r = self.session.get(
@@ -39,5 +39,9 @@ class SpaceTradersEntity:
             raise IOError(j["error"]["message"])
         return j
 
-    def update(self, data: dict=None):
+    def update(self, data: dict = None):
+        """
+        :param data: If you have data from an api requests, you can provide it here. If not provided, an API request will be sent.
+        :raise IOException: If the server fails
+        """
         pass
