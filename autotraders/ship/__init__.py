@@ -155,6 +155,7 @@ class Ship(SpaceTradersEntity):
                 raise IOError(j["error"]["message"])
         self.update(j["data"])
         self.reactor.cooldown = parse_time(j["data"]["cooldown"]["expiration"])
+        return j["data"]["extraction"]["yield"]["symbol"], j["data"]["extraction"]["yield"]["units"]
 
     def refuel(self):
         j = self.post("refuel")

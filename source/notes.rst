@@ -11,5 +11,5 @@ _______________
 As the game is in alpha the versioning system is not exactly semantic.
 
 - Major releases happen when the code structure changes or there is a breaking matter that involves the codebase
-- Minor releases can have breaking changes if the API changes
+- Minor releases can have breaking changes if the API changes. Minor release usually drop weekly on Saturday.
 - Patch releases are guaranteed not to have breaking changes.
