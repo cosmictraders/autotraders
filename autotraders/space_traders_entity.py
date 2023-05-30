@@ -40,5 +40,9 @@ class SpaceTradersEntity:
             raise IOError(j["error"]["message"])
         return j
 
-    def update(self):
+    def update(self, data=None):
+        """
+        :param data: If you have data from an api requests, you can provide it here. If not provided, an API request will be sent.
+        :raise IOException: If the server fails
+        """
         pass

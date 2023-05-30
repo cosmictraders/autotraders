@@ -73,7 +73,10 @@ class Ship(SpaceTradersEntity):
         self.crew: Optional[Crew] = None
         super().__init__(session, update, "my/ships/" + self.symbol + "/")
 
-    def update(self, data: dict = None, hard=False):
+    def update(self, data: dict = None, hard=False) -> None:
+        """
+        :param hard: Whether to update now static attributes (crew, frame, reactor, modules, and mounts)
+        """
         if data is None:
             data = self.get()["data"]
 
@@ -102,8 +105,6 @@ class Ship(SpaceTradersEntity):
     async def navigate_async(self, waypoint: Union[str, MapSymbol]):
         """Attempts to move ship to the provided waypoint.
         If the request succeeds, this function waits for the ship to arrive.
-            :raise:
-                IOError: if a server error occurs
         """
         j = self.post("navigate", data={"waypointSymbol": str(waypoint)})
         self.update(j["data"])
@@ -114,8 +115,6 @@ class Ship(SpaceTradersEntity):
     def navigate(self, waypoint: Union[str, MapSymbol]):
         """Attempts to move ship to the provided waypoint.
         If the request succeeds, this function exits immediately, and does not wait the ship to arrive.
-            :raise:
-                IOError: if a server error occurs
         """
         j = self.post("navigate", data={"waypointSymbol": str(waypoint)})
         self.update(j["data"])
@@ -216,7 +215,8 @@ class Ship(SpaceTradersEntity):
     def chart(self) -> Waypoint:
         """
         Charts the current waypoint
-        :return: The info about the waypoint that has been charted
+
+        :returns: The info about the waypoint that has been charted
         """
         j = self.post("chart")
         w = Waypoint(j["data"]["waypoint"]["symbol"], self.session, False)
@@ -231,7 +231,7 @@ class Ship(SpaceTradersEntity):
         self.reactor.cooldown = parse_time(j["data"]["cooldown"]["expiration"])
         return surveys
 
-    def scan_systems(self):
+    def scan_systems(self) -> list[System]:
         j = self.post("scan/systems")
         systems = []
         for system in j["systems"]:
@@ -241,7 +241,7 @@ class Ship(SpaceTradersEntity):
         self.reactor.cooldown = parse_time(j["data"]["cooldown"]["expiration"])
         return systems
 
-    def scan_waypoints(self):
+    def scan_waypoints(self) -> list[Waypoint]:
         j = self.post("scan/waypoints")
         waypoints = []
         for waypoint in j["waypoints"]:
@@ -251,7 +251,7 @@ class Ship(SpaceTradersEntity):
         self.reactor.cooldown = parse_time(j["data"]["cooldown"]["expiration"])
         return waypoints
 
-    def scan_ships(self):
+    def scan_ships(self) -> list:
         j = self.post("scan/ships")
         ships = []
         for ship in j["data"]["ships"]:
