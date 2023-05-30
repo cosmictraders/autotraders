@@ -46,14 +46,6 @@ autotraders.status module
    :undoc-members:
    :show-inheritance:
 
-autotraders.transaction module
-------------------------------
-
-.. automodule:: autotraders.transaction
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 autotraders.util module
 -----------------------
 
