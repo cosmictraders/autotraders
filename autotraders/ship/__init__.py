@@ -2,6 +2,7 @@ import asyncio
 from datetime import datetime, timezone
 from typing import Union, Optional
 
+from autotraders.shared_models.item import Item
 from autotraders.shared_models.transaction import MarketTransaction
 from autotraders.space_traders_entity import SpaceTradersEntity
 from autotraders.map.system import System
@@ -26,10 +27,10 @@ class Cargo:
     def __init__(self, j):
         self.capacity = j["capacity"]
         inventory = j["inventory"]
-        self.inventory = {}
+        self.inventory = []
         self.current = 0
         for symbol in inventory:
-            self.inventory[symbol["symbol"]] = symbol["units"]
+            self.inventory.append(Item(symbol["symbol"], symbol["units"], symbol["description"]))
             self.current += symbol["units"]
 
 
@@ -155,7 +156,7 @@ class Ship(SpaceTradersEntity):
                 raise IOError(j["error"]["message"])
         self.update(j["data"])
         self.reactor.cooldown = parse_time(j["data"]["cooldown"]["expiration"])
-        return j["data"]["extraction"]["yield"]["symbol"], j["data"]["extraction"]["yield"]["units"]
+        return Item(j["data"]["extraction"]["yield"]["symbol"], j["data"]["extraction"]["yield"]["units"], "")
 
     def refuel(self):
         j = self.post("refuel")

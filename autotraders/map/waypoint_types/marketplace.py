@@ -2,11 +2,12 @@ from typing import Optional
 
 from autotraders.map.waypoint_types import WaypointType
 from autotraders.session import AutoTradersSession
+from autotraders.shared_models.item import Item
 
 
-class TradeGood:
+class TradeGood(Item):
     def __init__(self, data):
-        self.symbol: str = data["symbol"]
+        super().__init__(data["symbol"], data["supply"], data["description"])
         self.trade_volume: int = data["tradeVolume"]
         self.supply: str = data["supply"]
         self.purchase_price: int = data["purchasePrice"]
