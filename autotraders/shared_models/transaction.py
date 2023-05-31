@@ -16,7 +16,6 @@ class MarketTransaction:
     def __init__(self, data):
         self.waypoint_symbol = MapSymbol(data["waypointSymbol"])
         self.ship_symbol = data["shipSymbol"]
-
         self.transaction_type = data["type"]
         self.item = Item(data["tradeSymbol"], data["units"], "")
         self.price_per_unit = data["pricePerUnit"]
