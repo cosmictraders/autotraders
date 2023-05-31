@@ -44,8 +44,8 @@ class Waypoint(SpaceTradersEntity):
         )
 
     @staticmethod
-    def all(system, session) -> (list, int):
-        r = session.get(session.base_url + "systems/" + system + "/waypoints?limit=20")
+    def all(system,  session, page=1) -> (list, int):
+        r = session.get(session.base_url + "systems/" + system + "/waypoints?limit=20&page=" + str(page))
         data = r.json()["data"]
         waypoints = []
         for w in data:
@@ -55,7 +55,3 @@ class Waypoint(SpaceTradersEntity):
 
     def __eq__(self, other):
         return self.symbol == other.symbol
-
-
-def get_all_waypoints(system, session):
-    return Waypoint.all(system, session)

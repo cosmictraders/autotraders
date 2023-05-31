@@ -68,14 +68,10 @@ class Contract(SpaceTradersEntity):
 
     @staticmethod
     def all(session, page: int = 1):
-        r = session.get(session.base_url + "my/contracts?page=" + str(page))
+        r = session.get(session.base_url + "my/contracts?limit=20&page=" + str(page))
         j = r.json()
         contracts = []
         for contract in j["data"]:
             c = Contract(contract["id"], session, contract)
             contracts.append(c)
         return contracts, r.json()["meta"]["total"]
-
-
-def get_all_contracts(session):
-    return Contract.all(session)[0]

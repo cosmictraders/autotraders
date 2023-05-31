@@ -40,7 +40,3 @@ class System(SpaceTradersEntity):
 
     def __eq__(self, other):
         return self.symbol == other.symbol
-
-
-def list_systems(session, page=1) -> (list[System], int):
-    return System.all(session, page)

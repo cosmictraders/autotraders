@@ -278,7 +278,3 @@ class Ship(SpaceTradersEntity):
             s = Ship(ship["symbol"], session, ship)
             ships.append(s)
         return ships, r.json()["meta"]["total"]
-
-
-def get_all_ships(session):
-    return Ship.all(session)[0]
