@@ -75,27 +75,24 @@ class Ship(SpaceTradersEntity):
         self.crew: Optional[Crew] = None
         super().__init__(session, "my/ships/" + self.symbol + "/", None)
 
-    def update(self, data: dict = None, hard=False) -> None:
+    def update(self, data: dict = None, hard=False) -> None:  # TODO: Hard is deprecated
         """
-        :param hard: Whether to update now static attributes (crew, frame, reactor, modules, and mounts)
+        :param hard: deprecated does not do anything
         """
         if data is None:
             data = self.get()["data"]
 
-        def go_for_update(d, s):
-            return s in data and (d is None or hard)
-
-        if go_for_update(self.crew, "crew"):
+        if "crew" in data:
             self.crew = Crew(data["crew"])
-        if go_for_update(self.frame, "frame"):
+        if "frame" in data:
             self.frame = Frame(data["frame"])
-        if go_for_update(self.reactor, "reactor"):
+        if "reactor" in data:
             self.reactor = Reactor(data["reactor"])
-        if go_for_update(self.engine, "engine"):
+        if "engine" in data:
             self.engine = Engine(data["engine"])
-        if go_for_update(self.modules, "modules"):
+        if "modules" in data:
             self.modules = [Module(d) for d in data["modules"]]
-        if go_for_update(self.mounts, "mounts"):
+        if "mounts" in data:
             self.mounts = [Mount(d) for d in data["mounts"]]
         if "nav" in data:
             self.nav = Nav(data["nav"])
