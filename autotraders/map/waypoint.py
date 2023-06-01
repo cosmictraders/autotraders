@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Union
 
 from autotraders.session import AutoTradersSession
 from autotraders.shared_models.trait import Trait
@@ -8,7 +8,7 @@ from autotraders.space_traders_entity import SpaceTradersEntity
 
 
 class Waypoint(SpaceTradersEntity):
-    def __init__(self, symbol, session: AutoTradersSession, data=None):
+    def __init__(self, symbol: Union[str, MapSymbol], session: AutoTradersSession, data=None):
         self.waypoint_type: Optional[str] = None
         self.faction: Optional[str] = None
         self.traits: Optional[list[Trait]] = []

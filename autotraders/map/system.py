@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Union
 
 from autotraders.space_traders_entity import SpaceTradersEntity
 from autotraders.session import AutoTradersSession
@@ -7,7 +7,7 @@ from autotraders.shared_models.map_symbol import MapSymbol
 
 
 class System(SpaceTradersEntity):
-    def __init__(self, symbol, session: AutoTradersSession, data=None):
+    def __init__(self, symbol: Union[str, MapSymbol], session: AutoTradersSession, data=None):
         self.symbol: MapSymbol = MapSymbol(symbol)
         self.x: Optional[int] = None
         self.y: Optional[int] = None
