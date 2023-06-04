@@ -46,6 +46,7 @@ class Status:
     :ivar announcements: A list of announcements
     :ivar links: A list of useful links
     """
+
     status: str
     version: str
     reset_date: datetime

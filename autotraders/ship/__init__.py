@@ -30,7 +30,9 @@ class Cargo:
         self.inventory = []
         self.current = 0
         for symbol in inventory:
-            self.inventory.append(Item(symbol["symbol"], symbol["units"], symbol["description"]))
+            self.inventory.append(
+                Item(symbol["symbol"], symbol["units"], symbol["description"])
+            )
             self.current += symbol["units"]
 
 
@@ -118,6 +120,25 @@ class Ship(SpaceTradersEntity):
         j = self.post("navigate", data={"waypointSymbol": str(waypoint)})
         self.update(j["data"])
 
+    def jump(self, destination: Union[str, MapSymbol]):
+        j = self.post(
+            "jump",
+            data={
+                "systemSymbol": str(destination),
+            },
+        )
+        self.update(j["data"])
+        self.reactor.cooldown = parse_time(j["data"]["cooldown"]["expiration"])
+
+    def warp(self, destination: Union[str, MapSymbol]):
+        j = self.post(
+            "warp",
+            data={
+                "waypointSymbol": str(destination),
+            },
+        )
+        self.update(j["data"])
+
     def patch_navigation(self, new_flight_mode):
         r = self.session.patch(
             self.session.base_url + "my/ships/" + self.symbol + "/nav",
@@ -137,23 +158,14 @@ class Ship(SpaceTradersEntity):
         self.update(j["data"])
 
     def extract(self):
-        j = self.session.post(
-            self.session.base_url + "my/ships/" + self.symbol + "/extract"
-        ).json()
-        if "error" in j:
-            if j["error"]["code"] == 4000:
-                raise IOError(
-                    "Ship is still in cooldown, "
-                    + str(j["error"]["data"]["cooldown"]["remainingSeconds"])
-                    + " seconds out of "
-                    + str(j["error"]["data"]["cooldown"]["totalSeconds"])
-                    + " seconds remaining"
-                )
-            else:
-                raise IOError(j["error"]["message"])
+        j = self.post("extract")
         self.update(j["data"])
         self.reactor.cooldown = parse_time(j["data"]["cooldown"]["expiration"])
-        return Item(j["data"]["extraction"]["yield"]["symbol"], j["data"]["extraction"]["yield"]["units"], "")
+        return Item(
+            j["data"]["extraction"]["yield"]["symbol"],
+            j["data"]["extraction"]["yield"]["units"],
+            "",
+        )
 
     def refuel(self):
         j = self.post("refuel")
@@ -181,25 +193,6 @@ class Ship(SpaceTradersEntity):
         )
         self.update(j["data"])
 
-    def jump(self, destination: Union[str, MapSymbol]):
-        j = self.post(
-            "jump",
-            data={
-                "systemSymbol": str(destination),
-            },
-        )
-        self.update(j["data"])
-        self.reactor.cooldown = parse_time(j["data"]["cooldown"]["expiration"])
-
-    def warp(self, destination: Union[str, MapSymbol]):
-        j = self.post(
-            "warp",
-            data={
-                "waypointSymbol": str(destination),
-            },
-        )
-        self.update(j["data"])
-
     def jettison(self, cargo_symbol: str, quantity: int):
         j = self.post(
             "jettison",
@@ -222,7 +215,9 @@ class Ship(SpaceTradersEntity):
         :returns: The info about the waypoint that has been charted
         """
         j = self.post("chart")
-        w = Waypoint(j["data"]["waypoint"]["symbol"], self.session, j["data"]["waypoint"])
+        w = Waypoint(
+            j["data"]["waypoint"]["symbol"], self.session, j["data"]["waypoint"]
+        )
         return w
 
     def survey(self) -> list[Survey]:

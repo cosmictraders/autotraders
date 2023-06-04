@@ -17,5 +17,5 @@ class WaypointType(SpaceTradersEntity):
             + "/"
             + trait
             + "/",
-            data
+            data,
         )
