@@ -15,12 +15,12 @@ class TradeGood(Item):
 
 
 class Marketplace(WaypointType):
-    def __init__(self, waypoint: str, session: AutoTradersSession, update=True):
+    def __init__(self, waypoint: str, session: AutoTradersSession, data=None):
         self.imports: Optional[list[str]] = None
         self.exports: Optional[list[str]] = None
         self.exchange: Optional[list[str]] = None
         self.trade_goods: Optional[list[TradeGood]] = None
-        super().__init__(waypoint, "market", session, update)
+        super().__init__(waypoint, "market", session, data)
 
     def update(self, data: dict = None):
         if data is None:
