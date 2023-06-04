@@ -27,5 +27,5 @@ class Agent(SpaceTradersEntity):
         self.headquarters = MapSymbol(data["headquarters"])
         self.credits = data["credits"]
         self.starting_faction = data["startingFaction"]
-        self.ships = Ship.all(self.session)
-        self.contracts = Contract.all(self.session)
+        self.ships = Ship.all(self.session)[0]
+        self.contracts = Contract.all(self.session)[0]
