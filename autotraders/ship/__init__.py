@@ -103,14 +103,15 @@ class Ship(SpaceTradersEntity):
         if "cargo" in data:
             self.cargo = Cargo(data["cargo"])
 
-    async def navigate_async(self, waypoint: Union[str, MapSymbol]):
+    async def navigate_async(self, waypoint: Union[str, MapSymbol], interval=1):
         """Attempts to move ship to the provided waypoint.
         If the request succeeds, this function waits for the ship to arrive.
+        :param interval: Frequency of updates in seconds (default: 1)
         """
         j = self.post("navigate", data={"waypointSymbol": str(waypoint)})
         self.update(j["data"])
         while self.nav.status == "IN_TRANSIT":
-            await asyncio.sleep(5)
+            await asyncio.sleep(interval)
             self.update()
 
     def navigate(self, waypoint: Union[str, MapSymbol]):
