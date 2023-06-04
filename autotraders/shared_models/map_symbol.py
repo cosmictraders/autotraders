@@ -26,6 +26,9 @@ class MapSymbol:
         """Returns the input that was passed as a string."""
         return self.raw
 
+    def __add__(self, other):
+        return self / other
+
     def __truediv__(self, other):
         """Concatenates with a '-'"""
         assert isinstance(other, str)
