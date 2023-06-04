@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import Optional
 
+from autotraders.paginated_list import PaginatedList
 from autotraders.space_traders_entity import SpaceTradersEntity
 from autotraders.session import AutoTradersSession
 from autotraders.shared_models.map_symbol import MapSymbol
@@ -68,10 +69,21 @@ class Contract(SpaceTradersEntity):
 
     @staticmethod
     def all(session, page: int = 1):
-        r = session.get(session.base_url + "my/contracts?limit=20&page=" + str(page))
-        j = r.json()
-        contracts = []
-        for contract in j["data"]:
-            c = Contract(contract["id"], session, contract)
-            contracts.append(c)
-        return contracts, r.json()["meta"]["total"]
+        def paginated_func(p, num_per_page):
+            r = session.get(
+                session.base_url
+                + "my/contracts?limit="
+                + str(num_per_page)
+                + "&page="
+                + str(p)
+            )
+            j = r.json()
+            if "error" in j:
+                raise IOError(j["error"]["message"])
+            contracts = []
+            for contract in j["data"]:
+                c = Contract(contract["id"], session, contract)
+                contracts.append(c)
+            return contracts, r.json()["meta"]["total"]
+
+        return PaginatedList(paginated_func, page)

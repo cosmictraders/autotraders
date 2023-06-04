@@ -1,5 +1,6 @@
 from typing import Optional
 
+from autotraders.paginated_list import PaginatedList
 from autotraders.space_traders_entity import SpaceTradersEntity
 from autotraders.session import AutoTradersSession
 from autotraders.shared_models.map_symbol import MapSymbol
@@ -28,16 +29,32 @@ class Faction(SpaceTradersEntity):
         self.is_recruiting = data["isRecruiting"]
 
     @staticmethod
-    def all(session):
-        r = session.get(session.base_url + "factions")
-        j = r.json()
-        if "error" in j:
-            raise IOError(j["error"]["message"])
-        factions = []
-        for f in j["data"]:
-            faction = Faction(f["symbol"], session, f)
-            factions.append(faction)
-        return factions
+    def all(session, page: int = 1) -> PaginatedList:
+        def paginated_func(p, num_per_page):
+            r = session.get(
+                session.base_url
+                + "my/contracts?limit="
+                + str(num_per_page)
+                + "&page="
+                + str(p)
+            )
+            r = session.get(
+                session.base_url
+                + "factions?limit="
+                + str(num_per_page)
+                + "&page="
+                + str(p)
+            )
+            j = r.json()
+            if "error" in j:
+                raise IOError(j["error"]["message"])
+            factions = []
+            for f in j["data"]:
+                faction = Faction(f["symbol"], session, f)
+                factions.append(faction)
+            return factions, r.json()["meta"]["total"]
+
+        return PaginatedList(paginated_func, page)
 
 
 def get_all_factions(session):

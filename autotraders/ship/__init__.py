@@ -2,6 +2,7 @@ import asyncio
 from datetime import datetime, timezone
 from typing import Union, Optional
 
+from autotraders.paginated_list import PaginatedList
 from autotraders.shared_models.item import Item
 from autotraders.shared_models.transaction import MarketTransaction
 from autotraders.space_traders_entity import SpaceTradersEntity
@@ -271,13 +272,22 @@ class Ship(SpaceTradersEntity):
         return MarketTransaction(j["data"]["transaction"])
 
     @staticmethod
-    def all(session, page: int = 1) -> (str, int):
-        r = session.get(session.base_url + "my/ships?limit=20&page=" + str(page))
-        j = r.json()
-        if "error" in j:
-            raise IOError(j["error"]["message"])
-        ships = []
-        for ship in j["data"]:
-            s = Ship(ship["symbol"], session, ship)
-            ships.append(s)
-        return ships, r.json()["meta"]["total"]
+    def all(session, page: int = 1) -> PaginatedList:
+        def paginated_func(p, num_per_page):
+            r = session.get(
+                session.base_url
+                + "my/ships?limit="
+                + str(num_per_page)
+                + "&page="
+                + str(p)
+            )
+            j = r.json()
+            if "error" in j:
+                raise IOError(j["error"]["message"])
+            ships = []
+            for ship in j["data"]:
+                s = Ship(ship["symbol"], session, ship)
+                ships.append(s)
+            return ships, r.json()["meta"]["total"]
+
+        return PaginatedList(paginated_func, page)

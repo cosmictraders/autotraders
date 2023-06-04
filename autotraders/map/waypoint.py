@@ -1,5 +1,6 @@
 from typing import Optional, Union
 
+from autotraders.paginated_list import PaginatedList
 from autotraders.session import AutoTradersSession
 from autotraders.shared_models.trait import Trait
 
@@ -47,20 +48,22 @@ class Waypoint(SpaceTradersEntity):
         )
 
     @staticmethod
-    def all(system, session, page=1) -> (list, int):
-        r = session.get(
-            session.base_url
-            + "systems/"
-            + system
-            + "/waypoints?limit=20&page="
-            + str(page)
-        )
-        data = r.json()["data"]
-        waypoints = []
-        for w in data:
-            waypoint = Waypoint(w["symbol"], session, w)
-            waypoints.append(waypoint)
-        return waypoints, r.json()["meta"]["total"]
+    def all(session, page: int = 1) -> PaginatedList:
+        def paginated_func(p, num_per_page):
+            r = session.get(
+                session.base_url
+                + "systems/waypoints?limit="
+                + str(num_per_page)
+                + "&page="
+                + str(p)
+            )
+            data = r.json()["data"]
+            waypoints = []
+            for w in data:
+                waypoint = Waypoint(w["symbol"], session, w)
+                waypoints.append(waypoint)
+
+        return PaginatedList(paginated_func, page)
 
     def __eq__(self, other):
         return self.symbol == other.symbol
