@@ -1,10 +1,10 @@
 from typing import Optional
 
+from autotraders.faction.contract import Contract
 from autotraders.shared_models.map_symbol import MapSymbol
 from autotraders.space_traders_entity import SpaceTradersEntity
-from autotraders.faction.contract import get_all_contracts, Contract
 from autotraders.session import AutoTradersSession
-from autotraders.ship import get_all_ships, Ship
+from autotraders.ship import Ship
 
 
 class Agent(SpaceTradersEntity):
@@ -27,5 +27,5 @@ class Agent(SpaceTradersEntity):
         self.headquarters = MapSymbol(data["headquarters"])
         self.credits = data["credits"]
         self.starting_faction = data["startingFaction"]
-        self.ships = get_all_ships(self.session)
-        self.contracts = get_all_contracts(self.session)
+        self.ships = Ship.all(self.session)
+        self.contracts = Contract.all(self.session)
