@@ -219,11 +219,11 @@ class Ship(SpaceTradersEntity):
         )
         self.update(j["data"])
         self.reactor.cooldown = parse_time(j["data"]["cooldown"]["expiration"])
-        return Item(
-            j["data"]["produced"]["symbol"],
-            j["data"]["produced"]["units"],
+        return [Item(
+            i["symbol"],
+            i["units"],
             None
-        )
+        ) for i in j["data"]["produced"]]
 
     def chart(self) -> Waypoint:
         """
