@@ -64,6 +64,13 @@ class Crew:
         self.wages = data["wages"]
 
 
+class Registration:
+    def __init__(self, data):
+        self.name = data["name"]
+        self.faction_symbol = data["factionSymbol"]
+        self.role = data["role"]
+
+
 class Ship(SpaceTradersEntity):
     def __init__(self, symbol, session: AutoTradersSession, data=None):
         self.cargo: Optional[Cargo] = None
@@ -76,6 +83,7 @@ class Ship(SpaceTradersEntity):
         self.modules: Optional[list[Module]] = None
         self.mounts: Optional[list[Mount]] = None
         self.crew: Optional[Crew] = None
+        self.registration: Optional[Registration] = None
         super().__init__(session, "my/ships/" + self.symbol, data)
 
     def update(self, data: dict = None, hard=False) -> None:  # TODO: Hard is deprecated
@@ -103,6 +111,8 @@ class Ship(SpaceTradersEntity):
             self.fuel = Fuel(data["fuel"]["current"], data["fuel"]["capacity"])
         if "cargo" in data:
             self.cargo = Cargo(data["cargo"])
+        if "registration" in data:
+            self.registration = Registration(data["registration"])
 
     async def navigate_async(self, waypoint: Union[str, MapSymbol], interval=1):
         """Attempts to move ship to the provided waypoint.
@@ -166,7 +176,7 @@ class Ship(SpaceTradersEntity):
         return Item(
             j["data"]["extraction"]["yield"]["symbol"],
             j["data"]["extraction"]["yield"]["units"],
-            "",
+            None,
         )
 
     def refuel(self):
@@ -209,6 +219,11 @@ class Ship(SpaceTradersEntity):
         )
         self.update(j["data"])
         self.reactor.cooldown = parse_time(j["data"]["cooldown"]["expiration"])
+        return Item(
+            j["data"]["produced"]["symbol"],
+            j["data"]["produced"]["units"],
+            None
+        )
 
     def chart(self) -> Waypoint:
         """

@@ -3,7 +3,7 @@ from typing import Optional
 from autotraders.map.waypoint_types import WaypointType
 from autotraders.session import AutoTradersSession
 from autotraders.shared_models.transaction import ShipyardTransaction
-from autotraders.ship import Frame, Reactor, Engine, Module, Mount
+from autotraders.ship import Frame, Reactor, Engine, Module, Mount, Ship
 
 
 class ShipyardShip:
@@ -42,4 +42,4 @@ class Shipyard(WaypointType):
             self.session.base_url + "my/ships",
             data={"shipType": ship_type, "waypointSymbol": self.location},
         ).json()
-        return ShipyardTransaction(j["data"]["transaction"])
+        return Ship(j["data"]["ship"], self.session), ShipyardTransaction(j["data"]["transaction"])

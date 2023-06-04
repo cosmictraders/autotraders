@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "autotraders"
-version = "1.3.3"
+version = "1.4.0"
 authors = [
   { name="Ashwin Naren", email="arihant2math@gmail.com" },
 ]
