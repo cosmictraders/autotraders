@@ -12,7 +12,10 @@ class ShipComponent:
     def __init__(self, data):
         self.symbol = data["symbol"]
         self.name = data["name"]
-        self.description = data["description"]
+        if "description" in data:
+            self.description = data["description"]
+        else:
+            self.description = None
         if "condition" in data:
             self.condition = data["condition"]
         else:

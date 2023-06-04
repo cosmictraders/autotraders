@@ -73,7 +73,7 @@ class Ship(SpaceTradersEntity):
         self.modules: Optional[list[Module]] = None
         self.mounts: Optional[list[Mount]] = None
         self.crew: Optional[Crew] = None
-        super().__init__(session, "my/ships/" + self.symbol + "/", None)
+        super().__init__(session, "my/ships/" + self.symbol, data)
 
     def update(self, data: dict = None, hard=False) -> None:  # TODO: Hard is deprecated
         """
@@ -263,6 +263,16 @@ class Ship(SpaceTradersEntity):
     def update_ship_cooldown(self):
         j = self.get("cooldown")
         self.reactor.cooldown = parse_time(j["data"]["expiration"])
+
+    def install_mount(self):
+        j = self.post("mounts/install")
+        self.update(j["data"])
+        return MarketTransaction(j["data"]["transaction"])
+
+    def remove_mount(self):
+        j = self.post("mounts/remove")
+        self.update(j["data"])
+        return MarketTransaction(j["data"]["transaction"])
 
     @staticmethod
     def all(session, page: int = 1) -> (str, int):
