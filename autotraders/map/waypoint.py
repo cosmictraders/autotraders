@@ -57,9 +57,11 @@ class Waypoint(SpaceTradersEntity):
                 + "&page="
                 + str(p)
             )
-            data = r.json()["data"]
+            j = r.json()
+            if "error" in j:
+                raise IOError(j["error"]["message"])
             waypoints = []
-            for w in data:
+            for w in j["data"]:
                 waypoint = Waypoint(w["symbol"], session, w)
                 waypoints.append(waypoint)
 

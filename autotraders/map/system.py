@@ -42,6 +42,8 @@ class System(SpaceTradersEntity):
                 + str(p)
             )
             j = r.json()["data"]
+            if "error" in j:
+                raise IOError(j["error"]["message"])
             systems = []
             for system in j:
                 s = System(system["symbol"], session, system)
