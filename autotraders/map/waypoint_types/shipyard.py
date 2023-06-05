@@ -42,4 +42,6 @@ class Shipyard(WaypointType):
             self.session.base_url + "my/ships",
             data={"shipType": ship_type, "waypointSymbol": self.location},
         ).json()
-        return Ship(j["data"]["ship"], self.session), ShipyardTransaction(j["data"]["transaction"])
+        return Ship(j["data"]["ship"], self.session), ShipyardTransaction(
+            j["data"]["transaction"]
+        )

@@ -35,6 +35,8 @@ def test_ship_nav(session):
     start = datetime.now(timezone.utc) - timedelta(seconds=5)
     end = datetime.now(timezone.utc) + timedelta(seconds=5)
     n = Nav(
+        "MOCK_SHIP_SYMBOL",
+        session,
         {
             "status": "IN_TRANSIT",
             "waypointSymbol": "X1-TEST-TEST2",
@@ -45,13 +47,15 @@ def test_ship_nav(session):
                 "departureTime": start.strftime("%Y-%m-%dT%H:%M:%SZ"),
                 "arrival": end.strftime("%Y-%m-%dT%H:%M:%SZ"),
             },
-        }
+        },
     )
     assert n.status == "IN_TRANSIT"
     assert n.moving
     start2 = datetime.now(timezone.utc) - timedelta(seconds=10)
     end2 = datetime.now(timezone.utc) - timedelta(seconds=5)
     n2 = Nav(
+        "MOCK_SHIP_SYMBOL",
+        session,
         {
             "status": "ORBIT",
             "waypointSymbol": "X1-TEST-TEST2",
@@ -62,7 +66,7 @@ def test_ship_nav(session):
                 "departureTime": start2.strftime("%Y-%m-%dT%H:%M:%SZ"),
                 "arrival": end2.strftime("%Y-%m-%dT%H:%M:%SZ"),
             },
-        }
+        },
     )
     assert n2.status == "ORBIT"
     assert not n2.moving

@@ -1,10 +1,12 @@
 import asyncio
-from datetime import datetime, timezone
 from typing import Union, Optional
 
 from autotraders.paginated_list import PaginatedList
 from autotraders.shared_models.item import Item
 from autotraders.shared_models.transaction import MarketTransaction
+from autotraders.ship.cargo import Cargo
+from autotraders.ship.nav import Nav
+from autotraders.ship.nav import Nav
 from autotraders.space_traders_entity import SpaceTradersEntity
 from autotraders.map.system import System
 from autotraders.session import AutoTradersSession
@@ -22,37 +24,6 @@ class Fuel:
 
     def __str__(self):
         return str(self.current) + "/" + str(self.total)
-
-
-class Cargo:
-    def __init__(self, j):
-        self.capacity = j["capacity"]
-        inventory = j["inventory"]
-        self.inventory = []
-        self.current = 0
-        for symbol in inventory:
-            self.inventory.append(
-                Item(symbol["symbol"], symbol["units"], symbol["description"])
-            )
-            self.current += symbol["units"]
-
-
-class Route:
-    def __init__(self, data):
-        self.destination = MapSymbol(data["destination"]["symbol"])
-        self.departure = MapSymbol(data["departure"]["symbol"])
-        self.departure_time = parse_time(data["departureTime"])
-        self.arrival = parse_time(data["arrival"])
-        self.moving = self.arrival > datetime.now(timezone.utc)
-
-
-class Nav:
-    def __init__(self, data):
-        self.status = data["status"]
-        self.location = MapSymbol(data["waypointSymbol"])
-        self.flight_mode = data["flightMode"]
-        self.route = Route(data["route"])
-        self.moving = self.route.moving
 
 
 class Crew:
@@ -86,10 +57,7 @@ class Ship(SpaceTradersEntity):
         self.registration: Optional[Registration] = None
         super().__init__(session, "my/ships/" + self.symbol, data)
 
-    def update(self, data: dict = None, hard=False) -> None:  # TODO: Hard is deprecated
-        """
-        :param hard: deprecated does not do anything
-        """
+    def update(self, data: dict = None) -> None:
         if data is None:
             data = self.get()["data"]
 
@@ -106,11 +74,11 @@ class Ship(SpaceTradersEntity):
         if "mounts" in data:
             self.mounts = [Mount(d) for d in data["mounts"]]
         if "nav" in data:
-            self.nav = Nav(data["nav"])
+            self.nav = Nav(self.symbol, self.session, data["nav"])
         if "fuel" in data:
             self.fuel = Fuel(data["fuel"]["current"], data["fuel"]["capacity"])
         if "cargo" in data:
-            self.cargo = Cargo(data["cargo"])
+            self.cargo = Cargo(self.symbol, self.session, data["cargo"])
         if "registration" in data:
             self.registration = Registration(data["registration"])
 
@@ -219,11 +187,7 @@ class Ship(SpaceTradersEntity):
         )
         self.update(j["data"])
         self.reactor.cooldown = parse_time(j["data"]["cooldown"]["expiration"])
-        return [Item(
-            i["symbol"],
-            i["units"],
-            None
-        ) for i in j["data"]["produced"]]
+        return [Item(i["tradeSymbol"], i["units"], None) for i in j["data"]["produced"]]
 
     def chart(self) -> Waypoint:
         """
