@@ -5,7 +5,8 @@ class PaginatedList:
     def __init__(self, func, page, num_per_page=20):
         """
         A paginated list with caching
-        :param func: Function to get page (must accept two ints denoting the page number and number of items per page and should return the data and total number of items)
+        :param func: Function to get page (must accept two ints denoting the page number and number of items per page
+        and should return the data and total number of items)
         :param page: Page to start on
         :param num_per_page: How many items per a page
         """
@@ -16,6 +17,9 @@ class PaginatedList:
         self.inner = {self.page: data}
         self.total = total
         self.pages = math.ceil(self.total // self.num_per_page)
+
+    def clear_cache(self):
+        self.inner = {}
 
     def next(self):
         self.page += 1
