@@ -64,6 +64,7 @@ class Waypoint(SpaceTradersEntity):
             for w in j["data"]:
                 waypoint = Waypoint(w["symbol"], session, w)
                 waypoints.append(waypoint)
+            return waypoints, j["meta"]["total"]
 
         return PaginatedList(paginated_func, page)
 
