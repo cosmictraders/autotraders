@@ -1,4 +1,4 @@
-from autotraders.util import parse_time
+from autotraders.time import parse_time
 
 
 class Survey:
