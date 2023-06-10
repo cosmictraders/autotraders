@@ -9,17 +9,19 @@ from autotraders.space_traders_entity import SpaceTradersEntity
 
 
 class Waypoint(SpaceTradersEntity):
+    waypoint_type: str
+    faction: Optional[str]
+    traits: list[Trait]
+    marketplace: bool
+    shipyard: bool
+    symbol: MapSymbol
+    x: int
+    y: int
+
     def __init__(
         self, symbol: Union[str, MapSymbol], session: AutoTradersSession, data=None
     ):
-        self.waypoint_type: Optional[str] = None
-        self.faction: Optional[str] = None
-        self.traits: Optional[list[Trait]] = []
-        self.marketplace: Optional[bool] = None
-        self.shipyard: Optional[bool] = None
         self.symbol = MapSymbol(symbol)
-        self.x: Optional[int] = None
-        self.y: Optional[int] = None
         super().__init__(
             session,
             "systems/" + self.symbol.system + "/waypoints/" + self.symbol.waypoint,

@@ -8,15 +8,17 @@ from autotraders.shared_models.map_symbol import MapSymbol
 
 
 class System(SpaceTradersEntity):
+    symbol: MapSymbol
+    x: int
+    y: int
+    waypoints: list[Waypoint]
+    factions: list[str]
+    star_type: str
+
     def __init__(
         self, symbol: Union[str, MapSymbol], session: AutoTradersSession, data=None
     ):
         self.symbol: MapSymbol = MapSymbol(symbol)
-        self.x: Optional[int] = None
-        self.y: Optional[int] = None
-        self.waypoints: Optional[list[Waypoint]] = None
-        self.factions: Optional[list[str]] = None
-        self.star_type: Optional[str] = None
         super().__init__(session, "systems/" + str(self.symbol) + "/", data)
 
     def update(self, data=None):
