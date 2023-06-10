@@ -17,15 +17,17 @@ class Deliver:
 
 
 class Contract(SpaceTradersEntity):
+    accepted: bool
+    fulfilled: bool
+    deadline: datetime
+    accept_deadline: datetime
+    on_fulfilled: str
+    on_accepted: str
+    contract_id: str
+
     def __init__(self, contract_id: str, session: AutoTradersSession, data=None):
         self.contract_data = None
-        self.accepted: Optional[bool] = None
-        self.fulfilled: Optional[bool] = None
-        self.deadline: Optional[datetime] = None
-        self.accept_deadline: Optional[datetime] = None
         self.contract_type = None
-        self.on_fulfilled: Optional[str] = None
-        self.on_accepted: Optional[str] = None
         self.contract_id: str = contract_id
         super().__init__(session, "my/contracts/" + self.contract_id, data)
 
