@@ -5,10 +5,10 @@ from autotraders.time import parse_time
 
 class ShipyardTransaction:
     def __init__(self, data):
-        self.credits = data["price"]
-        self.waypoint_symbol = MapSymbol(data["waypointSymbol"])
-        self.ship_symbol = data["shipSymbol"]
-        self.agent_symbol = data["agent_symbol"]
+        self.credits: int = data["price"]
+        self.waypoint_symbol: MapSymbol = MapSymbol(data["waypointSymbol"])
+        self.ship_symbol: str = data["shipSymbol"]
+        self.agent_symbol: str = data["agent_symbol"]
         self.timestamp = parse_time(data["timestamp"])
 
 

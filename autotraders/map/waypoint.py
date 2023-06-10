@@ -52,7 +52,9 @@ class Waypoint(SpaceTradersEntity):
         def paginated_func(p, num_per_page):
             r = session.get(
                 session.base_url
-                + "systems/" + system_symbol + "/waypoints?limit="
+                + "systems/"
+                + system_symbol
+                + "/waypoints?limit="
                 + str(num_per_page)
                 + "&page="
                 + str(p)
