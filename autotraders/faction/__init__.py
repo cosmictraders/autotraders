@@ -1,5 +1,3 @@
-from typing import Optional
-
 from autotraders.paginated_list import PaginatedList
 from autotraders.space_traders_entity import SpaceTradersEntity
 from autotraders.session import AutoTradersSession
@@ -8,12 +6,14 @@ from autotraders.shared_models.trait import Trait
 
 
 class Faction(SpaceTradersEntity):
+    is_recruiting: bool
+    traits: list[Trait]
+    headquarters: MapSymbol
+    description: str
+    name: str
+    symbol: str
+
     def __init__(self, symbol, session: AutoTradersSession, data=None):
-        self.is_recruiting: Optional[bool] = None
-        self.traits: Optional[list[Trait]] = None
-        self.headquarters: Optional[MapSymbol] = None
-        self.description: Optional[str] = None
-        self.name: Optional[str] = None
         self.symbol: str = symbol
         super().__init__(session, "factions/" + self.symbol, data)
 

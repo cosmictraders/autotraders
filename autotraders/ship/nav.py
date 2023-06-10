@@ -4,7 +4,7 @@ from typing import Optional
 from autotraders import AutoTradersSession
 from autotraders.shared_models.map_symbol import MapSymbol
 from autotraders.space_traders_entity import SpaceTradersEntity
-from autotraders.util import parse_time
+from autotraders.time import parse_time
 
 
 class Route:

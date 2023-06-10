@@ -13,7 +13,7 @@ from autotraders.session import AutoTradersSession
 from autotraders.shared_models.map_symbol import MapSymbol
 from autotraders.ship.ship_components import Frame, Reactor, Engine, Module, Mount
 from autotraders.ship.survey import Survey
-from autotraders.util import parse_time
+from autotraders.time import parse_time
 from autotraders.map.waypoint import Waypoint
 
 
@@ -42,19 +42,32 @@ class Registration:
         self.role = data["role"]
 
 
+class Capabilities:
+    def __init__(self, modules, mounts):
+        warp_drives = [module for module in modules if "warp" in module.symbol.lower()]
+        jump_drives = [module for module in modules if "jump" in module.symbol.lower()]
+        mine = [mount for mount in mounts if "mine" in mount.symbol.lower()]
+        self.warp = len(warp_drives) > 0
+        self.jump = len(jump_drives) > 0
+        self.mine = len(mine) > 0
+
+
 class Ship(SpaceTradersEntity):
+    cargo: Cargo
+    fuel: Fuel
+    nav: Nav
+    symbol: str
+    frame: Frame
+    reactor: Reactor
+    engine: Engine
+    modules: list[Module]
+    mounts: list[Mount]
+    crew: Crew
+    registration: Registration
+    capabilities: Optional[Capabilities]
+
     def __init__(self, symbol, session: AutoTradersSession, data=None):
-        self.cargo: Optional[Cargo] = None
-        self.fuel: Optional[Fuel] = None
-        self.nav: Optional[Nav] = None
-        self.symbol: str = symbol
-        self.frame: Optional[Frame] = None
-        self.reactor: Optional[Reactor] = None
-        self.engine: Optional[Engine] = None
-        self.modules: Optional[list[Module]] = None
-        self.mounts: Optional[list[Mount]] = None
-        self.crew: Optional[Crew] = None
-        self.registration: Optional[Registration] = None
+        self.symbol = symbol
         super().__init__(session, "my/ships/" + self.symbol, data)
 
     def update(self, data: dict = None) -> None:
@@ -81,6 +94,10 @@ class Ship(SpaceTradersEntity):
             self.cargo = Cargo(self.symbol, self.session, data["cargo"])
         if "registration" in data:
             self.registration = Registration(data["registration"])
+        try:
+            self.capabilities = Capabilities(self.modules, self.mounts)
+        except:
+            pass
 
     async def navigate_async(self, waypoint: Union[str, MapSymbol], interval=1):
         """Attempts to move ship to the provided waypoint.

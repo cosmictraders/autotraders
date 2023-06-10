@@ -1,6 +1,6 @@
 from autotraders.shared_models.item import Item
 from autotraders.shared_models.map_symbol import MapSymbol
-from autotraders.util import parse_time
+from autotraders.time import parse_time
 
 
 class ShipyardTransaction:

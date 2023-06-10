@@ -41,14 +41,14 @@ class System(SpaceTradersEntity):
                 + "&page="
                 + str(p)
             )
-            j = r.json()["data"]
+            j = r.json()
             if "error" in j:
                 raise IOError(j["error"]["message"])
             systems = []
-            for system in j:
+            for system in j["data"]:
                 s = System(system["symbol"], session, system)
                 systems.append(s)
-            return systems, r.json()["meta"]["total"]
+            return systems, j["meta"]["total"]
 
         return PaginatedList(paginated_func, page)
 
