@@ -8,14 +8,14 @@ class ShipyardTransaction:
         self.credits: int = data["price"]
         self.waypoint_symbol: MapSymbol = MapSymbol(data["waypointSymbol"])
         self.ship_symbol: str = data["shipSymbol"]
-        self.agent_symbol: str = data["agent_symbol"]
+        self.agent_symbol: str = data["agentSymbol"]
         self.timestamp = parse_time(data["timestamp"])
 
 
 class MarketTransaction:
     def __init__(self, data):
-        self.waypoint_symbol = MapSymbol(data["waypointSymbol"])
-        self.ship_symbol = data["shipSymbol"]
+        self.waypoint_symbol: MapSymbol = MapSymbol(data["waypointSymbol"])
+        self.ship_symbol: str = data["shipSymbol"]
         self.transaction_type = data["type"]
         self.item = Item(data["tradeSymbol"], data["units"], "")
         self.price_per_unit = data["pricePerUnit"]

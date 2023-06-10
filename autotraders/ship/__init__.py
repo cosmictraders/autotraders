@@ -3,7 +3,7 @@ from typing import Union, Optional
 
 from autotraders.paginated_list import PaginatedList
 from autotraders.shared_models.item import Item
-from autotraders.shared_models.transaction import MarketTransaction
+from autotraders.shared_models.transaction import MarketTransaction, ShipyardTransaction
 from autotraders.ship.cargo import Cargo
 from autotraders.ship.nav import Nav
 from autotraders.ship.nav import Nav
@@ -257,15 +257,16 @@ class Ship(SpaceTradersEntity):
         j = self.get("cooldown")
         self.reactor.cooldown = parse_time(j["data"]["expiration"])
 
-    def install_mount(self):
-        j = self.post("mounts/install")
+    def install_mount(self, mount_symbol: str):
+        j = self.post("mounts/install", data={"symbol": mount_symbol})
         self.update(j["data"])
-        return MarketTransaction(j["data"]["transaction"])
+        return ShipyardTransaction(j["data"]["transaction"])
 
-    def remove_mount(self):
-        j = self.post("mounts/remove")
+    def remove_mount(self, mount_symbol: str):
+        j = self.post("mounts/remove", data={"symbol": mount_symbol})
+        print(j)
         self.update(j["data"])
-        return MarketTransaction(j["data"]["transaction"])
+        return ShipyardTransaction(j["data"]["transaction"])
 
     @staticmethod
     def all(session, page: int = 1) -> PaginatedList:

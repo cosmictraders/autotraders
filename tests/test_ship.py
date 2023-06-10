@@ -18,12 +18,22 @@ def test_ship_functions(session):
     s.extract()
 
 
-def test_ship_param_functions(session):
+def test_ship_mount_functions(session):
+    s = Ship("TEST", session)
+    s.install_mount("TEST_MOUNT")
+    s.remove_mount("TEST_MOUNT")
+
+
+def test_ship_nav_functions(session):
     s = Ship("TEST-1", session)
     s.navigate("X1-TEST-TEST")
     s.patch_navigation("DRIFT")
     s.jump(MapSymbol("X1-TEST-TEST"))
     s.warp("X1-TEST-TEST")
+
+
+def test_ship_cargo_functions(session):
+    s = Ship("TEST-1", session)
     s.sell("FUEL", 42)
     s.buy("FUEL", 42)
     s.refine("FUEL")
@@ -32,6 +42,7 @@ def test_ship_param_functions(session):
 
 
 def test_ship_nav(session):
+    Nav("TEST-1", session)
     start = datetime.now(timezone.utc) - timedelta(seconds=5)
     end = datetime.now(timezone.utc) + timedelta(seconds=5)
     n = Nav(
