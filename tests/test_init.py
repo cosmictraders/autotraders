@@ -1,4 +1,4 @@
-import time
+# import time
 
 import pytest
 
@@ -17,7 +17,7 @@ def session():
 
 
 def test_invalid_api_key():
-    s = get_session("TEST")
+    s = get_session("INVALID TOKEN")
     try:
         Agent(s)
         assert False  # shouldn't complete successfully

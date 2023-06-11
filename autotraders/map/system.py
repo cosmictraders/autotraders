@@ -1,4 +1,4 @@
-from typing import Optional, Union
+from typing import Union
 
 from autotraders.paginated_list import PaginatedList
 from autotraders.space_traders_entity import SpaceTradersEntity

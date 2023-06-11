@@ -7,7 +7,6 @@ from autotraders.shared_models.item import Item
 from autotraders.shared_models.transaction import MarketTransaction, ShipyardTransaction
 from autotraders.ship.cargo import Cargo
 from autotraders.ship.nav import Nav
-from autotraders.ship.nav import Nav
 from autotraders.space_traders_entity import SpaceTradersEntity
 from autotraders.map.system import System
 from autotraders.session import AutoTradersSession
@@ -95,10 +94,8 @@ class Ship(SpaceTradersEntity):
             self.cargo = Cargo(self.symbol, self.session, data["cargo"])
         if "registration" in data:
             self.registration = Registration(data["registration"])
-        try:
+        if self.modules is not None and self.mounts is not None:
             self.capabilities = Capabilities(self.modules, self.mounts)
-        except:
-            pass
 
     async def navigate_async(self, waypoint: Union[str, MapSymbol], interval=1):
         """Attempts to move ship to the provided waypoint.

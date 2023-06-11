@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Optional
 
 from autotraders.paginated_list import PaginatedList
 from autotraders.space_traders_entity import SpaceTradersEntity
