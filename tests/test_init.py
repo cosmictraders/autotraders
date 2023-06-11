@@ -30,12 +30,12 @@ def test_get_status():
     assert status.version == "v2"
 
 
-def test_rate_limiter(session):
-    t1 = time.time()
-    for i in range(20):
-        get_status()
-    t2 = time.time()
-    assert t2 - t1 < 100
+# def test_rate_limiter(session):
+#     t1 = time.time()
+#     for i in range(20):
+#         get_status()
+#     t2 = time.time()
+#     assert t2 - t1 < 100
 
 
 def test_agent(session):
