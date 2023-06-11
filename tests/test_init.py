@@ -10,8 +10,9 @@ from autotraders.session import get_session
 
 @pytest.fixture
 def session():
-    s = get_session(None)
-    s.base_url = "https://stoplight.io/mocks/spacetraders/spacetraders/96627693/"
+    s = get_session("TEST")
+    s.base_url = "https://stoplight.io/mocks/spacetraders/spacetraders/96627693/"  # Use http://127.0.0.1:4010/ for local mocking
+    s.headers.update({"Prefer": "dynamic=true"})
     return s
 
 
@@ -32,7 +33,7 @@ def test_get_status():
 def test_rate_limiter(session):
     t1 = time.time()
     for i in range(20):
-        get_status(session)
+        get_status()
     t2 = time.time()
     assert t2 - t1 < 100
 

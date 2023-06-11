@@ -17,7 +17,6 @@ class AutoTradersSession(LimiterSession):
     def __init__(self, base_url="https://api.spacetraders.io/v2/"):
         super().__init__(per_second=2, burst_rate=10, limit_statuses=[429, 502])
         self.base_url = base_url
-        self.headers.update({"Prefer": "dynamic=true"})
 
 
 def get_session(token: Optional[str] = None) -> AutoTradersSession:

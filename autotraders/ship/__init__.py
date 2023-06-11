@@ -1,4 +1,5 @@
 import asyncio
+import json
 from typing import Union, Optional
 
 from autotraders.paginated_list import PaginatedList
@@ -139,7 +140,8 @@ class Ship(SpaceTradersEntity):
     def patch_navigation(self, new_flight_mode):
         r = self.session.patch(
             self.session.base_url + "my/ships/" + self.symbol + "/nav",
-            data={"flightMode": new_flight_mode},
+            data=json.dumps({"flightMode": new_flight_mode})  # Requests is so dumb I spent 30 minutes debugging this
+            # just to find that its requests fault for sending a body of "flightMode=DRIFT".
         )
         j = r.json()
         if "error" in j:
