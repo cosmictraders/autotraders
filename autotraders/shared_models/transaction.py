@@ -17,7 +17,7 @@ class MarketTransaction:
         self.waypoint_symbol: MapSymbol = MapSymbol(data["waypointSymbol"])
         self.ship_symbol: str = data["shipSymbol"]
         self.transaction_type = data["type"]
-        self.item = Item(data["tradeSymbol"], data["units"], "")
+        self.item = Item(data["tradeSymbol"], data["units"], None)
         self.price_per_unit = data["pricePerUnit"]
         self.total_price = data["totalPrice"]
         self.timestamp = parse_time(data["timestamp"])
