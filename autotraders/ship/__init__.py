@@ -43,6 +43,11 @@ class Registration:
 
 
 class Capabilities:
+    """
+    :ivar warp: can the ship warp
+    :ivar jump: can the ship jump without a jumpgate
+    :ivar mine: can the ship mine (experimental)
+    """
     def __init__(self, modules, mounts):
         warp_drives = [module for module in modules if "warp" in module.symbol.lower()]
         jump_drives = [module for module in modules if "jump" in module.symbol.lower()]
