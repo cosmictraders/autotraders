@@ -153,8 +153,17 @@ class Ship(SpaceTradersEntity):
         j = self.post("orbit")
         self.update(j["data"])
 
-    def extract(self):
-        j = self.post("extract")
+    def extract(self, survey: Survey = None):
+        if survey is None:
+            j = self.post("extract")
+        else:
+            j = self.post("extract", data={
+                "signature": survey.signature,
+                "symbol": survey.symbol,
+                "deposits": survey.deposits,
+                "expiration": survey.expiration.isoformat(),
+                "size": survey.size
+            })
         self.update(j["data"])
         self.reactor.cooldown = parse_time(j["data"]["cooldown"]["expiration"])
         return Item(
