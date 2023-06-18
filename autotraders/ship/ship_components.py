@@ -1,3 +1,7 @@
+from datetime import datetime
+from typing import Optional
+
+
 class Requirements:
     def __init__(self, data):
         if "power" in data:
@@ -35,7 +39,7 @@ class Reactor(ShipComponent):
     def __init__(self, data):
         super().__init__(data)
         self.power_output = data["powerOutput"]
-        self.cooldown = 0
+        self.cooldown: Optional[datetime] = None
 
 
 class Engine(ShipComponent):

@@ -2,6 +2,8 @@ import asyncio
 import json
 from typing import Union, Optional
 
+import requests
+
 from autotraders.paginated_list import PaginatedList
 from autotraders.shared_models.item import Item
 from autotraders.shared_models.transaction import MarketTransaction, ShipyardTransaction
@@ -267,8 +269,11 @@ class Ship(SpaceTradersEntity):
         return ships
 
     def update_ship_cooldown(self):
-        j = self.get("cooldown")
-        self.reactor.cooldown = parse_time(j["data"]["expiration"])
+        try: # TODO: get more elegant solution
+            j = self.get("cooldown")
+            self.reactor.cooldown = parse_time(j["data"]["expiration"])
+        except requests.exceptions.JSONDecodeError:
+            self.reactor.cooldown = None
 
     def install_mount(self, mount_symbol: str):
         j = self.post("mounts/install", data={"symbol": mount_symbol})
