@@ -52,7 +52,7 @@ Now we can create a ship object to control the ship.
     ship = Ship("STARSTAR-1")  # Note that this is the ship symbol, it varies for different people
 
 First we have to extract the resources, which can be done via the ``.extract()`` method, but it only works when the ship is in orbit,
-so we must use the ``.orbit()`` method first.
+so we must use the ``.orbit()`` method first. `extracted_resources` simply represents what has been extracted.
 
 .. code:: python
 
@@ -61,7 +61,7 @@ so we must use the ``.orbit()`` method first.
     s = session.get_session("YOUR_TOKEN_HERE")
     ship = Ship("STARSTAR-1")  # Note that this is the ship symbol, it varies for different people
     ship.orbit()
-    ship.extract()
+    extracted_resources = ship.extract()
 
 Next the ship needs to dock in order to sell its cargo:
 
@@ -72,11 +72,11 @@ Next the ship needs to dock in order to sell its cargo:
     s = session.get_session("YOUR_TOKEN_HERE")
     ship = Ship("STARSTAR-1")  # Note that this is the ship symbol, it varies for different people
     ship.orbit()
-    ship.extract()
+    extracted_resources = ship.extract()
     ship.dock()
 
 The ships cargo is stored as a dictionary in ``ship.cargo.inventory``.
-Let's sell all of it via ``.sell("SYMBOL", ship.cargo.inventory["SYMBOL"])`` where symbol is the item to sell.
+Let's sell the resource of it via ``.sell("SYMBOL", ship.cargo.inventory["SYMBOL"])`` where symbol is the item to sell.
 
 .. code:: python
 
@@ -85,10 +85,9 @@ Let's sell all of it via ``.sell("SYMBOL", ship.cargo.inventory["SYMBOL"])`` whe
     s = session.get_session("YOUR_TOKEN_HERE")
     ship = Ship("STARSTAR-1")  # Note that this is the ship symbol, it varies for different people
     ship.orbit()
-    ship.extract()
+    extracted_resources = ship.extract()
     ship.dock()
-    for item in ship.cargo.inventory:
-        ship.sell(item, ship.cargo.inventory[item])
+    ship.sell(extracted_resources.symbol, extracted_resources.units)
 
 And now we're done! You can wrap it in a while loop so it loops if you wish.
 
@@ -101,9 +100,8 @@ And now we're done! You can wrap it in a while loop so it loops if you wish.
     ship = Ship("STARSTAR-1")  # Note that this is the ship symbol, it varies for different people
     while True:
         ship.orbit()
-        ship.extract()
+        extracted_resources = ship.extract()
         ship.dock()
-        for item in ship.cargo.inventory:
-            ship.sell(item, ship.cargo.inventory[item])
+        ship.sell(extracted_resources.symbol, extracted_resources.units)
         time.sleep(60)  # make sure that the cooldown doesn't cause an extraction error
 
