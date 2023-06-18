@@ -1,6 +1,5 @@
-from typing import Optional
-
 from autotraders.faction.contract import Contract
+from autotraders.paginated_list import PaginatedList
 from autotraders.shared_models.map_symbol import MapSymbol
 from autotraders.space_traders_entity import SpaceTradersEntity
 from autotraders.session import AutoTradersSession
@@ -8,14 +7,15 @@ from autotraders.ship import Ship
 
 
 class Agent(SpaceTradersEntity):
+    contracts: PaginatedList
+    starting_faction: str
+    symbol: str
+    account_id: str
+    credits: int
+    ships: PaginatedList
+    headquarters: MapSymbol
+
     def __init__(self, session: AutoTradersSession, data=None):
-        self.contracts: Optional[list[Contract]] = None
-        self.starting_faction: Optional[str] = None
-        self.symbol: Optional[str] = None
-        self.account_id: Optional[str] = None
-        self.credits: Optional[int] = None
-        self.ships: Optional[Ship] = None
-        self.headquarters: Optional[MapSymbol] = None
         super().__init__(session, "my/agent", data)
 
     def update(self, data=None):

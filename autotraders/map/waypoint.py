@@ -11,7 +11,7 @@ from autotraders.space_traders_entity import SpaceTradersEntity
 class Waypoint(SpaceTradersEntity):
     waypoint_type: str
     faction: Optional[str]
-    traits: list[Trait]
+    traits: Optional[list[Trait]]
     marketplace: bool
     shipyard: bool
     symbol: MapSymbol
@@ -38,8 +38,9 @@ class Waypoint(SpaceTradersEntity):
             self.faction = data["faction"]["symbol"]
         else:
             self.faction = None
-        self.traits = []
+        self.traits = None
         if "traits" in data:
+            self.traits = []
             for trait in data["traits"]:
                 self.traits.append(Trait(trait))
         self.marketplace = (
