@@ -12,8 +12,8 @@ class Waypoint(SpaceTradersEntity):
     waypoint_type: str
     faction: Optional[str]
     traits: Optional[list[Trait]]
-    marketplace: bool
-    shipyard: bool
+    marketplace: Optional[bool]
+    shipyard: Optional[bool]
     symbol: MapSymbol
     x: int
     y: int
@@ -43,12 +43,16 @@ class Waypoint(SpaceTradersEntity):
             self.traits = []
             for trait in data["traits"]:
                 self.traits.append(Trait(trait))
-        self.marketplace = (
-            len([trait for trait in self.traits if trait.symbol == "MARKETPLACE"]) > 0
-        )
-        self.shipyard = (
-            len([trait for trait in self.traits if trait.symbol == "SHIPYARD"]) > 0
-        )
+        if self.traits is not None:
+            self.marketplace = (
+                len([trait for trait in self.traits if trait.symbol == "MARKETPLACE"]) > 0
+            )
+            self.shipyard = (
+                len([trait for trait in self.traits if trait.symbol == "SHIPYARD"]) > 0
+            )
+        else:
+            self.marketplace = None
+            self.shipyard = None
 
     @staticmethod
     def all(session, system_symbol, page: int = 1) -> PaginatedList:
