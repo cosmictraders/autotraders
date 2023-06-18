@@ -35,12 +35,12 @@ class Link:
 
 class Status:
     """
-    :ivar status: User Readable description of the server status
+    :ivar status: User-Readable description of the server status
     :ivar version: The server version
     :ivar reset_date: A datetime of the last reset date
     :ivar description: A user-readable description of the server
     :ivar stats: A dictionary of stats. The keys are agents, ships, systems, and waypoints
-    :ivar leaderboards:
+    :ivar leaderboards: The list of leaderboards (most credits, most charts)
     :ivar next_reset: A datetime of the next reset
     :ivar reset_frequency: A user-readable description of the server reset frequency
     :ivar announcements: A list of announcements
