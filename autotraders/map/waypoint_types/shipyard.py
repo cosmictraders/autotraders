@@ -1,5 +1,3 @@
-from typing import Optional
-
 from autotraders.map.waypoint_types import WaypointType
 from autotraders.session import AutoTradersSession
 from autotraders.shared_models.transaction import ShipyardTransaction
@@ -20,9 +18,10 @@ class ShipyardShip:
 
 
 class Shipyard(WaypointType):
+    ship_types: list[str]
+    ships: list[ShipyardShip]
+
     def __init__(self, waypoint: str, session: AutoTradersSession, data=None):
-        self.ship_types: Optional[list[str]] = None
-        self.ships: Optional[list[ShipyardShip]] = None
         super().__init__(waypoint, "shipyard", session, data)
 
     def update(self, data: dict = None):

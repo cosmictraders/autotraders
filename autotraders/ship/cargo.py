@@ -1,15 +1,14 @@
-from typing import Optional
-
 from autotraders import AutoTradersSession
 from autotraders.shared_models.item import Item
 from autotraders.space_traders_entity import SpaceTradersEntity
 
 
 class Cargo(SpaceTradersEntity):
+    capacity: int
+    current: int
+    inventory: list[Item]
+
     def __init__(self, symbol, session: AutoTradersSession, data=None):
-        self.capacity: Optional[int] = None
-        self.current: Optional[int] = None
-        self.inventory: Optional[list[Item]] = None
         super().__init__(session, "my/ships/" + symbol, data)
 
     def update(self, data: dict = None) -> None:

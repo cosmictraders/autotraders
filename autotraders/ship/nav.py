@@ -1,5 +1,4 @@
 from datetime import datetime, timezone
-from typing import Optional
 
 from autotraders import AutoTradersSession
 from autotraders.shared_models.map_symbol import MapSymbol
@@ -17,12 +16,13 @@ class Route:
 
 
 class Nav(SpaceTradersEntity):
+    status: str
+    location: MapSymbol
+    flight_mode: str
+    route: Route
+    moving: bool
+
     def __init__(self, symbol, session: AutoTradersSession, data=None):
-        self.status: Optional[str] = None
-        self.location: Optional[MapSymbol] = None
-        self.flight_mode: Optional[str] = None
-        self.route: Optional[Route] = None
-        self.moving: Optional[bool] = None
         super().__init__(session, "my/ships/" + symbol, data)
 
     def update(self, data: dict = None) -> None:

@@ -1,5 +1,3 @@
-from typing import Optional
-
 from autotraders.map.waypoint_types import WaypointType
 from autotraders.session import AutoTradersSession
 from autotraders.shared_models.item import Item
@@ -15,11 +13,12 @@ class TradeGood(Item):
 
 
 class Marketplace(WaypointType):
+    imports: list[str]
+    exports: list[str]
+    exchange: list[str]
+    trade_goods: list[TradeGood]
+
     def __init__(self, waypoint: str, session: AutoTradersSession, data=None):
-        self.imports: Optional[list[str]] = None
-        self.exports: Optional[list[str]] = None
-        self.exchange: Optional[list[str]] = None
-        self.trade_goods: Optional[list[TradeGood]] = None
         super().__init__(waypoint, "market", session, data)
 
     def update(self, data: dict = None):

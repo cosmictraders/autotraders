@@ -28,24 +28,24 @@ class Fuel:
 
 class Crew:
     def __init__(self, data):
-        self.current = data["current"]
-        self.required = data["required"]
-        self.capacity = data["capacity"]
+        self.current: int = data["current"]
+        self.required: int = data["required"]
+        self.capacity: int = data["capacity"]
         self.morale = data["morale"]
         self.wages = data["wages"]
 
 
 class Registration:
     def __init__(self, data):
-        self.name = data["name"]
-        self.faction_symbol = data["factionSymbol"]
-        self.role = data["role"]
+        self.name: str = data["name"]
+        self.faction_symbol: str = data["factionSymbol"]
+        self.role: str = data["role"]
 
 
 class Capabilities:
     """
     :ivar warp: can the ship warp
-    :ivar jump: can the ship jump without a jumpgate
+    :ivar jump: can the ship jump without a jump gate
     :ivar mine: can the ship mine (experimental)
     """
     def __init__(self, modules, mounts):
