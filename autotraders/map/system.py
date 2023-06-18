@@ -30,7 +30,6 @@ class System(SpaceTradersEntity):
         self.y = data["y"]
         self.factions = data["factions"]
         self.star_type = data["type"]
-        self.jump_gate = len([waypoint for waypoint in self.waypoints if waypoint.waypoint_type.lower() == "jump_gate"]) > 0
 
     @staticmethod
     def all(session, page: int = 1) -> PaginatedList:
