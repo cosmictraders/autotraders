@@ -14,6 +14,7 @@ class System(SpaceTradersEntity):
     waypoints: list[Waypoint]
     factions: list[str]
     star_type: str
+    jump_gate: bool
 
     def __init__(
         self, symbol: Union[str, MapSymbol], session: AutoTradersSession, data=None
@@ -24,14 +25,12 @@ class System(SpaceTradersEntity):
     def update(self, data=None):
         if data is None:
             data = self.get()["data"]
-        self.waypoints = []
+        self.waypoints = [Waypoint(w["symbol"], self.session, w) for w in data["waypoints"]]
         self.x = data["x"]
         self.y = data["y"]
         self.factions = data["factions"]
         self.star_type = data["type"]
-        for w in data["waypoints"]:
-            waypoint = Waypoint(w["symbol"], self.session, w)
-            self.waypoints.append(waypoint)
+        self.jump_gate = len([waypoint for waypoint in self.waypoints if waypoint.waypoint_type.lower() == "jump_gate"]) > 0
 
     @staticmethod
     def all(session, page: int = 1) -> PaginatedList:
