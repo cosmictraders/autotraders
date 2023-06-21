@@ -23,14 +23,7 @@ class Marketplace(WaypointType):
 
     def update(self, data: dict = None):
         if data is None:
-            data = self.session.get(
-                self.session.base_url
-                + "systems/"
-                + self.location.system
-                + "/waypoints/"
-                + self.location.waypoint
-                + "/market"
-            ).json()["data"]
+            data = self.get()["data"]
         self.imports = []
         for i in data["imports"]:
             self.imports.append(i["symbol"])
