@@ -5,4 +5,7 @@ class Trait:
         self.description: str = data["description"]
 
     def __str__(self):
-        return self.name
+        return self.symbol
+
+    def __eq__(self, other):
+        return self.symbol == str(other)
