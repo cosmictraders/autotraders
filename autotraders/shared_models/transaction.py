@@ -11,7 +11,8 @@ class ShipyardTransaction:
             self.credits: int = data["totalPrice"]
         self.waypoint_symbol: MapSymbol = MapSymbol(data["waypointSymbol"])
         self.ship_symbol: str = data["shipSymbol"]
-        self.agent_symbol: str = data["agentSymbol"]
+        if "agentSymbol" in data:
+            self.agent_symbol: str = data["agentSymbol"]
         self.timestamp = parse_time(data["timestamp"])
 
 
