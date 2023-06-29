@@ -1,5 +1,6 @@
 from typing import Union
 
+from autotraders.error import SpaceTradersException
 from autotraders.paginated_list import PaginatedList
 from autotraders.space_traders_entity import SpaceTradersEntity
 from autotraders.session import AutoTradersSession
@@ -25,7 +26,9 @@ class System(SpaceTradersEntity):
     def update(self, data=None):
         if data is None:
             data = self.get()["data"]
-        self.waypoints = [Waypoint(w["symbol"], self.session, w) for w in data["waypoints"]]
+        self.waypoints = [
+            Waypoint(w["symbol"], self.session, w) for w in data["waypoints"]
+        ]
         self.x = data["x"]
         self.y = data["y"]
         self.factions = data["factions"]
@@ -43,7 +46,7 @@ class System(SpaceTradersEntity):
             )
             j = r.json()
             if "error" in j:
-                raise IOError(j["error"]["message"])
+                raise SpaceTradersException(j["error"]["message"], r.status_code)
             systems = []
             for system in j["data"]:
                 s = System(system["symbol"], session, system)

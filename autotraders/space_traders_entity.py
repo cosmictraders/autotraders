@@ -1,6 +1,7 @@
 import json
 
 from autotraders import AutoTradersSession
+from autotraders.error import SpaceTradersException
 
 
 class SpaceTradersEntity:
@@ -22,7 +23,7 @@ class SpaceTradersEntity:
             )
         j = r.json()
         if "error" in j:
-            raise IOError(j["error"]["message"])
+            raise SpaceTradersException(j["error"], r.status_code)
         return j
 
     def post(self, action: str, data=None) -> dict:
@@ -36,7 +37,7 @@ class SpaceTradersEntity:
             r = self.session.post(self.action_url + action)
         j = r.json()
         if "error" in j:
-            raise IOError(j["error"]["message"])
+            raise SpaceTradersException(j["error"]["message"], r.status_code)
         return j
 
     def update(self, data: dict = None):

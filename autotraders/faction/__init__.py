@@ -1,3 +1,4 @@
+from autotraders.error import SpaceTradersException
 from autotraders.paginated_list import PaginatedList
 from autotraders.space_traders_entity import SpaceTradersEntity
 from autotraders.session import AutoTradersSession
@@ -33,13 +34,6 @@ class Faction(SpaceTradersEntity):
         def paginated_func(p, num_per_page):
             r = session.get(
                 session.base_url
-                + "my/contracts?limit="
-                + str(num_per_page)
-                + "&page="
-                + str(p)
-            )
-            r = session.get(
-                session.base_url
                 + "factions?limit="
                 + str(num_per_page)
                 + "&page="
@@ -47,7 +41,7 @@ class Faction(SpaceTradersEntity):
             )
             j = r.json()
             if "error" in j:
-                raise IOError(j["error"]["message"])
+                raise SpaceTradersException(j["error"]["message"], r.status_code)
             factions = []
             for f in j["data"]:
                 faction = Faction(f["symbol"], session, f)

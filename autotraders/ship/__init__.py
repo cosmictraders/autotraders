@@ -4,6 +4,7 @@ from typing import Union, Optional
 
 import requests
 
+from autotraders.error import SpaceTradersException
 from autotraders.paginated_list import PaginatedList
 from autotraders.shared_models.item import Item
 from autotraders.shared_models.transaction import MarketTransaction, ShipyardTransaction
@@ -50,6 +51,7 @@ class Capabilities:
     :ivar jump: can the ship jump without a jump gate
     :ivar mine: can the ship mine (experimental)
     """
+
     def __init__(self, modules, mounts):
         warp_drives = [module for module in modules if "warp" in module.symbol.lower()]
         jump_drives = [module for module in modules if "jump" in module.symbol.lower()]
@@ -144,12 +146,14 @@ class Ship(SpaceTradersEntity):
     def patch_navigation(self, new_flight_mode):
         r = self.session.patch(
             self.session.base_url + "my/ships/" + self.symbol + "/nav",
-            data=json.dumps({"flightMode": new_flight_mode})  # Requests is so dumb I spent 30 minutes debugging this
+            data=json.dumps(
+                {"flightMode": new_flight_mode}
+            )  # Requests is so dumb I spent 30 minutes debugging this
             # just to find that its requests fault for sending a body of "flightMode=DRIFT".
         )
         j = r.json()
         if "error" in j:
-            raise IOError(j["error"]["message"])
+            raise SpaceTradersException(j["error"]["message"], r.status_code)
         self.update({"nav": j["data"]})
 
     def dock(self):
@@ -164,13 +168,16 @@ class Ship(SpaceTradersEntity):
         if survey is None:
             j = self.post("extract")
         else:
-            j = self.post("extract", data={
-                "signature": survey.signature,
-                "symbol": survey.symbol,
-                "deposits": survey.deposits,
-                "expiration": survey.expiration.isoformat(),
-                "size": survey.size
-            })
+            j = self.post(
+                "extract",
+                data={
+                    "signature": survey.signature,
+                    "symbol": survey.symbol,
+                    "deposits": survey.deposits,
+                    "expiration": survey.expiration.isoformat(),
+                    "size": survey.size,
+                },
+            )
         self.update(j["data"])
         self.reactor.cooldown = parse_time(j["data"]["cooldown"]["expiration"])
         return Item(
@@ -269,7 +276,7 @@ class Ship(SpaceTradersEntity):
         return ships
 
     def update_ship_cooldown(self):
-        try: # TODO: get more elegant solution
+        try:  # TODO: get more elegant solution
             j = self.get("cooldown")
             self.reactor.cooldown = parse_time(j["data"]["expiration"])
         except requests.exceptions.JSONDecodeError:
@@ -298,7 +305,7 @@ class Ship(SpaceTradersEntity):
             )
             j = r.json()
             if "error" in j:
-                raise IOError(j["error"]["message"])
+                raise SpaceTradersException(j["error"]["message"], r.status_code)
             ships = []
             for ship in j["data"]:
                 s = Ship(ship["symbol"], session, ship)

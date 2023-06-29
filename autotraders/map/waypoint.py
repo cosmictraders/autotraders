@@ -1,5 +1,6 @@
 from typing import Optional, Union
 
+from autotraders.error import SpaceTradersException
 from autotraders.paginated_list import PaginatedList
 from autotraders.session import AutoTradersSession
 from autotraders.shared_models.trait import Trait
@@ -45,7 +46,8 @@ class Waypoint(SpaceTradersEntity):
                 self.traits.append(Trait(trait))
         if self.traits is not None:
             self.marketplace = (
-                len([trait for trait in self.traits if trait.symbol == "MARKETPLACE"]) > 0
+                len([trait for trait in self.traits if trait.symbol == "MARKETPLACE"])
+                > 0
             )
             self.shipyard = (
                 len([trait for trait in self.traits if trait.symbol == "SHIPYARD"]) > 0
@@ -68,7 +70,7 @@ class Waypoint(SpaceTradersEntity):
             )
             j = r.json()
             if "error" in j:
-                raise IOError(j["error"]["message"])
+                raise SpaceTradersException(j["error"]["message"], r.status_code)
             waypoints = []
             for w in j["data"]:
                 waypoint = Waypoint(w["symbol"], session, w)

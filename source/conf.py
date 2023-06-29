@@ -11,7 +11,7 @@ sys.path.insert(0, os.path.abspath(".."))  # Makes autodoc work
 project = "Autotraders"
 copyright = "2023, cosmictraders"
 author = "cosmictraders"
-release = "1.5.5"
+release = "1.6.0"
 
 # -- General configuration ---------------------------------------------------
 

@@ -2,6 +2,7 @@ from datetime import datetime
 
 import requests
 
+from autotraders.error import SpaceTradersException
 from autotraders.time import parse_time
 
 
@@ -67,7 +68,7 @@ def get_status(session=None) -> Status:
         r = session.get("https://api.spacetraders.io/v2/")
     j = r.json()
     if "error" in j:
-        raise IOError(j["error"]["message"])
+        raise SpaceTradersException(j["error"]["message"], r.status_code)
     s = Status()
     s.status = j["status"]
     s.version = j["version"]

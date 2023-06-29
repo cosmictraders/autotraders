@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from autotraders.error import SpaceTradersException
 from autotraders.paginated_list import PaginatedList
 from autotraders.space_traders_entity import SpaceTradersEntity
 from autotraders.session import AutoTradersSession
@@ -56,11 +57,12 @@ class Contract(SpaceTradersEntity):
 
     @staticmethod
     def negotiate(ship_symbol, session):
-        j = session.post(
+        r = session.post(
             session.base_url + "my/ships/" + ship_symbol + "/negotiate/contract"
-        ).json()
+        )
+        j = r.json()
         if "error" in j:
-            raise IOError(j["error"]["message"])
+            raise SpaceTradersException(j["error"]["message"], r.status_code)
         c = Contract(j["data"]["contract"]["id"], session, j["data"]["contract"])
         return c
 
@@ -80,7 +82,7 @@ class Contract(SpaceTradersEntity):
             )
             j = r.json()
             if "error" in j:
-                raise IOError(j["error"]["message"])
+                raise SpaceTradersException(j["error"]["message"], r.status_code)
             contracts = []
             for contract in j["data"]:
                 c = Contract(contract["id"], session, contract)
