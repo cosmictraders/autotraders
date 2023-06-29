@@ -4,6 +4,7 @@ import pytest
 
 from autotraders import get_status
 from autotraders.agent import Agent
+from autotraders.error import SpaceTradersException
 from autotraders.faction import Faction
 from autotraders.session import get_session
 
@@ -22,7 +23,7 @@ def test_invalid_api_key():
         Agent(s)
         assert False  # shouldn't complete successfully
     except Exception as e:
-        assert type(e) is IOError
+        assert type(e) is SpaceTradersException
 
 
 def test_get_status():
