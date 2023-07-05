@@ -34,6 +34,9 @@ class System(SpaceTradersEntity):
         self.factions = data["factions"]
         self.star_type = data["type"]
 
+    def __str__(self):
+        return str(self.symbol)
+
     @staticmethod
     def all(session, page: int = 1) -> PaginatedList:
         def paginated_func(p, num_per_page):

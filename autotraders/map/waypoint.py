@@ -56,6 +56,9 @@ class Waypoint(SpaceTradersEntity):
             self.marketplace = None
             self.shipyard = None
 
+    def __str__(self):
+        return str(self.symbol)
+
     @staticmethod
     def all(session, system_symbol, page: int = 1) -> PaginatedList:
         def paginated_func(p, num_per_page):

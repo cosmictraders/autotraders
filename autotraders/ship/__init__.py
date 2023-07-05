@@ -106,6 +106,9 @@ class Ship(SpaceTradersEntity):
         if self.modules is not None and self.mounts is not None:
             self.capabilities = Capabilities(self.modules, self.mounts)
 
+    def __str__(self):
+        return self.symbol
+
     async def navigate_async(self, waypoint: Union[str, MapSymbol], interval=1):
         """Attempts to move ship to the provided waypoint.
         If the request succeeds, this function waits for the ship to arrive.
