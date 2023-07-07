@@ -36,6 +36,7 @@ class Crew:
         self.capacity: int = data["capacity"]
         self.morale = data["morale"]
         self.wages = data["wages"]
+        self.rotation = data["rotation"]
 
 
 class Registration:
@@ -156,7 +157,7 @@ class Ship(SpaceTradersEntity):
         )
         j = r.json()
         if "error" in j:
-            raise SpaceTradersException(j["error"]["message"], r.status_code)
+            raise SpaceTradersException(j["error"], r.status_code)
         self.update({"nav": j["data"]})
 
     def dock(self):
@@ -308,7 +309,7 @@ class Ship(SpaceTradersEntity):
             )
             j = r.json()
             if "error" in j:
-                raise SpaceTradersException(j["error"]["message"], r.status_code)
+                raise SpaceTradersException(j["error"], r.status_code)
             ships = []
             for ship in j["data"]:
                 s = Ship(ship["symbol"], session, ship)

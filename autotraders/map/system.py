@@ -49,7 +49,7 @@ class System(SpaceTradersEntity):
             )
             j = r.json()
             if "error" in j:
-                raise SpaceTradersException(j["error"]["message"], r.status_code)
+                raise SpaceTradersException(j["error"], r.status_code)
             systems = []
             for system in j["data"]:
                 s = System(system["symbol"], session, system)
