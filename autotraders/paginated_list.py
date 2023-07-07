@@ -29,6 +29,13 @@ class PaginatedList:
         self.page -= 1
         return self.current()
 
+    def all(self):
+        for page in range(1, self.pages):
+            self.page = page
+            self.current()
+        return self.stitch()
+
+
     def __getitem__(self, key):
         assert type(key) is int
         self.page = key
