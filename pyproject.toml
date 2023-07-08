@@ -29,7 +29,8 @@ exclude = ["source*", "tests*", "venv*"]
 version = { attr = "autotraders.__version__" }
 
 [project.urls]
-"Homepage" = "https://arihant2math.github.io/autotraders/"
-"Documentation" = "https://arihant2math.github.io/autotraders/"
-"Bug Tracker" = "https://github.com/arihant2math/autotraders/issues"
-
+"Homepage" = "https://comsictraders.github.io/autotraders/"
+"Repository" = "https://github.com/comsictraders/autotraders.git"
+"Changelog" = "https://github.com/comsictraders/autotraders/blob/master/CHANGELOG.md"
+"Documentation" = "https://comsictraders.github.io/autotraders/"
+"Bug Tracker" = "https://github.com/comsictraders/autotraders/issues"
