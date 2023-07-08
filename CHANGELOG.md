@@ -1,3 +1,40 @@
+# v1.6.2
+- ADDED: Crew rotation
+- ADDED: PYPI classifiers
+- CHANGED: `ship.nav.flight_mode` and `ship.nav.status` to enums
+- FIXED: Bug where `SpaceTradersException` was not being raised
+- FIXED: PYPI links
+# v1.6.1
+- ADDED: `__version__`
+# v1.6.0
+- BREAKING: Exception class changed from `IOError` to `SpaceTradersException`
+- FIXED: Marketplace not raising a proper error
+- FIXED: Mount installation error
+# v1.5.5
+- FIXED: Waypoint bug
+# v1.5.4
+- BREAKING: Removed jumpgate (shouldn't affect anyone seeing I added it 2 hours ago)
+# v1.5.3
+- FIXED: get ship cooldown and cooldown
+# v1.5.2
+Not a minor release because there aren't no real server side change.
+
+- ADDED: extracting with survey
+- ADDED: Jump gate attribute to system (its a boolean)
+- CHANGED: Waypoint traits is now an optional attribute
+- FIXED: Removed excessive `Optional` on typing
+- FIXED: flight mode patching
+- FIXED: Shipyard transaction ship return
+# v1.5.1
+- FIXED: Adding and removing mounts
+- FIXED: Market transaction using empty string as item description
+- FIXED: Removed `Optional` from more fields
+# v1.5.0
+- ADDED: ship capabilities class
+- ADDED: Typed ship states (mostly unused)
+- FIXED: Typing
+# v1.4.3
+- FIXED: Waypoint list all bug fix
 # v1.4.2
 - FIXED: Waypoint list all bug fix
 # v1.4.1
