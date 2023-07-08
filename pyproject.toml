@@ -4,13 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "autotraders"
-version = "1.6.1"
 authors = [
-  { name="Ashwin Naren", email="arihant2math@gmail.com" },
+    { name = "Ashwin Naren", email = "arihant2math@gmail.com" },
 ]
 description = "A powerful spacetraders API"
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.9"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
@@ -20,10 +19,14 @@ dependencies = [
     "requests>=2.20",
     "requests-ratelimiter>=0.4"
 ]
+dynamic = ["version"]
 
 [tool.setuptools.packages.find]
 include = ["autotraders*"]
 exclude = ["source*", "tests*", "venv*"]
+
+[tool.setuptools.dynamic]
+version = { attr = "autotraders.__version__" }
 
 [project.urls]
 "Homepage" = "https://arihant2math.github.io/autotraders/"
