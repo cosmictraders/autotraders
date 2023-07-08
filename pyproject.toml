@@ -12,6 +12,9 @@ readme = "README.md"
 requires-python = ">=3.9"
 classifiers = [
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Development Status :: 4 - Beta",
+    "Topic :: Internet",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
