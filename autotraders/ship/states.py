@@ -9,6 +9,6 @@ class FlightMode(str, Enum):
 
 
 class NavState(str, Enum):
-    DOCK = "DOCK"
+    DOCKED = "DOCKED"
     ORBIT = "ORBIT"
     IN_TRANSIT = "IN_TRANSIT"
