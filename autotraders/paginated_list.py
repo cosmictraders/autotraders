@@ -1,7 +1,14 @@
 import math
 
 
-class PaginatedList:
+class PaginatedList:  # TODO: Don't use :param: for attrs
+    """
+    :param page: The current page
+    :param num_per_page: The number of items per a page
+    :param total: Total number of items
+    :param pages: number of pages
+    """
+
     def __init__(self, func, page, num_per_page=20):
         """
         A paginated list with caching
@@ -30,11 +37,11 @@ class PaginatedList:
         return self.current()
 
     def all(self):
+        """Gets all the pages and returns the list of all pages"""
         for page in range(1, self.pages):
             self.page = page
             self.current()
         return self.stitch()
-
 
     def __getitem__(self, key):
         assert type(key) is int
