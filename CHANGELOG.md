@@ -1,3 +1,5 @@
+# v1.6.3
+- FIXED: `NavState` issue
 # v1.6.2
 - ADDED: Crew rotation
 - ADDED: PYPI classifiers
