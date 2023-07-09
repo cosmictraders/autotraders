@@ -37,8 +37,4 @@ class MapSymbol:
         return MapSymbol(str(self) + "-" + other)
 
     def __eq__(self, other):
-        return (
-            self.sector == other.sector
-            and self.system == other.system
-            and self.waypoint == other.waypoint
-        )
+        return str(self) == str(other)
