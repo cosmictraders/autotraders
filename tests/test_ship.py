@@ -2,6 +2,7 @@ from datetime import datetime, timedelta, timezone
 
 from autotraders.shared_models.map_symbol import MapSymbol
 from autotraders.ship import Ship, Nav
+from autotraders.ship.states import NavState
 from test_init import session
 
 
@@ -81,4 +82,5 @@ def test_ship_nav(session):
         },
     )
     assert n2.status == "IN_ORBIT"
+    assert n2.status == NavState.IN_ORBIT
     assert not n2.moving
