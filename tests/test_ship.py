@@ -80,5 +80,5 @@ def test_ship_nav(session):
             },
         },
     )
-    assert n2.status == "ORBIT"
+    assert n2.status == "IN_ORBIT"
     assert not n2.moving
