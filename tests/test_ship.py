@@ -69,7 +69,7 @@ def test_ship_nav(session):
         "MOCK_SHIP_SYMBOL",
         session,
         {
-            "status": "ORBIT",
+            "status": "IN_ORBIT",
             "waypointSymbol": "X1-TEST-TEST2",
             "flightMode": "CRUISE",
             "route": {
