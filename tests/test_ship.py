@@ -15,6 +15,7 @@ def test_ship_functions(session):
     s.dock()
     s.orbit()
     s.refuel()
+    s.refuel(999)
     s.extract()
 
 
