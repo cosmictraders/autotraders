@@ -9,3 +9,6 @@ class Trait:
 
     def __eq__(self, other):
         return self.symbol == str(other)
+
+    def __hash__(self):
+        return self.symbol

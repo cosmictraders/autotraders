@@ -26,6 +26,9 @@ class MapSymbol:
         """Returns the input that was passed as a string."""
         return self.raw
 
+    def __hash__(self):
+        return self.raw
+
     def __add__(self, other):
         return self / other
 
