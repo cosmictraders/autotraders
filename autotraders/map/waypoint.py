@@ -84,3 +84,6 @@ class Waypoint(SpaceTradersEntity):
 
     def __eq__(self, other):
         return self.symbol == other.symbol
+
+    def __hash__(self):
+        return hash(self.symbol)

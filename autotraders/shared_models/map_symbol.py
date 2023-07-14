@@ -27,7 +27,7 @@ class MapSymbol:
         return self.raw
 
     def __hash__(self):
-        return self.raw
+        return hash(self.raw)
 
     def __add__(self, other):
         return self / other

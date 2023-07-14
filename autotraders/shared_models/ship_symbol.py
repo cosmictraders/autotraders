@@ -8,7 +8,7 @@ class ShipSymbol:
         return self.agent_name + "-" + self.number
 
     def __hash__(self):
-        return self.agent_name + "-" + str(self.number)
+        return hash(self.agent_name + "-" + str(self.number))
 
     def __eq__(self, other):
         return str(self) == str(other)

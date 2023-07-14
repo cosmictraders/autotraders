@@ -11,4 +11,4 @@ class Trait:
         return self.symbol == str(other)
 
     def __hash__(self):
-        return self.symbol
+        return hash(self.symbol)
