@@ -37,7 +37,8 @@ class Agent(SpaceTradersEntity):
         self.headquarters = MapSymbol(data["headquarters"])
         self.credits = data["credits"]
         self.starting_faction = data["startingFaction"]
-        self.ship_count = data["shipCount"]
+        if "shipCount" in data:
+            self.ship_count = data["shipCount"]
 
     @staticmethod
     def all(session, page: int = 1) -> PaginatedList:
