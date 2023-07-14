@@ -2,6 +2,7 @@ from datetime import datetime
 
 from autotraders.error import SpaceTradersException
 from autotraders.paginated_list import PaginatedList
+from autotraders.shared_models.item import Item
 from autotraders.space_traders_entity import SpaceTradersEntity
 from autotraders.session import AutoTradersSession
 from autotraders.shared_models.map_symbol import MapSymbol
@@ -10,7 +11,7 @@ from autotraders.time import parse_time
 
 class Deliver:
     def __init__(self, data):
-        self.trade_symbol = MapSymbol(data["tradeSymbol"])
+        self.trade_symbol = Item(data["tradeSymbol"], data["unitsRequired"], "")
         self.destination_symbol = MapSymbol(data["destinationSymbol"])
         self.units_required = data["unitsRequired"]
         self.units_fulfilled = data["unitsFulfilled"]
