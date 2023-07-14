@@ -1,12 +1,12 @@
 import math
 
 
-class PaginatedList:  # TODO: Don't use :param: for attrs
+class PaginatedList:
     """
-    :param page: The current page
-    :param num_per_page: The number of items per a page
-    :param total: Total number of items
-    :param pages: number of pages
+    :ivar page: The current page
+    :ivar num_per_page: The number of items per a page
+    :ivar total: Total number of items
+    :ivar pages: number of pages
     """
 
     def __init__(self, func, page, num_per_page=20):
