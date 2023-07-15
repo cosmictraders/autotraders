@@ -1,4 +1,4 @@
-API Documentation
+autotraders package
 ===================
 
 Subpackages
@@ -18,6 +18,22 @@ autotraders.agent module
 ------------------------
 
 .. automodule:: autotraders.agent
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+autotraders.error module
+------------------------
+
+.. automodule:: autotraders.error
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+autotraders.paginated\_list module
+----------------------------------
+
+.. automodule:: autotraders.paginated_list
    :members:
    :undoc-members:
    :show-inheritance:
@@ -42,6 +58,14 @@ autotraders.status module
 -------------------------
 
 .. automodule:: autotraders.status
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+autotraders.time module
+-----------------------
+
+.. automodule:: autotraders.time
    :members:
    :undoc-members:
    :show-inheritance:
