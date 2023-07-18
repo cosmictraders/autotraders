@@ -6,7 +6,6 @@ Just some FAQs and notes about pitfalls etc.
 - If an object attribute has a value of ``None`` (or doesn't exist) is it likely the object hasn't synced that part of its state from the server
 - Python 3.9 or higher necessary for usage.
 
-
 Finding Methods
 _________________
 Since having documentation for methods that simply make a request to the server is exessive, I will provide a mapping from

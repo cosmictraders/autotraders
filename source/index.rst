@@ -5,6 +5,8 @@ Welcome to Autotraders's documentation!
    The API documentation and quickstart mostly orient with regards to using the sdk, the actual documentation should be
    found at https://docs.spacetraders.io/
 
+.. note::
+    Mappings from stoplight to actual methods can be found in the usage notes.
 
 .. toctree::
    :maxdepth: 2
