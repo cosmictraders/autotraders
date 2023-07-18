@@ -1,4 +1,4 @@
-autotraders package
+API Documentation
 ===================
 
 Subpackages
