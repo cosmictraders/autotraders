@@ -4,7 +4,7 @@ import requests
 from autotraders.session import AutoTradersSession  # noqa F401
 from autotraders.status import get_status  # noqa F401
 
-__version__ = "1.7.1"
+__version__ = "1.8.0"
 
 
 def register_agent(
