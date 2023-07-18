@@ -58,10 +58,10 @@ class Capabilities:
     def __init__(self, modules, mounts):
         warp_drives = [module for module in modules if "warp" in module.symbol.lower()]
         jump_drives = [module for module in modules if "jump" in module.symbol.lower()]
-        mine = [mount for mount in mounts if "mine" in mount.symbol.lower()]
-        self.warp = len(warp_drives) > 0
-        self.jump = len(jump_drives) > 0
-        self.mine = len(mine) > 0
+        mine = [mount for mount in mounts if "mining" in mount.symbol.lower()]
+        self.warp = any(warp_drives)
+        self.jump = any(jump_drives)
+        self.mine = any(mine)
 
 
 class Cooldown(SpaceTradersEntity):
