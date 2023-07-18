@@ -26,8 +26,8 @@ Minimal API Request Model
 Once an object is initialized, no api requests are made until a function is called.
 The general update function to refresh the client state is called ``.update()``.
 
-You can use ``.all()`` to get all of your objects of that type ``Ships.all()`` returns all your ships for example,
-``.all()`` is paginated, so it returns the list and the page number.
+You can use ``.all()`` to get all of your objects of that type for example ``Ships.all()`` returns all your ships,
+``.all()`` is paginated, so it returns a ``PaginatedList``.
 
 
 Writing a Program
@@ -103,5 +103,5 @@ And now we're done! You can wrap it in a while loop so it loops if you wish.
         extracted_resources = ship.extract()
         ship.dock()
         ship.sell(extracted_resources.symbol, extracted_resources.units)
-        time.sleep(60)  # make sure that the cooldown doesn't cause an extraction error
+        ship.wait_cooldown()  # make sure that the cooldown doesn't cause an extraction error (ship.await_cooldown is the async equivalent)
 

@@ -8,3 +8,12 @@ class Survey:
         self.deposits = data["deposits"]
         self.expiration = parse_time(data["expiration"])
         self.size = data["size"]
+
+    def __dict__(self):
+        return {
+            "signature": self.signature,
+            "symbol": self.symbol,
+            "deposits": self.deposits,
+            "expiration": self.expiration.isoformat(),
+            "size": self.size,
+        }

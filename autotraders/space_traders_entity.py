@@ -40,6 +40,21 @@ class SpaceTradersEntity:
             raise SpaceTradersException(j["error"], r.status_code)
         return j
 
+    def patch(self, action: str, data=None) -> dict:
+        self.session.headers["Content-Type"] = "application/json"
+        if data is not None:
+            r = self.session.patch(
+                self.action_url + action,
+                data=json.dumps(data),
+            )
+        else:
+            r = self.session.patch(self.action_url + action)
+        j = r.json()
+        if "error" in j:
+            raise SpaceTradersException(j["error"], r.status_code)
+        return j
+
+
     def update(self, data: dict = None):
         """
         :param data: If you have data from an api requests, you can provide it here. If not provided, an API request

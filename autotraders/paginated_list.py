@@ -62,6 +62,7 @@ class PaginatedList:
         return self.current()
 
     def stitch(self):
+        """This method combines all elements in the inner data structure."""
         complete = []
         for key in self.inner:
             [complete.append(item) for item in self.inner[key]]

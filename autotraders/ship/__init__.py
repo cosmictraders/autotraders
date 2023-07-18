@@ -1,5 +1,6 @@
 import asyncio
-import json
+import time
+from datetime import datetime, timezone
 from typing import Union, Optional
 
 import requests
@@ -62,6 +63,18 @@ class Capabilities:
         self.mine = len(mine) > 0
 
 
+class Cooldown(SpaceTradersEntity):
+    def __init__(self, symbol, session: AutoTradersSession, data=None):
+        self.symbol = symbol
+        super().__init__(session, "my/ships/" + self.symbol + "/cooldown", data)
+
+    def update(self, data: dict = None) -> None:
+        if data is None:
+            data = self.get()["data"]
+        if "expiration" in data:
+            self.expiration = parse_time(data["expiration"])
+
+
 class Ship(SpaceTradersEntity):
     cargo: Cargo
     fuel: Fuel
@@ -75,6 +88,7 @@ class Ship(SpaceTradersEntity):
     crew: Crew
     registration: Registration
     capabilities: Optional[Capabilities]
+    cooldown: Optional[Cooldown]
 
     def __init__(self, symbol, session: AutoTradersSession, data=None):
         self.symbol = symbol
@@ -88,6 +102,8 @@ class Ship(SpaceTradersEntity):
             self.crew = Crew(data["crew"])
         if "frame" in data:
             self.frame = Frame(data["frame"])
+        if "cooldown" in data:
+            self.cooldown = Cooldown(self.symbol, self.session, data["cooldown"])
         if "reactor" in data:
             self.reactor = Reactor(data["reactor"])
         if "engine" in data:
@@ -110,16 +126,38 @@ class Ship(SpaceTradersEntity):
     def __str__(self):
         return self.symbol
 
-    async def navigate_async(self, waypoint: Union[str, MapSymbol], interval=1):
-        """Attempts to move ship to the provided waypoint.
-        If the request succeeds, this function waits for the ship to arrive.
-        :param interval: Frequency of updates in seconds (default: 1)
+    def wait_transit(self):
+        time.sleep(
+            (self.nav.route.arrival - datetime.now(timezone.utc)).total_seconds() + 1
+        )
+
+    async def await_transit(self):
+        await asyncio.sleep(
+            (self.nav.route.arrival - datetime.now(timezone.utc)).total_seconds() + 1
+        )
+
+    def wait_cooldown(self):
+        if self.cooldown is not None:
+            time.sleep(
+                (self.cooldown.expiration - datetime.now(timezone.utc)).total_seconds()
+                + 1
+            )
+
+    async def await_cooldown(self):
+        if self.cooldown is not None:
+            await asyncio.sleep(
+                (self.cooldown.expiration - datetime.now(timezone.utc)).total_seconds()
+                + 1
+            )
+
+    async def navigate_async(self, waypoint: Union[str, MapSymbol]):
         """
-        j = self.post("navigate", data={"waypointSymbol": str(waypoint)})
-        self.update(j["data"])
-        while self.nav.status == "IN_TRANSIT":
-            await asyncio.sleep(interval)
-            self.update()
+        DEPRECATED: USE ship.navigate and ship.await_cooldown instead.
+        Attempts to move ship to the provided waypoint.
+        If the request succeeds, this function waits for the ship to arrive.
+        """
+        self.navigate(waypoint)
+        await self.await_transit()
 
     def navigate(self, waypoint: Union[str, MapSymbol]):
         """Attempts to move ship to the provided waypoint.
@@ -148,16 +186,12 @@ class Ship(SpaceTradersEntity):
         self.update(j["data"])
 
     def patch_navigation(self, new_flight_mode):
-        r = self.session.patch(
-            self.session.base_url + "my/ships/" + self.symbol + "/nav",
-            data=json.dumps(
-                {"flightMode": new_flight_mode}
-            )  # Requests is so dumb I spent 30 minutes debugging this
+        j = self.patch(
+            "nav",
+            data={"flightMode": new_flight_mode}
+            # Requests is so dumb I spent 30 minutes debugging this
             # just to find that its requests fault for sending a body of "flightMode=DRIFT".
         )
-        j = r.json()
-        if "error" in j:
-            raise SpaceTradersException(j["error"], r.status_code)
         self.update({"nav": j["data"]})
 
     def dock(self):
@@ -174,13 +208,7 @@ class Ship(SpaceTradersEntity):
         else:
             j = self.post(
                 "extract",
-                data={
-                    "signature": survey.signature,
-                    "symbol": survey.symbol,
-                    "deposits": survey.deposits,
-                    "expiration": survey.expiration.isoformat(),
-                    "size": survey.size,
-                },
+                data=survey.__dict__(),
             )
         self.update(j["data"])
         self.reactor.cooldown = parse_time(j["data"]["cooldown"]["expiration"])
@@ -194,9 +222,7 @@ class Ship(SpaceTradersEntity):
         if units is None:
             j = self.post("refuel")
         else:
-            j = self.post("refuel", data={
-                "units": units
-            })
+            j = self.post("refuel", data={"units": units})
         self.update(j["data"])
         return MarketTransaction(j["data"]["transaction"])
 
@@ -287,9 +313,9 @@ class Ship(SpaceTradersEntity):
     def update_ship_cooldown(self):
         try:  # TODO: get more elegant solution
             j = self.get("cooldown")
-            self.reactor.cooldown = parse_time(j["data"]["expiration"])
+            self.update({"cooldown": j["data"]})
         except requests.exceptions.JSONDecodeError:
-            self.reactor.cooldown = None
+            self.cooldown = None
 
     def install_mount(self, mount_symbol: str):
         j = self.post("mounts/install", data={"symbol": mount_symbol})
