@@ -1,17 +1,17 @@
-.. Autotraders documentation master file, created by
-   sphinx-quickstart on Fri May 12 12:51:09 2023.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 Welcome to Autotraders's documentation!
 =======================================
+
+.. important::
+   The API documentation and quickstart mostly orient with regards to using the sdk, the actual documentation should be
+   found at https://docs.spacetraders.io/
+
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
    quickstart
-   notes
+   usage_notes
    api/autotraders
 
 

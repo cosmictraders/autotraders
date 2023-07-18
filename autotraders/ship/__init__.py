@@ -11,6 +11,7 @@ from autotraders.shared_models.item import Item
 from autotraders.shared_models.transaction import MarketTransaction, ShipyardTransaction
 from autotraders.ship.cargo import Cargo
 from autotraders.ship.nav import Nav
+from autotraders.ship.states import FlightMode
 from autotraders.space_traders_entity import SpaceTradersEntity
 from autotraders.map.system import System
 from autotraders.session import AutoTradersSession
@@ -185,10 +186,10 @@ class Ship(SpaceTradersEntity):
         )
         self.update(j["data"])
 
-    def patch_navigation(self, new_flight_mode):
+    def patch_navigation(self, new_flight_mode: Union[str, FlightMode]):
         j = self.patch(
             "nav",
-            data={"flightMode": new_flight_mode}
+            data={"flightMode": str(new_flight_mode)}
             # Requests is so dumb I spent 30 minutes debugging this
             # just to find that its requests fault for sending a body of "flightMode=DRIFT".
         )

@@ -18,7 +18,7 @@ To make sure your token works, try to check how many credits you have:
     from autotraders import agent, session
     s = session.get_session("YOUR_TOKEN_HERE")
     my_agent = agent.Agent(s)
-    print(my_agent.credits)
+    print(my_agent.credits, my_agent.headquarters)
 
 
 Minimal API Request Model

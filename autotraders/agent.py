@@ -20,6 +20,10 @@ class Agent(SpaceTradersEntity):
     headquarters: MapSymbol
 
     def __init__(self, session: AutoTradersSession, symbol=None, data=None):
+        """
+        :param symbol: If it's None, then the agent associated with the token will be retrieved.
+            Otherwise, the specified agent will be retrieved.
+        """
         if symbol is None:
             super().__init__(session, "my/agent", data)
         else:
@@ -60,4 +64,3 @@ class Agent(SpaceTradersEntity):
             return agents, r.json()["meta"]["total"]
 
         return PaginatedList(paginated_func, page)
-

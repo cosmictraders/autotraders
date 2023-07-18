@@ -19,6 +19,8 @@ def test_ship_functions(session):
     s.refuel()
     s.refuel(999)
     s.extract()
+    s.survey()
+    s.scan_ships()
 
 
 def test_ship_mount_functions(session):

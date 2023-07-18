@@ -9,6 +9,7 @@ class Cargo(SpaceTradersEntity):
     inventory: list[Item]
 
     def __init__(self, symbol, session: AutoTradersSession, data=None):
+        self.symbol = symbol
         super().__init__(session, "my/ships/" + symbol, data)
 
     def update(self, data: dict = None) -> None:
@@ -23,3 +24,10 @@ class Cargo(SpaceTradersEntity):
                 Item(symbol["symbol"], symbol["units"], symbol["description"])
             )
             self.current += symbol["units"]
+
+    def __getitem__(self, item):
+        results = [i for i in self.inventory if i.symbol == item]
+        if len(results) == 0:
+            raise Exception("No such item found.")
+        else:
+            return results[0]

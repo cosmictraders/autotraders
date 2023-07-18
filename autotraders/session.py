@@ -44,6 +44,7 @@ class AutoTradersSession(LimiterSession):
         cert: Any | None = None,
         json: Any | None = None,
     ) -> Response:
+        """Just like the normal method, but retries if the status code is 429."""
         resp = super().request(
             method,
             url,
