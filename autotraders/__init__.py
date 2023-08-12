@@ -4,7 +4,7 @@ import requests
 from autotraders.session import AutoTradersSession  # noqa F401
 from autotraders.status import get_status  # noqa F401
 
-__version__ = "1.8.1"
+__version__ = "1.8.2"
 
 
 def register_agent(
@@ -17,5 +17,5 @@ def register_agent(
             "symbol": symbol,
             "email": email,
         },
-    ).json()
+    ).json()["data"]
     return j["token"]
