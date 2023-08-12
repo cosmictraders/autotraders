@@ -9,7 +9,11 @@ from autotraders.error import SpaceTradersException
 from autotraders.paginated_list import PaginatedList
 from autotraders.shared_models.item import Item
 from autotraders.shared_models.transaction import MarketTransaction, ShipyardTransaction
+from autotraders.ship.fuel import Fuel
+from autotraders.ship.cooldown import Cooldown
 from autotraders.ship.cargo import Cargo
+from autotraders.ship.cooldown import Cooldown
+from autotraders.ship.fuel import Fuel
 from autotraders.ship.nav import Nav
 from autotraders.ship.states import FlightMode
 from autotraders.space_traders_entity import SpaceTradersEntity
@@ -20,15 +24,6 @@ from autotraders.ship.ship_components import Frame, Reactor, Engine, Module, Mou
 from autotraders.ship.survey import Survey
 from autotraders.time import parse_time
 from autotraders.map.waypoint import Waypoint
-
-
-class Fuel:
-    def __init__(self, current, total):
-        self.current = current
-        self.total = total
-
-    def __str__(self):
-        return str(self.current) + "/" + str(self.total)
 
 
 class Crew:
@@ -62,18 +57,6 @@ class Capabilities:
         self.warp = any(warp_drives)
         self.jump = any(jump_drives)
         self.mine = any(mine)
-
-
-class Cooldown(SpaceTradersEntity):
-    def __init__(self, symbol, session: AutoTradersSession, data=None):
-        self.symbol = symbol
-        super().__init__(session, "my/ships/" + self.symbol + "/cooldown", data)
-
-    def update(self, data: dict = None) -> None:
-        if data is None:
-            data = self.get()["data"]
-        if "expiration" in data:
-            self.expiration = parse_time(data["expiration"])
 
 
 class Ship(SpaceTradersEntity):

@@ -1,7 +1,9 @@
 from datetime import datetime, timezone
+from typing import Union
 
 from autotraders import AutoTradersSession
 from autotraders.shared_models.map_symbol import MapSymbol
+from autotraders.ship import Fuel
 from autotraders.ship.states import NavState, FlightMode
 from autotraders.space_traders_entity import SpaceTradersEntity
 from autotraders.time import parse_time
@@ -34,3 +36,13 @@ class Nav(SpaceTradersEntity):
         self.flight_mode = FlightMode(data["flightMode"])
         self.route = Route(data["route"])
         self.moving = self.route.moving
+
+    def navigate(self, destination: Union[str, MapSymbol]):
+        j = self.post(
+            "warp",
+            data={
+                "waypointSymbol": str(destination),
+            },
+        )
+        self.update(j["data"])
+        return Fuel(j["data"]["fuel"]["current"], j["data"]["fuel"]["capacity"])

@@ -48,6 +48,9 @@ def test_ship_cargo_functions(session):
 
 def test_ship_nav(session):
     Nav("TEST-1", session)
+
+
+def test_ship_nav_mocked(session):
     start = datetime.now(timezone.utc) - timedelta(seconds=5)
     end = datetime.now(timezone.utc) + timedelta(seconds=5)
     n = Nav(
