@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, re
 
 from autotraders.error import SpaceTradersException
 from autotraders.faction.contract import Contract
@@ -43,6 +43,29 @@ class Agent(SpaceTradersEntity):
         self.starting_faction = data["startingFaction"]
         if "shipCount" in data:
             self.ship_count = data["shipCount"]
+
+    @staticmethod
+    def create(session, faction, symbol, email, override_email_check=False):
+        def check_email(e):
+            return re.fullmatch(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$", e)
+
+        if not override_email_check and not (email is None or check_email(email)):
+            raise ValueError(
+                email
+                + " is not a valid email. Use override_email_check=True to bypass this error."
+            )
+        r = session.post(
+            session.base_url + "register",
+            data={
+                "faction": faction.upper(),
+                "symbol": symbol,
+                "email": email,
+            },
+        )
+        j = r.json()
+        if "error" in j:
+            raise SpaceTradersException(j["error"], r.status_code)
+        return j["data"]["token"]
 
     @staticmethod
     def all(session, page: int = 1) -> PaginatedList:

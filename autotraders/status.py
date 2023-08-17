@@ -1,39 +1,37 @@
 from datetime import datetime
 
 import requests
+from attrs import define
 
 from autotraders.error import SpaceTradersException
 from autotraders.time import parse_time
 
 
+@define
 class LeaderboardPlayer:
     symbol: str
     value: int
 
 
+@define
 class Leaderboard:
     name: str
     players: list[LeaderboardPlayer]
 
 
+@define
 class Announcement:
     title: str
     body: str
 
-    def __init__(self, title: str, body: str):
-        self.title = title
-        self.body = body
 
-
+@define
 class Link:
     name: str
     url: str
 
-    def __init__(self, name: str, url: str):
-        self.name = name
-        self.url = url
 
-
+@define
 class Status:
     """
     :ivar status: User-Readable description of the server status
@@ -69,20 +67,26 @@ def get_status(session=None) -> Status:
     j = r.json()
     if "error" in j:
         raise SpaceTradersException(j["error"], r.status_code)
-    s = Status()
-    s.status = j["status"]
-    s.version = j["version"]
-    s.reset_date = parse_time(j["resetDate"])
-    s.description = j["description"]
-    s.stats = j["stats"]
-    s.next_reset = parse_time(j["serverResets"]["next"])
-    s.reset_frequency = j["serverResets"]["frequency"]
-    s.announcements = []
+    s = Status(
+        status=j["status"],
+        version=j["version"],
+        reset_date=parse_time(j["resetDate"]),
+        description=j["description"],
+        stats=j["stats"],
+        next_reset=parse_time(j["serverResets"]["next"]),
+        reset_frequency=j["serverResets"]["frequency"],
+        announcements=[],
+        links=[],
+        leaderboards=[],
+    )
     for announcement in j["announcements"]:
         s.announcements.append(
             Announcement(title=announcement["title"], body=announcement["body"])
         )
-    s.links = []
+    for leaderboard in j["leaderboards"]:
+        s.leaderboards.append(
+            Leaderboard(name=leaderboard, players=j["leaderboards"][leaderboard])
+        )
     for link in j["links"]:
         s.links.append(Link(name=link["name"], url=link["url"]))
     return s
