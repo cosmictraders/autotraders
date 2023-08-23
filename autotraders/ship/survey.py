@@ -9,6 +9,9 @@ class Survey:
         self.expiration = parse_time(data["expiration"])
         self.size = data["size"]
 
+    def asdict(self):
+        return self.__dict__()
+
     def __dict__(self):
         return {
             "signature": self.signature,
