@@ -10,11 +10,10 @@ class Cargo(SpaceTradersEntity):
 
     def __init__(self, symbol, session: AutoTradersSession, data=None):
         self.symbol = symbol
-        super().__init__(session, "my/ships/" + symbol, data)
+        super().__init__(session, "my/ships/" + symbol + "/cargo/", data)
 
     def update(self, data: dict = None) -> None:
-        if data is None:
-            data = self.get("cargo")["data"]
+        data = super().update(data)
         self.capacity = data["capacity"]
         inventory = data["inventory"]
         self.inventory = []

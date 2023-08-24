@@ -12,7 +12,7 @@ from autotraders.session import get_session
 @pytest.fixture
 def session():
     s = get_session("TEST")
-    s.base_url = "https://stoplight.io/mocks/spacetraders/spacetraders/96627693/"  # Use http://127.0.0.1:4010/ for local mocking
+    s.b_url = "https://stoplight.io/mocks/spacetraders/spacetraders/96627693/"  # Use http://127.0.0.1:4010/ for local mocking
     s.headers.update({"Prefer": "dynamic=true"})
     return s
 

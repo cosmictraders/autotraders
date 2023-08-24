@@ -33,8 +33,7 @@ class Contract(SpaceTradersEntity):
         super().__init__(session, "my/contracts/" + self.contract_id, data)
 
     def update(self, data=None):
-        if data is None:
-            data = self.get()["data"]
+        data = super().update(data)
         self.on_accepted = data["terms"]["payment"]["onAccepted"]
         self.on_fulfilled = data["terms"]["payment"]["onFulfilled"]
         self.accepted = data["accepted"]
@@ -59,7 +58,7 @@ class Contract(SpaceTradersEntity):
     @staticmethod
     def negotiate(ship_symbol, session):
         r = session.post(
-            session.base_url + "my/ships/" + ship_symbol + "/negotiate/contract"
+            session.b_url + "my/ships/" + ship_symbol + "/negotiate/contract"
         )
         j = r.json()
         if "error" in j:
@@ -75,7 +74,7 @@ class Contract(SpaceTradersEntity):
     def all(session, page: int = 1):
         def paginated_func(p, num_per_page):
             r = session.get(
-                session.base_url
+                session.b_url
                 + "my/contracts?limit="
                 + str(num_per_page)
                 + "&page="

@@ -1,9 +1,9 @@
 import asyncio
 import time
 from datetime import datetime, timezone
+from json import JSONDecodeError
 from typing import Union, Optional
 
-import requests
 
 from autotraders.error import SpaceTradersException
 from autotraders.paginated_list import PaginatedList
@@ -80,7 +80,7 @@ class Ship(SpaceTradersEntity):
 
     def update(self, data: dict = None) -> None:
         if data is None:
-            data = self.get()["data"]
+            data = super().update(data)
 
         if "crew" in data:
             self.crew = Crew(data["crew"])
@@ -289,7 +289,7 @@ class Ship(SpaceTradersEntity):
         j = self.post("scan/ships")
         ships = []
         for ship in j["data"]["ships"]:
-            s = Ship(ship["symbol"], self.session, ship)
+            s = ship["symbol"]
             ships.append(s)
         self.reactor.cooldown = parse_time(j["data"]["cooldown"]["expiration"])
         return ships
@@ -298,7 +298,7 @@ class Ship(SpaceTradersEntity):
         try:  # TODO: get more elegant solution
             j = self.get("cooldown")
             self.update({"cooldown": j["data"]})
-        except requests.exceptions.JSONDecodeError:
+        except JSONDecodeError:  # TODO: test
             self.cooldown = None
 
     def install_mount(self, mount_symbol: str):
@@ -316,7 +316,7 @@ class Ship(SpaceTradersEntity):
     def all(session, page: int = 1) -> PaginatedList:
         def paginated_func(p, num_per_page):
             r = session.get(
-                session.base_url
+                session.b_url
                 + "my/ships?limit="
                 + str(num_per_page)
                 + "&page="

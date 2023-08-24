@@ -1,3 +1,34 @@
+# v2.0.0 (unreleased)
+- BREAKING: Dropped requests as a dependency, switched to httpx
+# v1.9.0
+- ADDED: `Agent.create`
+- ADDED: Email check for email fields
+- ADDED: dependency on `attrs`
+- ADDED: Missing fields in `get_status`
+# v1.8.2
+- FIXED: Agent creation
+# v1.8.1
+- FIXED: Create agent method
+# v1.8.0
+- ADDED: Automatic retrying on 429 ratelimit errors
+- ADDED: Agent registration method
+- ADDED: Navigation from a `Nav` object
+- ADDED: Dictionary style `__getitem__` to `Cargo`
+- ADDED: Stoplight Sidebar to function/class mapping
+- UPDATED: Fuel and flight time calculations
+- UPDATED: docs
+- FIXED: `contract.deliver.trade_symbol` is now an item instead of a map symbol
+- FIXED: `PaginatedList` docs
+# v1.7.1
+- FIXED: Agent init
+- FIXED: hashes
+# v1.7.0
+- ADDED: Ability to view other agents
+- ADDED: Partial refueling
+- ADDED: `__hash__` to `MapSymbol` and `ShipSymbol`
+- FIXED: `__eq__` for `MapSymbol`
+# v1.6.4
+- FIXED: `NavState` issue
 # v1.6.3
 - FIXED: `NavState` issue
 # v1.6.2

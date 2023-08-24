@@ -30,8 +30,7 @@ class Waypoint(SpaceTradersEntity):
         )
 
     def update(self, data=None):
-        if data is None:
-            data = self.get()["data"]
+        data = super().update(data)
         self.waypoint_type = data["type"]
         self.x = data["x"]
         self.y = data["y"]
@@ -63,7 +62,7 @@ class Waypoint(SpaceTradersEntity):
     def all(session, system_symbol, page: int = 1) -> PaginatedList:
         def paginated_func(p, num_per_page):
             r = session.get(
-                session.base_url
+                session.b_url
                 + "systems/"
                 + system_symbol
                 + "/waypoints?limit="

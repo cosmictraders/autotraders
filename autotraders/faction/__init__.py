@@ -19,8 +19,7 @@ class Faction(SpaceTradersEntity):
         super().__init__(session, "factions/" + self.symbol, data)
 
     def update(self, data=None):
-        if data is None:
-            data = self.get()["data"]
+        data = super().update(data)
         self.name = data["name"]
         self.description = data["description"]
         self.headquarters = MapSymbol(data["headquarters"])
@@ -33,7 +32,7 @@ class Faction(SpaceTradersEntity):
     def all(session, page: int = 1) -> PaginatedList:
         def paginated_func(p, num_per_page):
             r = session.get(
-                session.base_url
+                session.b_url
                 + "factions?limit="
                 + str(num_per_page)
                 + "&page="

@@ -1,6 +1,6 @@
 from datetime import datetime
 
-import requests
+import httpx
 from attrs import define
 
 from autotraders.error import SpaceTradersException
@@ -61,7 +61,7 @@ class Status:
 def get_status(session=None) -> Status:
     """returns the API status, with reset dates, see the Status class for more info."""
     if session is None:
-        r = requests.get("https://api.spacetraders.io/v2/")
+        r = httpx.get("https://api.spacetraders.io/v2/")
     else:
         r = session.get("https://api.spacetraders.io/v2/")
     j = r.json()

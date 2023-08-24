@@ -7,9 +7,10 @@ from autotraders.error import SpaceTradersException
 class SpaceTradersEntity:
     def __init__(self, session: AutoTradersSession, action_url, data=None):
         self.session: AutoTradersSession = session
-        self.action_url = session.base_url + action_url
+        self.action_url = session.b_url + action_url
         if self.action_url[-1] != "/":
             self.action_url += "/"
+        self.json = {}
         self.update(data)
 
     def get(self, action: str = None) -> dict:
@@ -60,4 +61,10 @@ class SpaceTradersEntity:
 
         :raise IOException: If the server fails
         """
-        pass
+        if data is None:
+            self.json = self.get()["data"]
+            return self.json
+        else:
+            for key in data:
+                self.json[key] = data[key]
+            return data

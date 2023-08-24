@@ -26,11 +26,11 @@ class Nav(SpaceTradersEntity):
     moving: bool
 
     def __init__(self, symbol, session: AutoTradersSession, data=None):
-        super().__init__(session, "my/ships/" + symbol, data)
+        super().__init__(session, "my/ships/" + symbol + "/nav/", data)
 
     def update(self, data: dict = None) -> None:
-        if data is None:
-            data = self.get("nav")["data"]
+        data = super().update(data)
+
         self.status = NavState(data["status"])
         self.location = MapSymbol(data["waypointSymbol"])
         self.flight_mode = FlightMode(data["flightMode"])

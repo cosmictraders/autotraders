@@ -1,4 +1,5 @@
-from typing import Optional, re
+from typing import Optional
+import re
 
 from autotraders.error import SpaceTradersException
 from autotraders.faction.contract import Contract
@@ -31,8 +32,7 @@ class Agent(SpaceTradersEntity):
 
     def update(self, data=None):
         """Uses 3 API requests to get all agent details"""
-        if data is None:
-            data = self.get()["data"]
+        data = super().update(data)
         if "account_id" in data:
             self.account_id = data["accountId"]
             self.ships = Ship.all(self.session)
@@ -55,7 +55,7 @@ class Agent(SpaceTradersEntity):
                 + " is not a valid email. Use override_email_check=True to bypass this error."
             )
         r = session.post(
-            session.base_url + "register",
+            session.b_url + "register",
             data={
                 "faction": faction.upper(),
                 "symbol": symbol,
@@ -71,11 +71,7 @@ class Agent(SpaceTradersEntity):
     def all(session, page: int = 1) -> PaginatedList:
         def paginated_func(p, num_per_page):
             r = session.get(
-                session.base_url
-                + "agents?limit="
-                + str(num_per_page)
-                + "&page="
-                + str(p)
+                session.b_url + "agents?limit=" + str(num_per_page) + "&page=" + str(p)
             )
             j = r.json()
             if "error" in j:

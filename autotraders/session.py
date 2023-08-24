@@ -1,96 +1,65 @@
 from __future__ import annotations
 
 import time
-from typing import Optional, Any
+from typing import Optional
 
-import requests
-from requests import Response
-from requests.sessions import RequestsCookieJar
-from requests_ratelimiter import LimiterSession
+from pyrate_limiter import Limiter, RequestRate, Duration, BucketFullException
+from httpx import Response, Client
 
 
-class BearerAuth(requests.auth.AuthBase):
-    def __init__(self, token):
-        self.token = token
-
-    def __call__(self, r):
-        r.headers["authorization"] = "Bearer " + self.token
-        return r
-
-
-class AutoTradersSession(LimiterSession):
-    def __init__(self, base_url="https://api.spacetraders.io/v2/"):
-        super().__init__(per_second=2, burst_rate=10, limit_statuses=[429, 502])
-        self.base_url = base_url
+class AutoTradersSession(Client):
+    def __init__(self, token=None, base_url="https://api.spacetraders.io/v2/"):
+        headers = {}
+        if token is not None:
+            headers["Authorization"] = "Bearer " + token
+        super().__init__(headers=headers)
+        self.b_url = base_url  # TODO: Migrate to base_url
+        self.limiter = Limiter(RequestRate(2, Duration.SECOND))
+        self.burst_limiter = Limiter(RequestRate(10, Duration.SECOND * 10))
         self.retries = 5
-        self.retry_time = 2
+        self.retry_sleep_time = 2
+        self.rate_limiter_sleep_time = 0.1
 
     def request(
         self,
-        method: str | bytes,
-        url: str | bytes,
-        params: Any | None = None,
-        data: Any | None = None,
-        headers: Any | None = None,
-        cookies: None | RequestsCookieJar | Any = None,
-        files: Any | None = None,
-        auth: Any | None = None,
-        timeout: Any | None = None,
-        allow_redirects: bool = None,
-        proxies: Any | None = None,
-        hooks: Any | None = None,
-        stream: bool | None = None,
-        verify: Any | None = None,
-        cert: Any | None = None,
-        json: Any | None = None,
+        method: str,
+        url,
+        *args,
+        **kwargs,
     ) -> Response:
         """Just like the normal method, but retries if the status code is 429."""
+        acquired = False
+        while not acquired:
+            try:
+                self.limiter.try_acquire()
+                acquired = True
+            except BucketFullException:
+                try:
+                    self.limiter.try_acquire()
+                    acquired = True
+                except BucketFullException:
+                    time.sleep(self.rate_limiter_sleep_time)
         resp = super().request(
             method,
             url,
-            params,
-            data,
-            headers,
-            cookies,
-            files,
-            auth,
-            timeout,
-            allow_redirects,
-            proxies,
-            hooks,
-            stream,
-            verify,
-            cert,
-            json,
+            *args,
+            **kwargs,
         )
         if resp.status_code == 429:
             i = 1
             while i < self.retries and resp.status_code == 429:
-                time.sleep(self.retry_time)
+                time.sleep(self.retry_sleep_time)
                 resp = super().request(
                     method,
                     url,
-                    params,
-                    data,
-                    headers,
-                    cookies,
-                    files,
-                    auth,
-                    timeout,
-                    allow_redirects,
-                    proxies,
-                    hooks,
-                    stream,
-                    verify,
-                    cert,
-                    json,
+                    *args,
+                    **kwargs,
                 )
+                i += 1
         return resp
 
 
 def get_session(token: Optional[str] = None) -> AutoTradersSession:
     """Creates a session with the provided token."""
-    s = AutoTradersSession()
-    if token is not None:
-        s.auth = BearerAuth(token)
+    s = AutoTradersSession(token)
     return s
