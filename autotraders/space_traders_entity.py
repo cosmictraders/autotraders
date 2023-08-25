@@ -1,5 +1,3 @@
-import json
-
 from autotraders import AutoTradersSession
 from autotraders.error import SpaceTradersException
 
@@ -32,7 +30,7 @@ class SpaceTradersEntity:
         if data is not None:
             r = self.session.post(
                 self.action_url + action,
-                data=json.dumps(data),
+                json=data,
             )
         else:
             r = self.session.post(self.action_url + action)
@@ -46,7 +44,7 @@ class SpaceTradersEntity:
         if data is not None:
             r = self.session.patch(
                 self.action_url + action,
-                data=json.dumps(data),
+                json=data,
             )
         else:
             r = self.session.patch(self.action_url + action)

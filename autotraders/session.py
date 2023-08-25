@@ -8,11 +8,13 @@ from httpx import Response, Client
 
 
 class AutoTradersSession(Client):
-    def __init__(self, token=None, base_url="https://api.spacetraders.io/v2/"):
+    def __init__(
+        self, token=None, http2=True, base_url="https://api.spacetraders.io/v2/"
+    ):
         headers = {}
         if token is not None:
             headers["Authorization"] = "Bearer " + token
-        super().__init__(headers=headers)
+        super().__init__(headers=headers, http2=http2)
         self.b_url = base_url  # TODO: Migrate to base_url
         self.limiter = Limiter(RequestRate(2, Duration.SECOND))
         self.burst_limiter = Limiter(RequestRate(10, Duration.SECOND * 10))
