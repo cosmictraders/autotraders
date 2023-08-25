@@ -134,15 +134,6 @@ class Ship(SpaceTradersEntity):
                 + 1
             )
 
-    async def navigate_async(self, waypoint: Union[str, MapSymbol]):
-        """
-        DEPRECATED: USE ship.navigate and ship.await_cooldown instead.
-        Attempts to move ship to the provided waypoint.
-        If the request succeeds, this function waits for the ship to arrive.
-        """
-        self.navigate(waypoint)
-        await self.await_transit()
-
     def navigate(self, waypoint: Union[str, MapSymbol]):
         """Attempts to move ship to the provided waypoint.
         If the request succeeds, this function exits immediately, and does not wait the ship to arrive.

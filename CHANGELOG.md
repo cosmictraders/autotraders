@@ -1,5 +1,7 @@
 # v2.0.0 (unreleased)
 - BREAKING: Dropped requests as a dependency, switched to httpx
+- BREAKING: Added and enabled http2
+- BREAKING: Removed `navigate_async`, (it was deprecated)
 # v1.9.0
 - ADDED: `Agent.create`
 - ADDED: Email check for email fields
