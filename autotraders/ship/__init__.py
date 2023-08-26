@@ -85,7 +85,7 @@ class Ship(SpaceTradersEntity):
 
     def update(self, data: dict = None) -> None:
         if data is None:
-            data = super().update(data)
+            data = super()._update(data)
 
         if "crew" in data:
             self.crew = Crew(**data["crew"])
@@ -144,43 +144,22 @@ class Ship(SpaceTradersEntity):
         """Attempts to move ship to the provided waypoint.
         If the request succeeds, this function exits immediately, and does not wait the ship to arrive.
         """
-        j = self.post("navigate", data={"waypointSymbol": str(waypoint)})
-        self.update(j["data"])
+        self.fuel = self.nav.navigate(waypoint)
 
     def jump(self, destination: Union[str, MapSymbol]):
-        j = self.post(
-            "jump",
-            data={
-                "systemSymbol": str(destination),
-            },
-        )
-        self.update(j["data"])
+        self.cooldown = self.nav.jump(destination)
 
     def warp(self, destination: Union[str, MapSymbol]):
-        j = self.post(
-            "warp",
-            data={
-                "waypointSymbol": str(destination),
-            },
-        )
-        self.update(j["data"])
+        self.fuel = self.nav.warp(destination)
 
     def patch_navigation(self, new_flight_mode: Union[str, FlightMode]):
-        j = self.patch(
-            "nav",
-            data={"flightMode": str(new_flight_mode)}
-            # Requests is so dumb I spent 30 minutes debugging this
-            # just to find that its requests fault for sending a body of "flightMode=DRIFT".
-        )
-        self.update({"nav": j["data"]})
+        self.nav.patch_flight_mode(new_flight_mode)
 
     def dock(self):
-        j = self.post("dock")
-        self.update(j["data"])
+        self.nav.dock()
 
     def orbit(self):
-        j = self.post("orbit")
-        self.update(j["data"])
+        self.nav.orbit()
 
     def extract(self, survey: Survey = None):
         if survey is None:
@@ -188,7 +167,7 @@ class Ship(SpaceTradersEntity):
         else:
             j = self.post(
                 "extract",
-                data=survey.__dict__(),
+                data=survey.model_dump(mode="json"),
             )
         self.update(j["data"])
         return Item(

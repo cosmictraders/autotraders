@@ -19,7 +19,7 @@ class Faction(SpaceTradersEntity):
         super().__init__(session, "factions/" + self.symbol, data)
 
     def update(self, data=None):
-        data = super().update(data)
+        data = super()._update(data)
         self.name = data["name"]
         self.description = data["description"]
         self.headquarters = MapSymbol(data["headquarters"])

@@ -53,14 +53,17 @@ class SpaceTradersEntity:
             raise SpaceTradersException(j["error"], r.status_code)
         return j
 
-    def update(self, data: dict = None):
+    def _update(self, data: dict = None, special_endpoint: str = None):
         """
         :param data: If you have data from an api requests, you can provide it here. If not provided, an API request will be sent.
 
         :raise IOException: If the server fails
         """
         if data is None:
-            self.json = self.get()["data"]
+            if special_endpoint is not None:
+                self.json = self.get(special_endpoint)["data"]
+            else:
+                self.json = self.get()["data"]
             return self.json
         else:
             for key in data:

@@ -32,7 +32,7 @@ class Agent(SpaceTradersEntity):
 
     def update(self, data=None):
         """Uses 3 API requests to get all agent details"""
-        data = super().update(data)
+        data = super()._update(data)
         if "account_id" in data:
             self.account_id = data["accountId"]
             self.ships = Ship.all(self.session)

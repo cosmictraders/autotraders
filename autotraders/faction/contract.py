@@ -33,7 +33,7 @@ class Contract(SpaceTradersEntity):
         super().__init__(session, "my/contracts/" + self.contract_id, data)
 
     def update(self, data=None):
-        data = super().update(data)
+        data = super()._update(data)
         self.on_accepted = data["terms"]["payment"]["onAccepted"]
         self.on_fulfilled = data["terms"]["payment"]["onFulfilled"]
         self.accepted = data["accepted"]

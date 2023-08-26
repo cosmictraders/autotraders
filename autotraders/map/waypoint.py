@@ -30,7 +30,7 @@ class Waypoint(SpaceTradersEntity):
         )
 
     def update(self, data=None):
-        data = super().update(data)
+        data = super()._update(data)
         self.waypoint_type = data["type"]
         self.x = data["x"]
         self.y = data["y"]

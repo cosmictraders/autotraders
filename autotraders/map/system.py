@@ -24,7 +24,7 @@ class System(SpaceTradersEntity):
         super().__init__(session, "systems/" + str(self.symbol) + "/", data)
 
     def update(self, data=None):
-        data = super().update(data)
+        data = super()._update(data)
         self.waypoints = [
             Waypoint(w["symbol"], self.session, w) for w in data["waypoints"]
         ]

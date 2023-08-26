@@ -13,7 +13,7 @@ class Cargo(SpaceTradersEntity):
         super().__init__(session, "my/ships/" + symbol + "/cargo/", data)
 
     def update(self, data: dict = None) -> None:
-        data = super().update(data)
+        data = super()._update(data)
         self.capacity = data["capacity"]
         inventory = data["inventory"]
         self.inventory = []
@@ -26,7 +26,7 @@ class Cargo(SpaceTradersEntity):
 
     def __getitem__(self, item):
         results = [i for i in self.inventory if i.symbol == item]
-        if len(results) == 0:
+        if not any(results):
             raise Exception("No such item found.")
         else:
             return results[0]

@@ -9,6 +9,6 @@ class Cooldown(SpaceTradersEntity):
         super().__init__(session, "my/ships/" + self.symbol + "/cooldown", data)
 
     def update(self, data: dict = None) -> None:
-        data = super().update(data)
+        data = super()._update(data)
         if "expiration" in data:
             self.expiration = parse_time(data["expiration"])
