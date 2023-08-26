@@ -14,11 +14,9 @@ def test_ship_functions(session):
     s = Ship("TEST", session)
     s.update_ship_cooldown()
     assert s.cooldown is not None
-    s.dock()
-    s.orbit()
     s.refuel()
     s.refuel(999)
-    s.extract()
+    s.extract()  # TODO: Test extracting with surveys
     s.survey()
     s.scan_ships()
 
@@ -31,6 +29,8 @@ def test_ship_mount_functions(session):
 
 def test_ship_nav_functions(session):
     s = Ship("TEST-1", session)
+    s.dock()
+    s.orbit()
     s.navigate("X1-TEST-TEST")
     s.patch_navigation("DRIFT")
     s.jump(MapSymbol("X1-TEST-TEST"))

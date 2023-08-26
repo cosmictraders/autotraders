@@ -61,7 +61,7 @@ class Nav(SpaceTradersEntity):
         j = self.post(
             "jump",
             data={
-                "waypointSymbol": str(destination),
+                "systemSymbol": str(destination),
             },
         )
         self.update(j["data"]["nav"])

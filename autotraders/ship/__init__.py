@@ -98,7 +98,6 @@ class Ship(SpaceTradersEntity):
         if "engine" in data:
             self.engine = Engine(**data["engine"])
         if "modules" in data:
-            print(data["modules"])
             self.modules = [Module(**d) for d in data["modules"]]
         if "mounts" in data:
             self.mounts = [Mount(**d) for d in data["mounts"]]
@@ -277,7 +276,6 @@ class Ship(SpaceTradersEntity):
 
     def remove_mount(self, mount_symbol: str):
         j = self.post("mounts/remove", data={"symbol": mount_symbol})
-        print(j)
         self.update(j["data"])
         return ShipyardTransaction(j["data"]["transaction"])
 
