@@ -11,7 +11,9 @@ from autotraders.time import parse_time
 
 class Deliver:
     def __init__(self, data):
-        self.trade_symbol = Item(data["tradeSymbol"], data["unitsRequired"], "")
+        self.trade_symbol = Item(
+            symbol=data["tradeSymbol"], amount=data["unitsRequired"]
+        )
         self.destination_symbol = MapSymbol(data["destinationSymbol"])
         self.units_required = data["unitsRequired"]
         self.units_fulfilled = data["unitsFulfilled"]

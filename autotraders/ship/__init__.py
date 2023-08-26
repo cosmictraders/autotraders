@@ -170,9 +170,8 @@ class Ship(SpaceTradersEntity):
             )
         self.update(j["data"])
         return Item(
-            j["data"]["extraction"]["yield"]["symbol"],
-            j["data"]["extraction"]["yield"]["units"],
-            None,
+            symbol=j["data"]["extraction"]["yield"]["symbol"],
+            quantity=j["data"]["extraction"]["yield"]["units"],
         )
 
     def refuel(self, units=None):
@@ -217,7 +216,10 @@ class Ship(SpaceTradersEntity):
             data={"produce": output_symbol},
         )
         self.update(j["data"])
-        return [Item(i["tradeSymbol"], i["units"], None) for i in j["data"]["produced"]]
+        return [
+            Item(symbol=i["tradeSymbol"], quantity=i["units"])
+            for i in j["data"]["produced"]
+        ]
 
     def chart(self) -> Waypoint:
         """

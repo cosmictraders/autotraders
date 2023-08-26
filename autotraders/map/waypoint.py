@@ -40,16 +40,13 @@ class Waypoint(SpaceTradersEntity):
             self.faction = None
         self.traits = None
         if "traits" in data:
-            self.traits = []
-            for trait in data["traits"]:
-                self.traits.append(Trait(trait))
+            self.traits = [Trait(**trait) for trait in data["traits"]]
         if self.traits is not None:
-            self.marketplace = (
-                len([trait for trait in self.traits if trait.symbol == "MARKETPLACE"])
-                > 0
+            self.marketplace = any(
+                [trait for trait in self.traits if trait.symbol == "MARKETPLACE"]
             )
-            self.shipyard = (
-                len([trait for trait in self.traits if trait.symbol == "SHIPYARD"]) > 0
+            self.shipyard = any(
+                [trait for trait in self.traits if trait.symbol == "SHIPYARD"]
             )
         else:
             self.marketplace = None

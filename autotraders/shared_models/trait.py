@@ -1,8 +1,10 @@
-class Trait:
-    def __init__(self, data):
-        self.symbol: str = data["symbol"]
-        self.name: str = data["name"]
-        self.description: str = data["description"]
+from pydantic import BaseModel
+
+
+class Trait(BaseModel):
+    symbol: str
+    name: str
+    description: str
 
     def __str__(self):
         return self.symbol

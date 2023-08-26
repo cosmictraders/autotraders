@@ -1,22 +1,22 @@
+from typing import Optional
+
 from autotraders.map.waypoint_types import WaypointType
 from autotraders.session import AutoTradersSession
 from autotraders.shared_models.item import Item
 
 
 class TradeGood(Item):
-    def __init__(self, data):
-        super().__init__(data["symbol"], data["supply"], None)
-        self.trade_volume: int = data["tradeVolume"]
-        self.supply: str = data["supply"]
-        self.purchase_price: int = data["purchasePrice"]
-        self.sell_price: int = data["sellPrice"]
+    trade_volume: int
+    supply: str
+    purchase_price: int
+    sell_price: int
 
 
 class Marketplace(WaypointType):
     imports: list[str]
     exports: list[str]
     exchange: list[str]
-    trade_goods: list[TradeGood]
+    trade_goods: Optional[list[TradeGood]]
 
     def __init__(self, waypoint: str, session: AutoTradersSession, data=None):
         super().__init__(waypoint, "market", session, data)
@@ -38,4 +38,4 @@ class Marketplace(WaypointType):
         if "tradeGoods" in data:
             self.trade_goods = []
             for i in data["tradeGoods"]:
-                self.trade_goods.append(TradeGood(i))
+                self.trade_goods.append(TradeGood(**i))

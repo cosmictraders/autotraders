@@ -18,11 +18,15 @@ class Cargo(SpaceTradersEntity):
         inventory = data["inventory"]
         self.inventory = []
         self.current = 0
-        for symbol in inventory:
+        for item in inventory:
             self.inventory.append(
-                Item(symbol["symbol"], symbol["units"], symbol["description"])
+                Item(
+                    symbol=item["symbol"],
+                    quantity=item["units"],
+                    description=item["description"],
+                )
             )
-            self.current += symbol["units"]
+            self.current += item["units"]
 
     def __getitem__(self, item):
         results = [i for i in self.inventory if i.symbol == item]
@@ -30,3 +34,6 @@ class Cargo(SpaceTradersEntity):
             raise Exception("No such item found.")
         else:
             return results[0]
+
+    def __iter__(self):
+        return iter(self.inventory)

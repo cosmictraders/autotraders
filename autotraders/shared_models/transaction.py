@@ -1,3 +1,7 @@
+from datetime import datetime
+
+from pydantic import BaseModel, Field
+
 from autotraders.shared_models.item import Item
 from autotraders.shared_models.map_symbol import MapSymbol
 from autotraders.time import parse_time
@@ -21,7 +25,7 @@ class MarketTransaction:
         self.waypoint_symbol: MapSymbol = MapSymbol(data["waypointSymbol"])
         self.ship_symbol: str = data["shipSymbol"]
         self.transaction_type = data["type"]
-        self.item = Item(data["tradeSymbol"], data["units"], None)
+        self.item = Item(symbol=data["tradeSymbol"], quantity=data["units"])
         self.price_per_unit = data["pricePerUnit"]
         self.total_price = data["totalPrice"]
         self.timestamp = parse_time(data["timestamp"])

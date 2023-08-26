@@ -23,9 +23,7 @@ class Faction(SpaceTradersEntity):
         self.name = data["name"]
         self.description = data["description"]
         self.headquarters = MapSymbol(data["headquarters"])
-        self.traits = []
-        for trait in data["traits"]:
-            self.traits.append(Trait(trait))
+        self.traits = [Trait(**trait) for trait in data["traits"]]
         self.is_recruiting = data["isRecruiting"]
 
     @staticmethod
