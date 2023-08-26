@@ -6,7 +6,7 @@ from pydantic import BaseModel, AliasChoices, Field
 class Item(BaseModel):
     symbol: str = Field(validation_alias=AliasChoices("symbol", "tradeSymbol"))
     quantity: int = Field(
-        validation_alias=AliasChoices("quantity", "units", "amount", "supply")
+        validation_alias=AliasChoices("quantity", "units", "amount", "tradeVolume")
     )
     description: Optional[str] = None
 

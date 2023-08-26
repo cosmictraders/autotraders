@@ -1,15 +1,17 @@
 from typing import Optional
 
+from pydantic import Field
+
 from autotraders.map.waypoint_types import WaypointType
 from autotraders.session import AutoTradersSession
 from autotraders.shared_models.item import Item
 
 
 class TradeGood(Item):
-    trade_volume: int
+    trade_volume: int = Field(alias="tradeVolume")
     supply: str
-    purchase_price: int
-    sell_price: int
+    purchase_price: int = Field(alias="purchasePrice")
+    sell_price: int = Field(alias="sellPrice")
 
 
 class Marketplace(WaypointType):
