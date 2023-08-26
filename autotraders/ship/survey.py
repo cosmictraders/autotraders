@@ -1,22 +1,18 @@
+from datetime import datetime
+from enum import Enum
+
 from autotraders.time import parse_time
 
 
+class SizeEnum(str, Enum):
+    SMALL = "SMALL"
+    MODERATE = "MODERATE"
+    LARGE = "LARGE"
+
+
 class Survey:
-    def __init__(self, data):
-        self.signature = data["signature"]
-        self.symbol = data["symbol"]
-        self.deposits = data["deposits"]
-        self.expiration = parse_time(data["expiration"])
-        self.size = data["size"]
-
-    def asdict(self):
-        return self.__dict__()
-
-    def __dict__(self):
-        return {
-            "signature": self.signature,
-            "symbol": self.symbol,
-            "deposits": self.deposits,
-            "expiration": self.expiration.isoformat(),
-            "size": self.size,
-        }
+    signature: str
+    symbol: str
+    deposits: list[dict[str, str]]
+    expiration: datetime
+    size: SizeEnum

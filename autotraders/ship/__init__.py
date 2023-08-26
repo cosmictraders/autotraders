@@ -1,9 +1,11 @@
 import asyncio
 import time
 from datetime import datetime, timezone
+from enum import Enum
 from json import JSONDecodeError
 from typing import Union, Optional
 
+from pydantic import BaseModel, Field
 
 from autotraders.error import SpaceTradersException
 from autotraders.paginated_list import PaginatedList
@@ -26,21 +28,24 @@ from autotraders.time import parse_time
 from autotraders.map.waypoint import Waypoint
 
 
-class Crew:
-    def __init__(self, data):
-        self.current: int = data["current"]
-        self.required: int = data["required"]
-        self.capacity: int = data["capacity"]
-        self.morale = data["morale"]
-        self.wages = data["wages"]
-        self.rotation = data["rotation"]
+class RotationEnum(str, Enum):
+    RELAXED = "RELAXED"
+    STRICT = "STRICT"
 
 
-class Registration:
-    def __init__(self, data):
-        self.name: str = data["name"]
-        self.faction_symbol: str = data["factionSymbol"]
-        self.role: str = data["role"]
+class Crew(BaseModel):
+    current: int
+    required: int
+    capacity: int
+    morale: int
+    wages: int
+    rotation: RotationEnum
+
+
+class Registration(BaseModel):
+    name: str
+    faction_symbol: str = Field(alias="factionSymbol")
+    role: str
 
 
 class Capabilities:
@@ -83,27 +88,27 @@ class Ship(SpaceTradersEntity):
             data = super().update(data)
 
         if "crew" in data:
-            self.crew = Crew(data["crew"])
+            self.crew = Crew(**data["crew"])
         if "frame" in data:
-            self.frame = Frame(data["frame"])
+            self.frame = Frame(**data["frame"])
         if "cooldown" in data:
             self.cooldown = Cooldown(self.symbol, self.session, data["cooldown"])
         if "reactor" in data:
-            self.reactor = Reactor(data["reactor"])
+            self.reactor = Reactor(**data["reactor"])
         if "engine" in data:
-            self.engine = Engine(data["engine"])
+            self.engine = Engine(**data["engine"])
         if "modules" in data:
-            self.modules = [Module(d) for d in data["modules"]]
+            self.modules = [Module(**d) for d in data["modules"]]
         if "mounts" in data:
-            self.mounts = [Mount(d) for d in data["mounts"]]
+            self.mounts = [Mount(**d) for d in data["mounts"]]
         if "nav" in data:
             self.nav = Nav(self.symbol, self.session, data["nav"])
         if "fuel" in data:
-            self.fuel = Fuel(data["fuel"]["current"], data["fuel"]["capacity"])
+            self.fuel = Fuel(**data["fuel"])
         if "cargo" in data:
             self.cargo = Cargo(self.symbol, self.session, data["cargo"])
         if "registration" in data:
-            self.registration = Registration(data["registration"])
+            self.registration = Registration(**data["registration"])
         if self.modules is not None and self.mounts is not None:
             self.capabilities = Capabilities(self.modules, self.mounts)
 

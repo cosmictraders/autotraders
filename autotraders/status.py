@@ -1,38 +1,31 @@
 from datetime import datetime
 
 import httpx
-from attrs import define
-
+from pydantic import BaseModel, PositiveInt, Field, AwareDatetime, AnyUrl
 from autotraders.error import SpaceTradersException
-from autotraders.time import parse_time
 
 
-@define
-class LeaderboardPlayer:
+class LeaderboardPlayer(BaseModel):
     symbol: str
     value: int
 
 
-@define
-class Leaderboard:
+class Leaderboard(BaseModel):
     name: str
     players: list[LeaderboardPlayer]
 
 
-@define
-class Announcement:
+class Announcement(BaseModel):
     title: str
     body: str
 
 
-@define
-class Link:
+class Link(BaseModel):
     name: str
-    url: str
+    url: AnyUrl
 
 
-@define
-class Status:
+class Status(BaseModel):
     """
     :ivar status: User-Readable description of the server status
     :ivar version: The server version
@@ -48,12 +41,12 @@ class Status:
 
     status: str
     version: str
-    reset_date: datetime
+    reset_date: AwareDatetime = Field(alias="resetDate")
     description: str
-    stats: dict[str, int]
+    stats: dict[str, PositiveInt]
     leaderboards: list[Leaderboard]
-    next_reset: datetime
-    reset_frequency: str
+    next_reset: datetime = Field(alias="nextReset")
+    reset_frequency: str = Field(alias="resetFrequency")
     announcements: list[Announcement]
     links: list[Link]
 
@@ -67,26 +60,5 @@ def get_status(session=None) -> Status:
     j = r.json()
     if "error" in j:
         raise SpaceTradersException(j["error"], r.status_code)
-    s = Status(
-        status=j["status"],
-        version=j["version"],
-        reset_date=parse_time(j["resetDate"]),
-        description=j["description"],
-        stats=j["stats"],
-        next_reset=parse_time(j["serverResets"]["next"]),
-        reset_frequency=j["serverResets"]["frequency"],
-        announcements=[],
-        links=[],
-        leaderboards=[],
-    )
-    for announcement in j["announcements"]:
-        s.announcements.append(
-            Announcement(title=announcement["title"], body=announcement["body"])
-        )
-    for leaderboard in j["leaderboards"]:
-        s.leaderboards.append(
-            Leaderboard(name=leaderboard, players=j["leaderboards"][leaderboard])
-        )
-    for link in j["links"]:
-        s.links.append(Link(name=link["name"], url=link["url"]))
+    s = Status(**j)
     return s

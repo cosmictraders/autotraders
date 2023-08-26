@@ -12,7 +12,7 @@ def register_agent(
 ):  # TODO: Update
     j = httpx.post(
         url + "register",
-        data={
+        json={
             "faction": faction.upper(),
             "symbol": symbol,
             "email": email,

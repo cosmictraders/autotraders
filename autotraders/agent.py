@@ -56,7 +56,7 @@ class Agent(SpaceTradersEntity):
             )
         r = session.post(
             session.b_url + "register",
-            data={
+            json={
                 "faction": faction.upper(),
                 "symbol": symbol,
                 "email": email,

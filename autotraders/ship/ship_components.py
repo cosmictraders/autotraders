@@ -1,65 +1,42 @@
 from datetime import datetime
 from typing import Optional
 
-
-class Requirements:
-    def __init__(self, data):
-        if "power" in data:
-            self.power = data["power"]
-        if "crew" in data:
-            self.crew = data["crew"]
-        if "slots" in data:
-            self.slots = data["slots"]
+from pydantic import BaseModel, Field
 
 
-class ShipComponent:
-    def __init__(self, data):
-        self.symbol = data["symbol"]
-        self.name = data["name"]
-        if "description" in data:
-            self.description = data["description"]
-        else:
-            self.description = None
-        if "condition" in data:
-            self.condition = data["condition"]
-        else:
-            self.condition = 100
-        self.requirements = Requirements(data["requirements"])
+class Requirements(BaseModel):
+    power: Optional[int]
+    crew: Optional[int]
+    slots: Optional[int]
+
+
+class ShipComponent(BaseModel):
+    symbol: str
+    name: str
+    description: Optional[str]
+    condition: int
+    requirements: Requirements
 
 
 class Frame(ShipComponent):
-    def __init__(self, data):
-        super().__init__(data)
-        self.module_slots = data["moduleSlots"]
-        self.mounting_points = data["mountingPoints"]
-        self.fuel_capacity = data["fuelCapacity"]
+    module_slots: int = Field(alias="moduleSlots")
+    mounting_points: int = Field(alias="mountingPoints")
+    fuel_capacity: int = Field(alias="fuelCapacity")
 
 
 class Reactor(ShipComponent):
-    def __init__(self, data):
-        super().__init__(data)
-        self.power_output = data["powerOutput"]
+    power_output: int = Field(alias="powerOutput")
 
 
 class Engine(ShipComponent):
-    def __init__(self, data):
-        super().__init__(data)
-        self.speed = data["speed"]
+    speed: int
 
 
 class Module(ShipComponent):
-    def __init__(self, data):
-        super().__init__(data)
-        if "capacity" in data:
-            self.capacity = data["capacity"]
-        if "range" in data:
-            self.range = data["range"]
+    capacity: Optional[int]
+    range: Optional[int]
 
 
 class Mount(ShipComponent):
-    def __init__(self, data):
-        super().__init__(data)
-        if "strength" in data:
-            self.strength = data["strength"]
-        if "deposits" in data:
-            self.deposits = data["deposits"]
+    strength: Optional[int]
+    deposits: Optional[list[str]]

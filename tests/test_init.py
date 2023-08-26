@@ -6,19 +6,19 @@ from autotraders import get_status
 from autotraders.agent import Agent
 from autotraders.error import SpaceTradersException
 from autotraders.faction import Faction
-from autotraders.session import get_session
+from autotraders.session import AutoTradersSession
 
 
 @pytest.fixture
 def session():
-    s = get_session("TEST")
+    s = AutoTradersSession("TEST")
     s.b_url = "https://stoplight.io/mocks/spacetraders/spacetraders/96627693/"  # Use http://127.0.0.1:4010/ for local mocking
     s.headers.update({"Prefer": "dynamic=true"})
     return s
 
 
 def test_invalid_api_key():
-    s = get_session("INVALID TOKEN")
+    s = AutoTradersSession("INVALID TOKEN")
     try:
         Agent(s)
         assert False  # shouldn't complete successfully

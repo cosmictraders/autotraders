@@ -59,9 +59,3 @@ class AutoTradersSession(Client):
                 )
                 i += 1
         return resp
-
-
-def get_session(token: Optional[str] = None) -> AutoTradersSession:
-    """Creates a session with the provided token."""
-    s = AutoTradersSession(token)
-    return s

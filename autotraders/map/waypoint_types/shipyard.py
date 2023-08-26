@@ -1,25 +1,28 @@
+from typing import Optional
+
+from pydantic import Field, BaseModel
+
 from autotraders.map.waypoint_types import WaypointType
 from autotraders.session import AutoTradersSession
 from autotraders.shared_models.transaction import ShipyardTransaction
 from autotraders.ship import Frame, Reactor, Engine, Module, Mount, Ship
 
 
-class ShipyardShip:
-    def __init__(self, data):
-        self.ship_type = data["type"]
-        self.name = data["name"]
-        self.description = data["description"]
-        self.purchase_price = data["purchasePrice"]
-        self.frame = Frame(data["frame"])
-        self.reactor = Reactor(data["reactor"])
-        self.engine = Engine(data["engine"])
-        self.modules = [Module(d) for d in data["modules"]]
-        self.mounts = [Mount(d) for d in data["mounts"]]
+class ShipyardShip(BaseModel):
+    ship_type: str = Field(alias="type")
+    name: str
+    description: str
+    purchase_price: int = Field(alias="purchasePrice")
+    frame: Frame
+    reactor: Reactor
+    engine: Engine
+    modules: list[Module]
+    mounts: list[Mount]
 
 
 class Shipyard(WaypointType):
     ship_types: list[str]
-    ships: list[ShipyardShip]
+    ships: Optional[list[ShipyardShip]]
 
     def __init__(self, waypoint: str, session: AutoTradersSession, data=None):
         super().__init__(waypoint, "shipyard", session, data)
@@ -34,7 +37,7 @@ class Shipyard(WaypointType):
         if "ships" in data:
             self.ships = []
             for ship in data["ships"]:
-                self.ships.append(ShipyardShip(ship))
+                self.ships.append(ShipyardShip(**ship))
 
     def purchase(self, ship_type: str):
         j = self.session.post(
