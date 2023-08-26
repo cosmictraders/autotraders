@@ -1,18 +1,9 @@
-from datetime import datetime
+from datetime import date
+from typing import Any
 
 import httpx
 from pydantic import BaseModel, PositiveInt, Field, AwareDatetime, AnyUrl
 from autotraders.error import SpaceTradersException
-
-
-class LeaderboardPlayer(BaseModel):
-    symbol: str
-    value: int
-
-
-class Leaderboard(BaseModel):
-    name: str
-    players: list[LeaderboardPlayer]
 
 
 class Announcement(BaseModel):
@@ -24,6 +15,9 @@ class Link(BaseModel):
     name: str
     url: AnyUrl
 
+class ServerResets(BaseModel):
+    next: AwareDatetime
+    frequency: str
 
 class Status(BaseModel):
     """
@@ -41,12 +35,11 @@ class Status(BaseModel):
 
     status: str
     version: str
-    reset_date: AwareDatetime = Field(alias="resetDate")
+    reset_date: date = Field(alias="resetDate")
     description: str
     stats: dict[str, PositiveInt]
-    leaderboards: list[Leaderboard]
-    next_reset: datetime = Field(alias="nextReset")
-    reset_frequency: str = Field(alias="resetFrequency")
+    leaderboards: dict[str, list[dict[str, Any]]]
+    server_resets: ServerResets = Field(alias="serverResets")
     announcements: list[Announcement]
     links: list[Link]
 

@@ -5,16 +5,16 @@ from pydantic import BaseModel, Field
 
 
 class Requirements(BaseModel):
-    power: Optional[int]
-    crew: Optional[int]
-    slots: Optional[int]
+    power: Optional[int] = None
+    crew: Optional[int] = None
+    slots: Optional[int] = None
 
 
 class ShipComponent(BaseModel):
     symbol: str
     name: str
-    description: Optional[str]
-    condition: int
+    description: Optional[str] = None
+    condition: Optional[int] = None
     requirements: Requirements
 
 
@@ -33,10 +33,10 @@ class Engine(ShipComponent):
 
 
 class Module(ShipComponent):
-    capacity: Optional[int]
-    range: Optional[int]
+    capacity: Optional[int] = None
+    range: Optional[int] = None
 
 
 class Mount(ShipComponent):
-    strength: Optional[int]
-    deposits: Optional[list[str]]
+    strength: Optional[int] = None
+    deposits: Optional[list[str]] = None

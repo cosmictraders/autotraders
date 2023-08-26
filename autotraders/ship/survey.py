@@ -1,7 +1,6 @@
 from datetime import datetime
 from enum import Enum
-
-from autotraders.time import parse_time
+from pydantic import BaseModel
 
 
 class SizeEnum(str, Enum):
@@ -10,7 +9,7 @@ class SizeEnum(str, Enum):
     LARGE = "LARGE"
 
 
-class Survey:
+class Survey(BaseModel):
     signature: str
     symbol: str
     deposits: list[dict[str, str]]
