@@ -30,7 +30,7 @@ class System(SpaceTradersEntity):
         ]
         self.x = data["x"]
         self.y = data["y"]
-        self.factions = data["factions"]
+        self.factions = [faction["symbol"] for faction in data["factions"]]
         self.star_type = data["type"]
 
     def __str__(self):

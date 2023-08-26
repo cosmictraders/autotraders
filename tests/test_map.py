@@ -7,7 +7,26 @@ from test_init import session
 
 
 def test_system(session):
-    System("X1-AB12", session)
+    System(
+        "X1-AB12",
+        session,
+        {
+            "symbol": "X1-AB12",
+            "sectorSymbol": "X1",
+            "type": "UNSTABLE",
+            "x": 10,
+            "y": 2,
+            "factions": [{"symbol": "VOID"}],
+            "waypoints": [
+                {
+                    "symbol": "X1-AB12-AB11",
+                    "type": "JUMP_GATE",
+                    "x": 10,
+                    "y": 1,
+                }
+            ],
+        },
+    )
 
 
 def test_waypoint(session):
