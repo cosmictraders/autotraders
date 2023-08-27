@@ -5,6 +5,7 @@
 - BREAKING: Removed `navigate_async`, (it was deprecated)
 - BREAKING: Removed `get_session`, you can instantiate the client for greater control.
 - BREAKING: Renamed `Fuel.total` to `Fuel.capacity`
+- BREAKING: `agent.ships` and `agent.contracts` have been removed.
 - BREAKING: `status.leaderboards` is no longer a `list` it is now a `dict`
 - BREAKING: `status.next_reset` and `status.reset_frequency` have been moved to `status.server_reset`
 and renamed to `next` and `frequency`

@@ -25,11 +25,11 @@ class System(SpaceTradersEntity):
 
     def update(self, data=None):
         data = super()._update(data)
+        mappings = {"x": {}, "y": {}}
+        super().update_attr(mappings, data)
         self.waypoints = [
             Waypoint(w["symbol"], self.session, w) for w in data["waypoints"]
         ]
-        self.x = data["x"]
-        self.y = data["y"]
         self.factions = [faction["symbol"] for faction in data["factions"]]
         self.star_type = data["type"]
 

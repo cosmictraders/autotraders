@@ -86,29 +86,22 @@ class Ship(SpaceTradersEntity):
     def update(self, data: dict = None) -> None:
         if data is None:
             data = super()._update(data)
-
-        if "crew" in data:
-            self.crew = Crew(**data["crew"])
-        if "frame" in data:
-            self.frame = Frame(**data["frame"])
-        if "cooldown" in data:
-            self.cooldown = Cooldown(self.symbol, self.session, data["cooldown"])
-        if "reactor" in data:
-            self.reactor = Reactor(**data["reactor"])
-        if "engine" in data:
-            self.engine = Engine(**data["engine"])
+        mappings = {
+            "crew": {"type": "object", "class": Crew},
+            "frame": {"type": "object", "class": Frame},
+            "cooldown": {"type": "dynamic", "class": Cooldown},
+            "reactor": {"type": "object", "class": Reactor},
+            "engine": {"type": "object", "class": Engine},
+            "nav": {"type": "dynamic", "class": Nav},
+            "fuel": {"type": "object", "class": Fuel},
+            "cargo": {"type": "dynamic", "class": Cargo},
+            "registration": {"type": "object", "class": Registration},
+        }
+        super().update_attr(mappings, data)
         if "modules" in data:
             self.modules = [Module(**d) for d in data["modules"]]
         if "mounts" in data:
             self.mounts = [Mount(**d) for d in data["mounts"]]
-        if "nav" in data:
-            self.nav = Nav(self.symbol, self.session, data["nav"])
-        if "fuel" in data:
-            self.fuel = Fuel(**data["fuel"])
-        if "cargo" in data:
-            self.cargo = Cargo(self.symbol, self.session, data["cargo"])
-        if "registration" in data:
-            self.registration = Registration(**data["registration"])
         if self.modules is not None and self.mounts is not None:
             self.capabilities = Capabilities(self.modules, self.mounts)
 

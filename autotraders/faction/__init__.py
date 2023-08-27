@@ -20,11 +20,14 @@ class Faction(SpaceTradersEntity):
 
     def update(self, data=None):
         data = super()._update(data)
-        self.name = data["name"]
-        self.description = data["description"]
+        mappings = {
+            "name": {},
+            "description": {},
+            "is_recruiting": {"alias": "isRecruiting"},
+        }
+        super().update_attr(mappings, data)
         self.headquarters = MapSymbol(data["headquarters"])
         self.traits = [Trait(**trait) for trait in data["traits"]]
-        self.is_recruiting = data["isRecruiting"]
 
     @staticmethod
     def all(session, page: int = 1) -> PaginatedList:

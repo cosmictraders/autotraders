@@ -32,7 +32,6 @@ class Nav(SpaceTradersEntity):
 
     def update(self, data: dict = None) -> None:
         data = super()._update(data, "nav")
-
         self.status = NavState(data["status"])
         self.location = MapSymbol(data["waypointSymbol"])
         self.flight_mode = FlightMode(data["flightMode"])

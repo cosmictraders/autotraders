@@ -31,9 +31,12 @@ class Waypoint(SpaceTradersEntity):
 
     def update(self, data=None):
         data = super()._update(data)
+        mappings = {
+            "x": {},
+            "y": {},
+        }
+        super().update_attr(mappings, data)
         self.waypoint_type = data["type"]
-        self.x = data["x"]
-        self.y = data["y"]
         if "faction" in data:
             self.faction = data["faction"]["symbol"]
         else:

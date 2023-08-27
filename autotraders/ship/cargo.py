@@ -14,7 +14,10 @@ class Cargo(SpaceTradersEntity):
 
     def update(self, data: dict = None) -> None:
         data = super()._update(data)
-        self.capacity = data["capacity"]
+        mappings = {
+            "capacity": {},
+        }
+        super().update_attr(mappings, data)
         inventory = data["inventory"]
         self.inventory = []
         self.current = 0

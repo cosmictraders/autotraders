@@ -69,3 +69,28 @@ class SpaceTradersEntity:
             for key in data:
                 self.json[key] = data[key]
             return data
+
+    def update_attr(self, mappings, data):
+        for mapping in mappings:
+            if mapping in data:
+                mapping_info = mappings.get(mapping, {})
+                t = mapping_info.get("type", None)
+                if t == "object":
+                    setattr(
+                        self,
+                        mapping,
+                        mapping_info["class"](
+                            **data[mapping_info.get("alias", mapping)]
+                        ),
+                    )
+                elif t == "dynamic":
+                    setattr(
+                        self,
+                        mapping,
+                        mapping_info["class"](
+                            self.symbol, self.session, data[mapping_info.get("alias", mapping)]
+                        ),
+                    )
+                elif t is None or t == "primitive":
+                    setattr(self, mapping, data[mapping_info.get("alias", mapping)])
+

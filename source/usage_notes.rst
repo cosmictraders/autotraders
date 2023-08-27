@@ -5,15 +5,16 @@ Just some FAQs and notes about pitfalls etc.
 - Errors are always thrown then the API request fails (usually an ``SpaceTradersException``)
 - If an object attribute has a value of ``None`` (or doesn't exist) is it likely the object hasn't synced that part of its state from the server
 - Python 3.9 or higher necessary for usage.
-- ``Survey.asdict()`` (equivalent to `dict(survey)`) exists for any surveys you might want to convert into json ``json.dumps(dict(survey))``.
+- ``Survey.model_dump(mode="json")`` will dump the survey into a json compatible dictionary.
+However ``ship.extract`` accepts a ``Survey`` object as well.
 
 Finding Methods
 _________________
-Since having documentation for methods that simply make a request to the server is exessive, I will provide a mapping from
+Since having documentation for methods that simply make a request to the server is excessive, I will provide a mapping from
 `Stoplight <https://spacetraders.stoplight.io/docs/spacetraders/11f2735b75b02-space-traders-api>`_.
 Things might not have a one to one correspondence however.
 
-- Get Status -> :meth:`autotraders.status.get_status` (or autotraders.get_status)
+- Get Status -> :meth:`autotraders.status.get_status`
 - Register New Agent -> :meth:`autotraders.register_agent`
 
 Agents

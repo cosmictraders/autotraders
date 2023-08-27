@@ -36,13 +36,12 @@ class Contract(SpaceTradersEntity):
 
     def update(self, data=None):
         data = super()._update(data)
+        mappings = {"accepted": {}, "fulfilled": {}, "contract_type": {"alias": "type"}}
+        super().update_attr(mappings, data)
         self.on_accepted = data["terms"]["payment"]["onAccepted"]
         self.on_fulfilled = data["terms"]["payment"]["onFulfilled"]
-        self.accepted = data["accepted"]
-        self.fulfilled = data["fulfilled"]
         self.deadline = parse_time(data["terms"]["deadline"])
         self.accept_deadline = parse_time(data["deadlineToAccept"])
-        self.contract_type = data["type"]
         if "deliver" in data["terms"]:
             self.contract_data = [Deliver(d) for d in data["terms"]["deliver"]]
 

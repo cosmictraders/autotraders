@@ -31,18 +31,16 @@ class Agent(SpaceTradersEntity):
             super().__init__(session, "agents/" + symbol, data)
 
     def update(self, data=None):
-        """Uses 3 API requests to get all agent details"""
         data = super()._update(data)
-        if "account_id" in data:
-            self.account_id = data["accountId"]
-            self.ships = Ship.all(self.session)
-            self.contracts = Contract.all(self.session)
-        self.symbol = data["symbol"]
-        self.headquarters = MapSymbol(data["headquarters"])
-        self.credits = data["credits"]
-        self.starting_faction = data["startingFaction"]
-        if "shipCount" in data:
-            self.ship_count = data["shipCount"]
+        mappings = {
+            "account_id": {"type": None, "class": str, "alias": "accountId"},
+            "symbol": {"type": None, "class": str},
+            "headquarters": {"type": None, "class": MapSymbol},
+            "credits": {"type": None, "class": int},
+            "starting_faction": {"type": None, "class": str, "alias": "startingFaction"},
+            "ship_count": {"type": None, "class": int, "alias": "shipCount"},
+        }
+        super().update_attr(mappings, data)
 
     @staticmethod
     def create(session, faction, symbol, email, override_email_check=False):
