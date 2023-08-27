@@ -63,7 +63,7 @@ class Contract(SpaceTradersEntity):
         )
         j = r.json()
         if "error" in j:
-            raise SpaceTradersException(j["error"], r.status_code)
+            raise SpaceTradersException(j["error"], r.url, r.status_code, r.request.headers, r.headers)
         c = Contract(j["data"]["contract"]["id"], session, j["data"]["contract"])
         return c
 
@@ -83,7 +83,7 @@ class Contract(SpaceTradersEntity):
             )
             j = r.json()
             if "error" in j:
-                raise SpaceTradersException(j["error"], r.status_code)
+                raise SpaceTradersException(j["error"], r.url, r.status_code, r.request.headers, r.headers)
             contracts = []
             for contract in j["data"]:
                 c = Contract(contract["id"], session, contract)

@@ -22,7 +22,7 @@ class SpaceTradersEntity:
             )
         j = r.json()
         if "error" in j:
-            raise SpaceTradersException(j["error"], r.status_code)
+            raise SpaceTradersException(j["error"], r.url, r.status_code, r.request.headers, r.headers)
         return j
 
     def post(self, action: str, data=None) -> dict:
@@ -36,7 +36,7 @@ class SpaceTradersEntity:
             r = self.session.post(self.action_url + action)
         j = r.json()
         if "error" in j:
-            raise SpaceTradersException(j["error"], r.status_code)
+            raise SpaceTradersException(j["error"], r.url, r.status_code, r.request.headers, r.headers)
         return j
 
     def patch(self, action: str, data=None) -> dict:
@@ -50,7 +50,7 @@ class SpaceTradersEntity:
             r = self.session.patch(self.action_url + action)
         j = r.json()
         if "error" in j:
-            raise SpaceTradersException(j["error"], r.status_code)
+            raise SpaceTradersException(j["error"], r.url, r.status_code, r.request.headers, r.headers)
         return j
 
     def _update(self, data: dict = None, special_endpoint: str = None):

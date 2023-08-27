@@ -52,6 +52,6 @@ def get_status(session=None) -> Status:
         r = session.get("https://api.spacetraders.io/v2/")
     j = r.json()
     if "error" in j:
-        raise SpaceTradersException(j["error"], r.status_code)
+        raise SpaceTradersException(j["error"], r.url, r.status_code, r.request.headers, r.headers)
     s = Status(**j)
     return s

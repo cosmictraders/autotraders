@@ -62,7 +62,7 @@ class Agent(SpaceTradersEntity):
         )
         j = r.json()
         if "error" in j:
-            raise SpaceTradersException(j["error"], r.status_code)
+            raise SpaceTradersException(j["error"], r.url, r.status_code, r.request.headers, r.headers)
         return j["data"]["token"]
 
     @staticmethod
@@ -73,7 +73,7 @@ class Agent(SpaceTradersEntity):
             )
             j = r.json()
             if "error" in j:
-                raise SpaceTradersException(j["error"], r.status_code)
+                raise SpaceTradersException(j["error"], r.url, r.status_code, r.request.headers, r.headers)
             agents = []
             for agent in j["data"]:
                 a = Agent(session, agent["symbol"], agent)

@@ -41,7 +41,7 @@ class Faction(SpaceTradersEntity):
             )
             j = r.json()
             if "error" in j:
-                raise SpaceTradersException(j["error"], r.status_code)
+                raise SpaceTradersException(j["error"], r.url, r.status_code, r.request.headers, r.headers)
             factions = []
             for f in j["data"]:
                 faction = Faction(f["symbol"], session, f)
