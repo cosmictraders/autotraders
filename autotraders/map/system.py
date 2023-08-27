@@ -44,7 +44,9 @@ class System(SpaceTradersEntity):
             )
             j = r.json()
             if "error" in j:
-                raise SpaceTradersException(j["error"], r.url, r.status_code, r.request.headers, r.headers)
+                raise SpaceTradersException(
+                    j["error"], r.url, r.status_code, r.request.headers, r.headers
+                )
             systems = []
             for system in j["data"]:
                 s = System(system["symbol"], session, system)

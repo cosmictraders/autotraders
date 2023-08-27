@@ -72,7 +72,9 @@ class Waypoint(SpaceTradersEntity):
             )
             j = r.json()
             if "error" in j:
-                raise SpaceTradersException(j["error"], r.url, r.status_code, r.request.headers, r.headers)
+                raise SpaceTradersException(
+                    j["error"], r.url, r.status_code, r.request.headers, r.headers
+                )
             waypoints = []
             for w in j["data"]:
                 waypoint = Waypoint(w["symbol"], session, w)

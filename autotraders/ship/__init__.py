@@ -286,7 +286,9 @@ class Ship(SpaceTradersEntity):
             )
             j = r.json()
             if "error" in j:
-                raise SpaceTradersException(j["error"], r.url, r.status_code, r.request.headers, r.headers)
+                raise SpaceTradersException(
+                    j["error"], r.url, r.status_code, r.request.headers, r.headers
+                )
             ships = []
             for ship in j["data"]:
                 s = Ship(ship["symbol"], session, ship)
