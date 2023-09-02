@@ -2,6 +2,7 @@ from typing import Optional
 
 from pydantic import Field, BaseModel
 
+from autotraders import SpaceTradersException
 from autotraders.map.waypoint_types import WaypointType
 from autotraders.session import AutoTradersSession
 from autotraders.shared_models.transaction import ShipyardTransaction
@@ -47,10 +48,15 @@ class Shipyard(WaypointType):
                 self.transactions.append(ShipyardTransaction(i))
 
     def purchase(self, ship_type: str):
-        j = self.session.post(
+        r = self.session.post(
             self.session.b_url + "my/ships",
             data={"shipType": ship_type, "waypointSymbol": self.location},
-        ).json()
+        )
+        j = r.json()
+        if "error" in j:
+            raise SpaceTradersException(
+                j["error"], r.url, r.status_code, r.request.headers, r.headers
+            )
         return Ship(
             j["data"]["ship"]["symbol"], self.session, j["data"]["ship"]
         ), ShipyardTransaction(j["data"]["transaction"])
