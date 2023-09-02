@@ -51,7 +51,7 @@ class Shipyard(WaypointType):
         r = self.session.post(
             self.session.b_url + "my/ships",
             json={"shipType": ship_type, "waypointSymbol": self.location},
-        )
+        )  # TODO: Fix
         j = r.json()
         if "error" in j:
             raise SpaceTradersException(
