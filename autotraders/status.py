@@ -15,9 +15,11 @@ class Link(BaseModel):
     name: str
     url: AnyUrl
 
+
 class ServerResets(BaseModel):
     next: AwareDatetime
     frequency: str
+
 
 class Status(BaseModel):
     """
@@ -52,6 +54,8 @@ def get_status(session=None) -> Status:
         r = session.get("https://api.spacetraders.io/v2/")
     j = r.json()
     if "error" in j:
-        raise SpaceTradersException(j["error"], r.url, r.status_code, r.request.headers, r.headers)
+        raise SpaceTradersException(
+            j["error"], r.url, r.status_code, r.request.headers, r.headers
+        )
     s = Status(**j)
     return s

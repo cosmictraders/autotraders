@@ -5,6 +5,7 @@ from pydantic import Field
 from autotraders.map.waypoint_types import WaypointType
 from autotraders.session import AutoTradersSession
 from autotraders.shared_models.item import Item
+from autotraders.shared_models.transaction import MarketTransaction
 
 
 class TradeGood(Item):
@@ -43,3 +44,8 @@ class Marketplace(WaypointType):
             self.trade_goods = []
             for i in data["tradeGoods"]:
                 self.trade_goods.append(TradeGood(**i))
+        self.transactions = None
+        if "transactions" in data:
+            self.transactions = []
+            for i in data["transactions"]:
+                self.transactions.append(MarketTransaction(i))

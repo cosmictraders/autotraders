@@ -40,6 +40,11 @@ class Shipyard(WaypointType):
             self.ships = []
             for ship in data["ships"]:
                 self.ships.append(ShipyardShip(**ship))
+        self.transactions = None
+        if "transactions" in data:
+            self.transactions = []
+            for i in data["transactions"]:
+                self.transactions.append(ShipyardTransaction(i))
 
     def purchase(self, ship_type: str):
         j = self.session.post(

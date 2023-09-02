@@ -38,5 +38,7 @@ def parse_token(token):
     if len(split) != 3:
         raise ValueError("Invalid JWT")
     header = json.loads(base64.b64decode(split[0].encode("ascii")).decode("utf-8"))
-    payload = json.loads(base64.b64decode(split[1].encode("ascii") + b'==').decode("utf-8"))
+    payload = json.loads(
+        base64.b64decode(split[1].encode("ascii") + b"==").decode("utf-8")
+    )
     return JWT(header=header, payload=payload, signature=split[2])

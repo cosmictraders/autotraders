@@ -5,7 +5,9 @@ from autotraders.error import SpaceTradersException
 
 
 class SpaceTradersEntity:
-    def __init__(self, session: AutoTradersSession, action_url, data: Optional[dict] = None):
+    def __init__(
+        self, session: AutoTradersSession, action_url, data: Optional[dict] = None
+    ):
         self.session: AutoTradersSession = session
         self.action_url = session.b_url + action_url
         if self.action_url[-1] != "/":
@@ -16,7 +18,7 @@ class SpaceTradersEntity:
     def get(self, action: Optional[str] = None) -> dict:
         if action is None:
             r = self.session.get(
-                self.action_url[0: len(self.action_url) - 1]  # noqa E203
+                self.action_url[0 : len(self.action_url) - 1]  # noqa E203
             )
         else:
             r = self.session.get(
@@ -24,7 +26,9 @@ class SpaceTradersEntity:
             )
         j = r.json()
         if "error" in j:
-            raise SpaceTradersException(j["error"], r.url, r.status_code, r.request.headers, r.headers)
+            raise SpaceTradersException(
+                j["error"], r.url, r.status_code, r.request.headers, r.headers
+            )
         return j
 
     def post(self, action: str, data=None) -> dict:
@@ -37,7 +41,9 @@ class SpaceTradersEntity:
             r = self.session.post(self.action_url + action)
         j = r.json()
         if "error" in j:
-            raise SpaceTradersException(j["error"], r.url, r.status_code, r.request.headers, r.headers)
+            raise SpaceTradersException(
+                j["error"], r.url, r.status_code, r.request.headers, r.headers
+            )
         return j
 
     def patch(self, action: str, data=None) -> dict:
@@ -51,10 +57,16 @@ class SpaceTradersEntity:
             r = self.session.patch(self.action_url + action)
         j = r.json()
         if "error" in j:
-            raise SpaceTradersException(j["error"], r.url, r.status_code, r.request.headers, r.headers)
+            raise SpaceTradersException(
+                j["error"], r.url, r.status_code, r.request.headers, r.headers
+            )
         return j
 
-    def _update(self, data: Optional[dict[str, Any]] = None, special_endpoint: Optional[str] = None) -> dict[str, Any]:
+    def _update(
+        self,
+        data: Optional[dict[str, Any]] = None,
+        special_endpoint: Optional[str] = None,
+    ) -> dict[str, Any]:
         """
         :param data: If you have data from an api requests, you can provide it here. If not provided, an API request will be sent.
 
@@ -85,16 +97,16 @@ class SpaceTradersEntity:
                     setattr(
                         self,
                         mapping,
-                        mapping_info["class"](
-                            **data[data_name]
-                        ),
+                        mapping_info["class"](**data[data_name]),
                     )
                 elif t == "dynamic":
                     setattr(
                         self,
                         mapping,
                         mapping_info["class"](
-                            getattr(self, mapping_info.get("first_arg", "symbol")), self.session, data[data_name]
+                            getattr(self, mapping_info.get("first_arg", "symbol")),
+                            self.session,
+                            data[data_name],
                         ),
                     )
                 elif t is None or t == "primitive":

@@ -21,5 +21,7 @@ def register_agent(
     )
     j = r.json()
     if "error" in j:
-        raise SpaceTradersException(j["error"], r.url, r.status_code, r.request.headers, r.headers)
+        raise SpaceTradersException(
+            j["error"], r.url, r.status_code, r.request.headers, r.headers
+        )
     return j["data"]["token"]

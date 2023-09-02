@@ -18,7 +18,9 @@ class Agent(SpaceTradersEntity):
     ships: Optional[PaginatedList]
     headquarters: WaypointSymbol
 
-    def __init__(self, session: AutoTradersSession, symbol=None, data: Optional[dict] = None):
+    def __init__(
+        self, session: AutoTradersSession, symbol=None, data: Optional[dict] = None
+    ):
         """
         :param symbol: If it's None, then the agent associated with the token will be retrieved.
             Otherwise, the specified agent will be retrieved.
@@ -35,8 +37,17 @@ class Agent(SpaceTradersEntity):
             "symbol": {"type": None, "class": str, "optional": False},
             "headquarters": {"type": None, "class": WaypointSymbol},
             "credits": {"type": None, "class": int, "optional": False},
-            "starting_faction": {"type": None, "class": str, "alias": "startingFaction"},
-            "ship_count": {"type": None, "class": int, "alias": "shipCount", "optional": False},
+            "starting_faction": {
+                "type": None,
+                "class": str,
+                "alias": "startingFaction",
+            },
+            "ship_count": {
+                "type": None,
+                "class": int,
+                "alias": "shipCount",
+                "optional": False,
+            },
         }
         super().update_attr(mappings, data)
 
@@ -60,7 +71,9 @@ class Agent(SpaceTradersEntity):
         )
         j = r.json()
         if "error" in j:
-            raise SpaceTradersException(j["error"], r.url, r.status_code, r.request.headers, r.headers)
+            raise SpaceTradersException(
+                j["error"], r.url, r.status_code, r.request.headers, r.headers
+            )
         return j["data"]["token"]
 
     @staticmethod
@@ -71,7 +84,9 @@ class Agent(SpaceTradersEntity):
             )
             j = r.json()
             if "error" in j:
-                raise SpaceTradersException(j["error"], r.url, r.status_code, r.request.headers, r.headers)
+                raise SpaceTradersException(
+                    j["error"], r.url, r.status_code, r.request.headers, r.headers
+                )
             agents = []
             for agent in j["data"]:
                 a = Agent(session, agent["symbol"], agent)
