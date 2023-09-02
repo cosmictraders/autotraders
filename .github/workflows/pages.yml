@@ -35,7 +35,7 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Install Dependencies
-        run: pip install sphinx furo requests requests_ratelimiter
+        run: pip install sphinx furo httpx pydantic pyrate-limiter
       - name: Build
         run: sphinx-build -b html source build
       - name: Upload artifact
