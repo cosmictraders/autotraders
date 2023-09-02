@@ -46,7 +46,7 @@ class Agent(SpaceTradersEntity):
                 "type": None,
                 "class": int,
                 "alias": "shipCount",
-                "optional": False,
+                "optional": True,
             },
         }
         super().update_attr(mappings, data)
