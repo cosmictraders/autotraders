@@ -1,24 +1,28 @@
+from typing import Optional
+
 from autotraders.error import SpaceTradersException
 from autotraders.paginated_list import PaginatedList
+from autotraders.shared_models.waypoint_symbol import WaypointSymbol
 from autotraders.space_traders_entity import SpaceTradersEntity
 from autotraders.session import AutoTradersSession
-from autotraders.shared_models.map_symbol import MapSymbol
 from autotraders.shared_models.trait import Trait
 
 
 class Faction(SpaceTradersEntity):
     is_recruiting: bool
     traits: list[Trait]
-    headquarters: MapSymbol
+    headquarters: WaypointSymbol
     description: str
     name: str
     symbol: str
 
-    def __init__(self, symbol, session: AutoTradersSession, data=None):
+    def __init__(
+        self, symbol, session: AutoTradersSession, data: Optional[dict] = None
+    ):
         self.symbol: str = symbol
         super().__init__(session, "factions/" + self.symbol, data)
 
-    def update(self, data=None):
+    def update(self, data: Optional[dict] = None):
         data = super()._update(data)
         mappings = {
             "name": {},
@@ -26,7 +30,7 @@ class Faction(SpaceTradersEntity):
             "is_recruiting": {"alias": "isRecruiting"},
         }
         super().update_attr(mappings, data)
-        self.headquarters = MapSymbol(data["headquarters"])
+        self.headquarters = WaypointSymbol(data["headquarters"])
         self.traits = [Trait(**trait) for trait in data["traits"]]
 
     @staticmethod

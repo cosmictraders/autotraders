@@ -11,6 +11,7 @@ from autotraders.error import SpaceTradersException
 from autotraders.paginated_list import PaginatedList
 from autotraders.shared_models.item import Item
 from autotraders.shared_models.transaction import MarketTransaction, ShipyardTransaction
+from autotraders.shared_models.waypoint_symbol import WaypointSymbol
 from autotraders.ship.fuel import Fuel
 from autotraders.ship.cooldown import Cooldown
 from autotraders.ship.cargo import Cargo
@@ -79,11 +80,13 @@ class Ship(SpaceTradersEntity):
     capabilities: Optional[Capabilities]
     cooldown: Optional[Cooldown]
 
-    def __init__(self, symbol, session: AutoTradersSession, data=None):
+    def __init__(
+        self, symbol, session: AutoTradersSession, data: Optional[dict] = None
+    ):
         self.symbol = symbol
         super().__init__(session, "my/ships/" + self.symbol, data)
 
-    def update(self, data: dict = None) -> None:
+    def update(self, data: Optional[dict] = None) -> None:
         if data is None:
             data = super()._update(data)
         mappings = {
@@ -136,7 +139,7 @@ class Ship(SpaceTradersEntity):
         """Attempts to move ship to the provided waypoint.
         If the request succeeds, this function exits immediately, and does not wait the ship to arrive.
         """
-        self.fuel = self.nav.navigate(waypoint)
+        self.fuel = self.nav.navigate(WaypointSymbol(waypoint))
 
     def jump(self, destination: Union[str, MapSymbol]):
         self.cooldown = self.nav.jump(destination)
@@ -153,7 +156,7 @@ class Ship(SpaceTradersEntity):
     def orbit(self):
         self.nav.orbit()
 
-    def extract(self, survey: Survey = None):
+    def extract(self, survey: Optional[Survey] = None):
         if survey is None:
             j = self.post("extract")
         else:
@@ -172,6 +175,7 @@ class Ship(SpaceTradersEntity):
             j = self.post("refuel")
         else:
             j = self.post("refuel", data={"units": units})
+        print(j)
         self.update(j["data"])
         return MarketTransaction(j["data"]["transaction"])
 

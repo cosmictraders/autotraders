@@ -1,3 +1,5 @@
+from typing import Optional, Any
+
 from autotraders import AutoTradersSession
 from autotraders.shared_models.item import Item
 from autotraders.space_traders_entity import SpaceTradersEntity
@@ -8,13 +10,15 @@ class Cargo(SpaceTradersEntity):
     current: int
     inventory: list[Item]
 
-    def __init__(self, symbol, session: AutoTradersSession, data=None):
+    def __init__(
+        self, symbol, session: AutoTradersSession, data: Optional[dict] = None
+    ):
         self.symbol = symbol
         super().__init__(session, "my/ships/" + symbol + "/cargo/", data)
 
-    def update(self, data: dict = None) -> None:
+    def update(self, data: Optional[dict] = None) -> None:
         data = super()._update(data)
-        mappings = {
+        mappings: dict[str, Any] = {
             "capacity": {},
         }
         super().update_attr(mappings, data)

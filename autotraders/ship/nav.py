@@ -1,8 +1,10 @@
 from datetime import datetime, timezone
-from typing import Union
+from typing import Union, Optional
 
 from autotraders import AutoTradersSession
 from autotraders.shared_models.map_symbol import MapSymbol
+from autotraders.shared_models.system_symbol import SystemSymbol
+from autotraders.shared_models.waypoint_symbol import WaypointSymbol
 from autotraders.ship import Fuel, Cooldown
 from autotraders.ship.states import NavState, FlightMode
 from autotraders.space_traders_entity import SpaceTradersEntity
@@ -11,8 +13,8 @@ from autotraders.time import parse_time
 
 class Route:
     def __init__(self, data):
-        self.destination = MapSymbol(data["destination"]["symbol"])
-        self.departure = MapSymbol(data["departure"]["symbol"])
+        self.destination = WaypointSymbol(data["destination"]["symbol"])
+        self.departure = WaypointSymbol(data["departure"]["symbol"])
         self.departure_time = parse_time(data["departureTime"])
         self.arrival = parse_time(data["arrival"])
         self.moving = self.arrival > datetime.now(timezone.utc)
@@ -21,19 +23,21 @@ class Route:
 class Nav(SpaceTradersEntity):
     symbol: str
     status: str
-    location: MapSymbol
+    location: WaypointSymbol
     flight_mode: str
     route: Route
     moving: bool
 
-    def __init__(self, symbol, session: AutoTradersSession, data=None):
+    def __init__(
+        self, symbol, session: AutoTradersSession, data: Optional[dict] = None
+    ):
         self.symbol = symbol
         super().__init__(session, "my/ships/" + symbol, data)
 
-    def update(self, data: dict = None) -> None:
+    def update(self, data: Optional[dict] = None) -> None:
         data = super()._update(data, "nav")
         self.status = NavState(data["status"])
-        self.location = MapSymbol(data["waypointSymbol"])
+        self.location = WaypointSymbol(data["waypointSymbol"])
         self.flight_mode = FlightMode(data["flightMode"])
         self.route = Route(data["route"])
         self.moving = self.route.moving
@@ -47,6 +51,7 @@ class Nav(SpaceTradersEntity):
         self.update(j["data"]["nav"])
 
     def navigate(self, destination: Union[str, MapSymbol]):
+        destination = WaypointSymbol(destination)
         j = self.post(
             "warp",
             data={
@@ -57,6 +62,7 @@ class Nav(SpaceTradersEntity):
         return Fuel(**j["data"]["fuel"])
 
     def jump(self, destination: Union[str, MapSymbol]):
+        destination = SystemSymbol(destination)
         j = self.post(
             "jump",
             data={
@@ -67,6 +73,7 @@ class Nav(SpaceTradersEntity):
         return Cooldown(self.symbol, self.session, j["data"]["cooldown"])
 
     def warp(self, destination: Union[str, MapSymbol]):
+        destination = WaypointSymbol(destination)
         j = self.post(
             "warp",
             data={

@@ -5,8 +5,7 @@ class MapSymbol:
         """Your input must be a valid symbol for a sector, system, or waypoint. or a value error might be raised.
         :param s: The symbol
         """
-        if type(s) is MapSymbol:
-            s = str(s)
+        s = str(s)
         split = s.split("-")
         self.sector = split[0]
         # TODO: Wait till stoplight is fixed

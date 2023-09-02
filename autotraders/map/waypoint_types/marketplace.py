@@ -20,10 +20,12 @@ class Marketplace(WaypointType):
     exchange: list[str]
     trade_goods: Optional[list[TradeGood]]
 
-    def __init__(self, waypoint: str, session: AutoTradersSession, data=None):
+    def __init__(
+        self, waypoint: str, session: AutoTradersSession, data: Optional[dict] = None
+    ):
         super().__init__(waypoint, "market", session, data)
 
-    def update(self, data: dict = None):
+    def update(self, data: Optional[dict] = None):
         if data is None:
             data = self.get()["data"]
         self.imports = []

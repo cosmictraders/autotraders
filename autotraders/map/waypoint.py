@@ -1,4 +1,4 @@
-from typing import Optional, Union
+from typing import Optional, Union, Any
 
 from autotraders.error import SpaceTradersException
 from autotraders.paginated_list import PaginatedList
@@ -20,7 +20,10 @@ class Waypoint(SpaceTradersEntity):
     y: int
 
     def __init__(
-        self, symbol: Union[str, MapSymbol], session: AutoTradersSession, data=None
+        self,
+        symbol: Union[str, MapSymbol],
+        session: AutoTradersSession,
+        data: Optional[dict] = None,
     ):
         self.symbol = MapSymbol(symbol)
         super().__init__(
@@ -29,9 +32,9 @@ class Waypoint(SpaceTradersEntity):
             data,
         )
 
-    def update(self, data=None):
+    def update(self, data: Optional[dict] = None):
         data = super()._update(data)
-        mappings = {
+        mappings: dict[str, Any] = {
             "x": {},
             "y": {},
         }

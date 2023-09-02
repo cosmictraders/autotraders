@@ -24,10 +24,12 @@ class Shipyard(WaypointType):
     ship_types: list[str]
     ships: Optional[list[ShipyardShip]]
 
-    def __init__(self, waypoint: str, session: AutoTradersSession, data=None):
+    def __init__(
+        self, waypoint: str, session: AutoTradersSession, data: Optional[dict] = None
+    ):
         super().__init__(waypoint, "shipyard", session, data)
 
-    def update(self, data: dict = None):
+    def update(self, data: Optional[dict] = None):
         if data is None:
             data = self.get()["data"]
         self.ship_types = []

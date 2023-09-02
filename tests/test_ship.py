@@ -33,7 +33,7 @@ def test_ship_nav_functions(session):
     s.orbit()
     s.navigate("X1-TEST-TEST")
     s.patch_navigation("DRIFT")
-    s.jump(MapSymbol("X1-TEST-TEST"))
+    s.jump(MapSymbol("X1-TEST"))
     s.warp("X1-TEST-TEST")
 
 

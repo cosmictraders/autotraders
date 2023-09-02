@@ -2,12 +2,10 @@ from typing import Optional
 import re
 
 from autotraders.error import SpaceTradersException
-from autotraders.faction.contract import Contract
 from autotraders.paginated_list import PaginatedList
-from autotraders.shared_models.map_symbol import MapSymbol
+from autotraders.shared_models.waypoint_symbol import WaypointSymbol
 from autotraders.space_traders_entity import SpaceTradersEntity
 from autotraders.session import AutoTradersSession
-from autotraders.ship import Ship
 
 
 class Agent(SpaceTradersEntity):
@@ -18,9 +16,9 @@ class Agent(SpaceTradersEntity):
     credits: int
     ship_count: int
     ships: Optional[PaginatedList]
-    headquarters: MapSymbol
+    headquarters: WaypointSymbol
 
-    def __init__(self, session: AutoTradersSession, symbol=None, data=None):
+    def __init__(self, session: AutoTradersSession, symbol=None, data: Optional[dict] = None):
         """
         :param symbol: If it's None, then the agent associated with the token will be retrieved.
             Otherwise, the specified agent will be retrieved.
@@ -30,15 +28,15 @@ class Agent(SpaceTradersEntity):
         else:
             super().__init__(session, "agents/" + symbol, data)
 
-    def update(self, data=None):
+    def update(self, data: Optional[dict] = None):
         data = super()._update(data)
         mappings = {
             "account_id": {"type": None, "class": str, "alias": "accountId"},
-            "symbol": {"type": None, "class": str},
-            "headquarters": {"type": None, "class": MapSymbol},
-            "credits": {"type": None, "class": int},
+            "symbol": {"type": None, "class": str, "optional": False},
+            "headquarters": {"type": None, "class": WaypointSymbol},
+            "credits": {"type": None, "class": int, "optional": False},
             "starting_faction": {"type": None, "class": str, "alias": "startingFaction"},
-            "ship_count": {"type": None, "class": int, "alias": "shipCount"},
+            "ship_count": {"type": None, "class": int, "alias": "shipCount", "optional": False},
         }
         super().update_attr(mappings, data)
 

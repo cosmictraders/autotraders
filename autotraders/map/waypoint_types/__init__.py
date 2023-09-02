@@ -1,13 +1,19 @@
+from typing import Optional
+
+from autotraders.shared_models.waypoint_symbol import WaypointSymbol
 from autotraders.space_traders_entity import SpaceTradersEntity
 from autotraders.session import AutoTradersSession
-from autotraders.shared_models.map_symbol import MapSymbol
 
 
 class WaypointType(SpaceTradersEntity):
     def __init__(
-        self, waypoint: str, trait: str, session: AutoTradersSession, data=None
+        self,
+        waypoint: str,
+        trait: str,
+        session: AutoTradersSession,
+        data: Optional[dict] = None,
     ):
-        self.location: MapSymbol = MapSymbol(waypoint)
+        self.location: WaypointSymbol = WaypointSymbol(waypoint)
         super().__init__(
             session,
             "systems/"

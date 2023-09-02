@@ -5,3 +5,4 @@ venv/*
 htmlcov/*
 */.pytest_cache/*
 *.pyc
+*/.mypy_cache/*

@@ -9,9 +9,9 @@ from httpx import Response, Client
 
 class AutoTradersSession(Client):
     def __init__(
-        self, token=None, http2=True, base_url="https://api.spacetraders.io/v2/"
+            self, token=None, http2=True, base_url="https://api.spacetraders.io/v2/"
     ):
-        headers = {}
+        headers = {"Content-Type": "application/json", "Accept": "application/json"}
         if token is not None:
             headers["Authorization"] = "Bearer " + token
         super().__init__(headers=headers, http2=http2)

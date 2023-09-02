@@ -1,7 +1,8 @@
-from typing import Union
+from typing import Union, Optional
 
 from autotraders.error import SpaceTradersException
 from autotraders.paginated_list import PaginatedList
+from autotraders.shared_models.system_symbol import SystemSymbol
 from autotraders.space_traders_entity import SpaceTradersEntity
 from autotraders.session import AutoTradersSession
 from autotraders.map.waypoint import Waypoint
@@ -9,7 +10,7 @@ from autotraders.shared_models.map_symbol import MapSymbol
 
 
 class System(SpaceTradersEntity):
-    symbol: MapSymbol
+    symbol: SystemSymbol
     x: int
     y: int
     waypoints: list[Waypoint]
@@ -18,9 +19,12 @@ class System(SpaceTradersEntity):
     jump_gate: bool
 
     def __init__(
-        self, symbol: Union[str, MapSymbol], session: AutoTradersSession, data=None
+        self,
+        symbol: Union[str, MapSymbol],
+        session: AutoTradersSession,
+        data: Optional[dict] = None,
     ):
-        self.symbol: MapSymbol = MapSymbol(symbol)
+        self.symbol = SystemSymbol(symbol)
         super().__init__(session, "systems/" + str(self.symbol) + "/", data)
 
     def update(self, data=None):
