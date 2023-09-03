@@ -175,7 +175,6 @@ class Ship(SpaceTradersEntity):
             j = self.post("refuel")
         else:
             j = self.post("refuel", data={"units": units})
-        print(j)
         self.update(j["data"])
         return MarketTransaction(j["data"]["transaction"])
 

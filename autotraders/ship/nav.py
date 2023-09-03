@@ -53,7 +53,7 @@ class Nav(SpaceTradersEntity):
     def navigate(self, destination: Union[str, MapSymbol]):
         destination = WaypointSymbol(destination)
         j = self.post(
-            "warp",
+            "navigate",
             data={
                 "waypointSymbol": str(destination),
             },
