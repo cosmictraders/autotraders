@@ -161,7 +161,7 @@ class Ship(SpaceTradersEntity):
             j = self.post("extract")
         else:
             j = self.post(
-                "extract",
+                "extract/survey",
                 data=survey.model_dump(mode="json"),
             )
         self.update(j["data"])

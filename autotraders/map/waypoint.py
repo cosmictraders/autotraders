@@ -6,6 +6,7 @@ from autotraders.session import AutoTradersSession
 from autotraders.shared_models.trait import Trait
 
 from autotraders.shared_models.map_symbol import MapSymbol
+from autotraders.shared_models.waypoint_symbol import WaypointSymbol
 from autotraders.space_traders_entity import SpaceTradersEntity
 
 
@@ -45,6 +46,10 @@ class Waypoint(SpaceTradersEntity):
         else:
             self.faction = None
         self.traits = None
+        if "orbits" in data:
+            self.orbits = WaypointSymbol(data["orbits"])
+        else:
+            self.orbits = None
         if "traits" in data:
             self.traits = [Trait(**trait) for trait in data["traits"]]
         if self.traits is not None:
