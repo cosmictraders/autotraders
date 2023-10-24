@@ -1,10 +1,9 @@
 from __future__ import annotations
 
 import time
-from typing import Optional
 
-from pyrate_limiter import Limiter, RequestRate, Duration, BucketFullException
 from httpx import Response, Client
+from pyrate_limiter import Limiter, RequestRate, Duration, BucketFullException
 
 
 class AutoTradersSession(Client):
