@@ -25,7 +25,6 @@ from autotraders.session import AutoTradersSession
 from autotraders.shared_models.map_symbol import MapSymbol
 from autotraders.ship.ship_components import Frame, Reactor, Engine, Module, Mount
 from autotraders.ship.survey import Survey
-from autotraders.time import parse_time
 from autotraders.map.waypoint import Waypoint
 
 
