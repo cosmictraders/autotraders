@@ -1,6 +1,6 @@
 class ShipSymbol:
     def __init__(self, symbol):
-        split = self.symbol.split("-")
+        split = symbol.split("-")
         self.agent_name = split[0]
         self.number = split[1]
 
