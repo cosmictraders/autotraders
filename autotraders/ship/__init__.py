@@ -269,13 +269,6 @@ class Ship(SpaceTradersEntity):
             ships.append(s)
         return ships
 
-    def update_ship_cooldown(self):
-        try:  # TODO: get more elegant solution
-            j = self.get("cooldown")
-            self.update({"cooldown": j["data"]})
-        except JSONDecodeError:  # TODO: test
-            self.cooldown = None
-
     def install_mount(self, mount_symbol: str):
         j = self.post("mounts/install", data={"symbol": mount_symbol})
         self.update(j["data"])
