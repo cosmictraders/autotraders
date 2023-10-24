@@ -27,7 +27,8 @@ def travel_time(distance, ship_speed, mode):
 
 def distance(*args):
     """
-    If there is one arg, then the arg should be a iterable of length 2 or 4. It will be expanded and used as a 2 or 4 arg.
+    If there is one arg, then the arg should be a iterable of length 2 or 4.
+    It will be expanded and used as a 2 or 4 arg.
     If there are 2 args, then they should both have x and y attributes
     if there are 4 args they should be in the format x_1, y_1, x_2, y_2
 
