@@ -48,7 +48,7 @@ class AutoTradersSession(Client):
             **kwargs,
         )
         if resp.status_code == 429:
-            i = 1
+            i = 0
             while i < self.retries and resp.status_code == 429:
                 time.sleep(self.retry_sleep_time)
                 resp = super().request(
