@@ -29,10 +29,9 @@ class Status(BaseModel):
     :ivar description: A user-readable description of the server
     :ivar stats: A dictionary of stats. The keys are agents, ships, systems, and waypoints
     :ivar leaderboards: The list of leaderboards (most credits, most charts)
-    :ivar next_reset: A datetime of the next reset
-    :ivar reset_frequency: A user-readable description of the server reset frequency
     :ivar announcements: A list of announcements
     :ivar links: A list of useful links
+    :ivar server_resets: Info about the server resets
     """
 
     status: str
