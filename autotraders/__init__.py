@@ -1,10 +1,13 @@
 """A spacetraders api"""
+from autotraders.version import __version__  # noqa F401
+
+__version__ = __version__
+
 import httpx
 
 from autotraders.error import SpaceTradersException
 from autotraders.session import AutoTradersSession  # noqa F401
 from autotraders.status import get_status  # noqa F401
-from autotraders.version import __version__  # noqa F401
 
 
 def register_agent(
