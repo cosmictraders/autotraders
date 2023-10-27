@@ -3,9 +3,8 @@ from typing import Optional, Union, Any
 from autotraders.error import SpaceTradersException
 from autotraders.paginated_list import PaginatedList
 from autotraders.session import AutoTradersSession
-from autotraders.shared_models.trait import Trait
-
 from autotraders.shared_models.map_symbol import MapSymbol
+from autotraders.shared_models.trait import Trait
 from autotraders.shared_models.waypoint_symbol import WaypointSymbol
 from autotraders.space_traders_entity import SpaceTradersEntity
 

@@ -1,12 +1,12 @@
 from typing import Union, Optional
 
 from autotraders.error import SpaceTradersException
+from autotraders.map.waypoint import Waypoint
 from autotraders.paginated_list import PaginatedList
+from autotraders.session import AutoTradersSession
+from autotraders.shared_models.map_symbol import MapSymbol
 from autotraders.shared_models.system_symbol import SystemSymbol
 from autotraders.space_traders_entity import SpaceTradersEntity
-from autotraders.session import AutoTradersSession
-from autotraders.map.waypoint import Waypoint
-from autotraders.shared_models.map_symbol import MapSymbol
 
 
 class System(SpaceTradersEntity):

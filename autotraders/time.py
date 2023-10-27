@@ -22,5 +22,7 @@ def parse_time(time: str) -> datetime:
                 d = datetime.strptime(time, "%Y-%m-%dT%H:%M:%SZ")
             except ValueError:  # Workaround for stoplight
                 d = datetime.fromisoformat(time)
-        d = d.replace(tzinfo=timezone.utc)  # Makes the time timezone aware, so it is consistent with python 3.11+
+        d = d.replace(
+            tzinfo=timezone.utc
+        )  # Makes the time timezone aware, so it is consistent with python 3.11+
         return d

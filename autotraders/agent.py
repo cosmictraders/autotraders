@@ -1,11 +1,11 @@
-from typing import Optional
 import re
+from typing import Optional
 
 from autotraders.error import SpaceTradersException
 from autotraders.paginated_list import PaginatedList
+from autotraders.session import AutoTradersSession
 from autotraders.shared_models.waypoint_symbol import WaypointSymbol
 from autotraders.space_traders_entity import SpaceTradersEntity
-from autotraders.session import AutoTradersSession
 
 
 class Agent(SpaceTradersEntity):

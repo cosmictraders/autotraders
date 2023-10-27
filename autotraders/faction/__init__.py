@@ -2,10 +2,10 @@ from typing import Optional
 
 from autotraders.error import SpaceTradersException
 from autotraders.paginated_list import PaginatedList
-from autotraders.shared_models.waypoint_symbol import WaypointSymbol
-from autotraders.space_traders_entity import SpaceTradersEntity
 from autotraders.session import AutoTradersSession
 from autotraders.shared_models.trait import Trait
+from autotraders.shared_models.waypoint_symbol import WaypointSymbol
+from autotraders.space_traders_entity import SpaceTradersEntity
 
 
 class Faction(SpaceTradersEntity):

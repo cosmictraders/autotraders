@@ -3,6 +3,7 @@ from typing import Any
 
 import httpx
 from pydantic import BaseModel, PositiveInt, Field, AwareDatetime, AnyUrl
+
 from autotraders.error import SpaceTradersException
 
 
