@@ -164,13 +164,13 @@ class Ship(SpaceTradersEntity):
     def orbit(self):
         self.nav.orbit()
 
-    def extract(self, survey: Optional[Survey] = None):
-        if survey is None:
+    def extract(self, extraction_survey: Optional[Survey] = None):
+        if extraction_survey is None:
             j = self.post("extract")
         else:
             j = self.post(
                 "extract/survey",
-                data=survey.model_dump(mode="json"),
+                data=extraction_survey.model_dump(mode="json"),
             )
         self.update(j["data"])
         return Item(
