@@ -3,7 +3,7 @@ from __future__ import annotations
 import time
 
 from httpx import Response, Client
-from pyrate_limiter import Limiter, RequestRate, Duration, BucketFullException
+from pyrate_limiter import Limiter, Rate, Duration, BucketFullException
 
 
 class AutoTradersSession(Client):
@@ -15,8 +15,8 @@ class AutoTradersSession(Client):
             headers["Authorization"] = "Bearer " + token
         super().__init__(headers=headers, http2=http2)
         self.b_url = base_url  # TODO: Migrate to base_url
-        self.limiter = Limiter(RequestRate(2, Duration.SECOND))
-        self.burst_limiter = Limiter(RequestRate(10, Duration.SECOND * 10))
+        self.limiter = Limiter(Rate(2, Duration.SECOND))
+        self.burst_limiter = Limiter(Rate(10, Duration.SECOND * 10))
         self.retries = 5
         self.retry_sleep_time = 2
         self.rate_limiter_sleep_time = 0.1
@@ -32,11 +32,11 @@ class AutoTradersSession(Client):
         acquired = False
         while not acquired:
             try:
-                self.limiter.try_acquire()
+                self.limiter.try_acquire(url)
                 acquired = True
             except BucketFullException:
                 try:
-                    self.limiter.try_acquire()
+                    self.limiter.try_acquire(url)
                     acquired = True
                 except BucketFullException:
                     time.sleep(self.rate_limiter_sleep_time)
