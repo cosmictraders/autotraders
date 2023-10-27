@@ -7,7 +7,7 @@ import sys
 
 sys.path.insert(0, os.path.abspath(".."))  # Makes autodoc work
 
-from autotraders import __version__
+from autotraders.version import __version__
 
 # -- Project information -----------------------------------------------------
 
