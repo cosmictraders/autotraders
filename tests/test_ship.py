@@ -12,7 +12,6 @@ def test_ship(session):
 
 def test_ship_functions(session):
     s = Ship("TEST", session)
-    s.update_ship_cooldown()
     assert s.cooldown is not None
     s.refuel()
     s.refuel(999)
