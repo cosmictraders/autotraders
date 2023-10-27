@@ -30,7 +30,7 @@ include = ["autotraders*"]
 exclude = ["source*", "tests*", "venv*"]
 
 [tool.setuptools.dynamic]
-version = { attr = "autotraders.__version__" }
+version = { attr = "autotraders.version.__version__" }
 
 [project.urls]
 "Homepage" = "https://comsictraders.github.io/autotraders/"
