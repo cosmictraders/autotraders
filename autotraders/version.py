@@ -1,4 +1,4 @@
-__version__ = "2.3.0"
+__version__ = "2.3.1"
 major_version = __version__.split(".")[0]
 minor_version = __version__.split(".")[1]
 patch_version = __version__.split(".")[2]
