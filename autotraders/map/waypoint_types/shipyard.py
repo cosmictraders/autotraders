@@ -24,6 +24,7 @@ class ShipyardShip(BaseModel):
 class Shipyard(WaypointType):
     ship_types: list[str]
     ships: Optional[list[ShipyardShip]]
+    modifications_fee: int
 
     def __init__(
         self, waypoint: str, session: AutoTradersSession, data: Optional[dict] = None
@@ -46,6 +47,7 @@ class Shipyard(WaypointType):
             self.transactions = []
             for i in data["transactions"]:
                 self.transactions.append(ShipyardTransaction(i))
+        modifications_fee = data["modificationsFee"]
 
     def purchase(self, ship_type: str):
         r = self.session.post(

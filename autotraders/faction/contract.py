@@ -5,6 +5,7 @@ from autotraders.error import SpaceTradersException
 from autotraders.paginated_list import PaginatedList
 from autotraders.session import AutoTradersSession
 from autotraders.shared_models.item import Item
+from autotraders.shared_models.item_progress import ItemProgress
 from autotraders.shared_models.waypoint_symbol import WaypointSymbol
 from autotraders.ship import Cargo
 from autotraders.space_traders_entity import SpaceTradersEntity
@@ -13,12 +14,12 @@ from autotraders.time import parse_time
 
 class Deliver:
     def __init__(self, data):
-        self.trade_symbol = Item(
-            symbol=data["tradeSymbol"], amount=data["unitsRequired"]
+        self.item = ItemProgress(
+            symbol=data["tradeSymbol"],
+            required=data["unitsRequired"],
+            fulfilled=data["unitsFulfilled"],
         )
         self.destination_symbol = WaypointSymbol(data["destinationSymbol"])
-        self.units_required = data["unitsRequired"]
-        self.units_fulfilled = data["unitsFulfilled"]
 
 
 class Contract(SpaceTradersEntity):
