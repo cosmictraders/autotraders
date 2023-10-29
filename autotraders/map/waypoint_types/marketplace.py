@@ -35,7 +35,7 @@ class TradeGood(Item):
     supply: Supply
     purchase_price: int = Field(alias="purchasePrice")
     sell_price: int = Field(alias="sellPrice")
-    activity: Activity
+    activity: Optional[Activity]
 
 
 class Marketplace(WaypointType):
