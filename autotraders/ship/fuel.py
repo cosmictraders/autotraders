@@ -13,3 +13,9 @@ class Fuel(BaseModel):
 
     def __str__(self):
         return str(self.current) + "/" + str(self.total)
+
+    def __float__(self):
+        return float(self.current) / float(self.capacity)
+
+    def __hash__(self):
+        return hash((self.current, self.capacity))

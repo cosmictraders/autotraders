@@ -44,3 +44,6 @@ class Cargo(SpaceTradersEntity):
 
     def __iter__(self):
         return iter(self.inventory)
+
+    def __len__(self):
+        return len(self.inventory)

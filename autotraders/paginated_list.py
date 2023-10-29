@@ -23,7 +23,7 @@ class PaginatedList:
         data, total = self.func(self.page, self.num_per_page)
         self.inner = {self.page: data}
         self.total = total
-        self.pages = math.ceil(self.total // self.num_per_page)
+        self.pages = math.ceil(self.total / self.num_per_page)
 
     def clear_cache(self):
         self.inner = {}
