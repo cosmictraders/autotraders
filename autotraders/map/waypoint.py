@@ -16,7 +16,7 @@ class Waypoint(SpaceTradersEntity):
     modifiers: Optional[list[Trait]]
     marketplace: Optional[bool]
     shipyard: Optional[bool]
-    is_under_construction: bool
+    is_under_construction: Optional[bool]
     symbol: MapSymbol
     x: int
     y: int
@@ -67,7 +67,9 @@ class Waypoint(SpaceTradersEntity):
         self.modifiers = None
         if "modifiers" in data:
             self.modifiers = [Trait(**trait) for trait in data["modifiers"]]
-        self.is_under_construction = data["isUnderConstruction"]
+        self.is_under_construction = None
+        if "isUnderConstruction" in data:
+            self.is_under_construction = data["isUnderConstruction"]
         self.chart = data["chart"]  # TODO: Fix this
 
     def __str__(self):
