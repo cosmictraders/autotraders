@@ -5,6 +5,7 @@ from autotraders.paginated_list import PaginatedList
 from autotraders.session import AutoTradersSession
 from autotraders.shared_models.item import Item
 from autotraders.shared_models.waypoint_symbol import WaypointSymbol
+from autotraders.ship import Cargo
 from autotraders.space_traders_entity import SpaceTradersEntity
 from autotraders.time import parse_time
 
@@ -55,6 +56,7 @@ class Contract(SpaceTradersEntity):
             data={"shipSymbol": symbol, "tradeSymbol": cargo_symbol, "units": amount},
         )
         self.update(j["data"]["contract"])
+        return Cargo(j["data"]["cargo"], self.session)
 
     @staticmethod
     def negotiate(ship_symbol, session):
