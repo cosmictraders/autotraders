@@ -11,7 +11,7 @@ from autotraders.space_traders_entity import SpaceTradersEntity
 class Faction(SpaceTradersEntity):
     is_recruiting: bool
     traits: list[Trait]
-    headquarters: SystemSymbol
+    headquarters: Optional[SystemSymbol]
     description: str
     name: str
     symbol: str
@@ -30,7 +30,10 @@ class Faction(SpaceTradersEntity):
             "is_recruiting": {"alias": "isRecruiting"},
         }
         super().update_attr(mappings, data)
-        self.headquarters = SystemSymbol(data["headquarters"])
+        if data["headquarters"] is None or data["headquarters"] == "":
+            self.headquarters = None
+        else:
+            self.headquarters = SystemSymbol(data["headquarters"])
         self.traits = [Trait(**trait) for trait in data["traits"]]
 
     @staticmethod
