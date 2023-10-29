@@ -25,9 +25,11 @@ class Agent(SpaceTradersEntity):
         :param symbol: If it's None, then the agent associated with the token will be retrieved.
             Otherwise, the specified agent will be retrieved.
         """
-        if symbol is None:
+        if symbol is None and data is None:
             super().__init__(session, "my/agent", data)
         else:
+            if symbol is None:
+                symbol = data["symbol"]
             super().__init__(session, "agents/" + symbol, data)
 
     def update(self, data: Optional[dict] = None):

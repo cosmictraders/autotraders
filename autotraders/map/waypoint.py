@@ -27,6 +27,8 @@ class Waypoint(SpaceTradersEntity):
         session: AutoTradersSession,
         data: Optional[dict] = None,
     ):
+        if symbol is None:
+            symbol = data["symbol"]
         self.symbol = MapSymbol(symbol)
         super().__init__(
             session,

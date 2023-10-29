@@ -24,6 +24,8 @@ class System(SpaceTradersEntity):
         session: AutoTradersSession,
         data: Optional[dict] = None,
     ):
+        if symbol is None:
+            symbol = data["symbol"]
         self.symbol = SystemSymbol(symbol)
         super().__init__(session, "systems/" + str(self.symbol) + "/", data)
 

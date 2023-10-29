@@ -81,6 +81,8 @@ class Ship(SpaceTradersEntity):
     def __init__(
         self, symbol, session: AutoTradersSession, data: Optional[dict] = None
     ):
+        if symbol is None:
+            symbol = data["symbol"]
         self.symbol = symbol
         super().__init__(session, "my/ships/" + self.symbol, data)
 
