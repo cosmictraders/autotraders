@@ -4,14 +4,14 @@ from autotraders.error import SpaceTradersException
 from autotraders.paginated_list import PaginatedList
 from autotraders.session import AutoTradersSession
 from autotraders.shared_models.trait import Trait
-from autotraders.shared_models.waypoint_symbol import WaypointSymbol
+from autotraders.shared_models.system_symbol import SystemSymbol
 from autotraders.space_traders_entity import SpaceTradersEntity
 
 
 class Faction(SpaceTradersEntity):
     is_recruiting: bool
     traits: list[Trait]
-    headquarters: WaypointSymbol
+    headquarters: SystemSymbol
     description: str
     name: str
     symbol: str
@@ -30,7 +30,7 @@ class Faction(SpaceTradersEntity):
             "is_recruiting": {"alias": "isRecruiting"},
         }
         super().update_attr(mappings, data)
-        self.headquarters = WaypointSymbol(data["headquarters"])
+        self.headquarters = SystemSymbol(data["headquarters"])
         self.traits = [Trait(**trait) for trait in data["traits"]]
 
     @staticmethod
