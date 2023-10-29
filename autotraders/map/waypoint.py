@@ -13,8 +13,10 @@ class Waypoint(SpaceTradersEntity):
     waypoint_type: str
     faction: Optional[str]
     traits: Optional[list[Trait]]
+    modifiers: Optional[list[Trait]]
     marketplace: Optional[bool]
     shipyard: Optional[bool]
+    is_under_construction: bool
     symbol: MapSymbol
     x: int
     y: int
@@ -49,6 +51,7 @@ class Waypoint(SpaceTradersEntity):
             self.orbits = WaypointSymbol(data["orbits"])
         else:
             self.orbits = None
+        self.orbitals = [WaypointSymbol(orbital) for orbital in data["orbitals"]]
         if "traits" in data:
             self.traits = [Trait(**trait) for trait in data["traits"]]
         if self.traits is not None:
@@ -61,6 +64,11 @@ class Waypoint(SpaceTradersEntity):
         else:
             self.marketplace = None
             self.shipyard = None
+        self.modifiers = None
+        if "modifiers" in data:
+            self.modifiers = [Trait(**trait) for trait in data["modifiers"]]
+        self.is_under_construction = data["isUnderConstruction"]
+        self.chart = data["chart"]  # TODO: Fix this
 
     def __str__(self):
         return str(self.symbol)
