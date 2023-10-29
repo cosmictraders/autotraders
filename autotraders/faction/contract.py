@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from autotraders.agent import Agent
 from autotraders.error import SpaceTradersException
 from autotraders.paginated_list import PaginatedList
 from autotraders.session import AutoTradersSession
@@ -49,6 +50,7 @@ class Contract(SpaceTradersEntity):
     def accept(self):
         j = self.post("accept")
         self.update(j["data"]["contract"])
+        return Agent(j["data"]["agent"], self.session)
 
     def deliver(self, symbol, cargo_symbol, amount):
         j = self.post(
@@ -74,6 +76,7 @@ class Contract(SpaceTradersEntity):
     def fulfill(self):
         j = self.post("fulfill")
         self.update(j["data"]["contract"])
+        return Agent(j["data"]["agent"], self.session)
 
     @staticmethod
     def all(session, page: int = 1):
