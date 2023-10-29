@@ -88,15 +88,15 @@ class Waypoint(SpaceTradersEntity):
         page: int = 1,
     ) -> PaginatedList:
         def assemble_url():
-            url = session.b_url + "systems/" + system_symbol + "/waypoints?"
+            url = "systems/" + system_symbol + "/waypoints?"
             if waypoint_type is not None:
                 url += "type=" + waypoint_type
             if traits is not None:
-                str_traits = [trait for trait in traits if isinstance(trait, str)]
-                str_traits += [
-                    trait.symbol for trait in traits if isinstance(trait, Trait)
-                ]
-                raise NotImplementedError("To be implemented")
+                for trait in traits:
+                    if isinstance(trait, Trait):
+                        url += "&traits=" + trait.symbol
+                    else:
+                        url += "&traits=" + trait
             return url
 
         def paginated_func(p, num_per_page):

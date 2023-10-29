@@ -40,5 +40,5 @@ def parse_token(token):
     header = json.loads(base64.b64decode(split[0].encode("ascii")).decode("utf-8"))
     payload = json.loads(
         base64.b64decode(split[1].encode("ascii") + b"==").decode("utf-8")
-    )
+    )  # TODO: Make API agnostic (don't add padding if already present)
     return JWT(header=header, payload=payload, signature=split[2])

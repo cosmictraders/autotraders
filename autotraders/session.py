@@ -13,8 +13,7 @@ class AutoTradersSession(Client):
         headers = {"Content-Type": "application/json", "Accept": "application/json"}
         if token is not None:
             headers["Authorization"] = "Bearer " + token
-        super().__init__(headers=headers, http2=http2)
-        self.b_url = base_url  # TODO: Migrate to base_url
+        super().__init__(headers=headers, http2=http2, base_url=base_url)
         self.limiter = Limiter(Rate(2, Duration.SECOND))
         self.burst_limiter = Limiter(Rate(10, Duration.SECOND * 10))
         self.retries = 5

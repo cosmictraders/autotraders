@@ -9,7 +9,7 @@ class SpaceTradersEntity:
         self, session: AutoTradersSession, action_url, data: Optional[dict] = None
     ):
         self.session: AutoTradersSession = session
-        self.action_url = session.b_url + action_url
+        self.action_url = action_url
         if self.action_url[-1] != "/":
             self.action_url += "/"
         self.json: dict[str, Any] = {}

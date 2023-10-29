@@ -51,7 +51,7 @@ class Contract(SpaceTradersEntity):
     def accept(self):
         j = self.post("accept")
         self.update(j["data"]["contract"])
-        return Agent(j["data"]["agent"], self.session)
+        return Agent(self.session, data=j["data"]["agent"])
 
     def deliver(self, symbol, cargo_symbol, amount):
         j = self.post(
@@ -63,9 +63,7 @@ class Contract(SpaceTradersEntity):
 
     @staticmethod
     def negotiate(ship_symbol, session):
-        r = session.post(
-            session.b_url + "my/ships/" + ship_symbol + "/negotiate/contract"
-        )
+        r = session.post("my/ships/" + ship_symbol + "/negotiate/contract")
         j = r.json()
         if "error" in j:
             raise SpaceTradersException(
@@ -77,17 +75,13 @@ class Contract(SpaceTradersEntity):
     def fulfill(self):
         j = self.post("fulfill")
         self.update(j["data"]["contract"])
-        return Agent(j["data"]["agent"], self.session)
+        return Agent(self.session, data=j["data"]["agent"])
 
     @staticmethod
     def all(session, page: int = 1):
         def paginated_func(p, num_per_page):
             r = session.get(
-                session.b_url
-                + "my/contracts?limit="
-                + str(num_per_page)
-                + "&page="
-                + str(p)
+                "my/contracts?limit=" + str(num_per_page) + "&page=" + str(p)
             )
             j = r.json()
             if "error" in j:

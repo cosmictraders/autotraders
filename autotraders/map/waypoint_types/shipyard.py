@@ -51,7 +51,7 @@ class Shipyard(WaypointType):
 
     def purchase(self, ship_type: str):
         r = self.session.post(
-            self.session.b_url + "my/ships",
+            "my/ships",
             json={"shipType": ship_type, "waypointSymbol": str(self.location)},
         )  # TODO: Fix
         j = r.json()

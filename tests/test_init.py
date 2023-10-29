@@ -11,9 +11,9 @@ from autotraders.session import AutoTradersSession
 
 @pytest.fixture
 def session():
-    s = AutoTradersSession("TEST")
-    s.b_url = "https://stoplight.io/mocks/spacetraders/spacetraders/96627693"
-    s.headers.update({"Prefer": "dynamic=true"})
+    s = AutoTradersSession(
+        "TEST", base_url="https://stoplight.io/mocks/spacetraders/spacetraders/96627693"
+    )
     return s
 
 
