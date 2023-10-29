@@ -48,10 +48,12 @@ class Waypoint(SpaceTradersEntity):
             self.faction = None
         self.traits = None
         if "orbits" in data:
-            self.orbits = WaypointSymbol(data["orbits"])
+            self.orbits = WaypointSymbol(data["orbits"]["symbol"])
         else:
             self.orbits = None
-        self.orbitals = [WaypointSymbol(orbital) for orbital in data["orbitals"]]
+        self.orbitals = [
+            WaypointSymbol(orbital["symbol"]) for orbital in data["orbitals"]
+        ]
         if "traits" in data:
             self.traits = [Trait(**trait) for trait in data["traits"]]
         if self.traits is not None:
@@ -70,7 +72,9 @@ class Waypoint(SpaceTradersEntity):
         self.is_under_construction = None
         if "isUnderConstruction" in data:
             self.is_under_construction = data["isUnderConstruction"]
-        self.chart = data["chart"]  # TODO: Fix this
+        self.chart = None
+        if "chart" in data:
+            self.chart = data["chart"]  # TODO: Fix this
 
     def __str__(self):
         return str(self.symbol)
@@ -84,9 +88,9 @@ class Waypoint(SpaceTradersEntity):
         page: int = 1,
     ) -> PaginatedList:
         def assemble_url():
-            url = session.b_url + "systems/" + system_symbol + "/waypoints"
+            url = session.b_url + "systems/" + system_symbol + "/waypoints?"
             if waypoint_type is not None:
-                url += "?type=" + waypoint_type
+                url += "type=" + waypoint_type
             if traits is not None:
                 str_traits = [trait for trait in traits if isinstance(trait, str)]
                 str_traits += [
