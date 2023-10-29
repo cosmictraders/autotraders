@@ -178,6 +178,14 @@ class Ship(SpaceTradersEntity):
             quantity=j["data"]["extraction"]["yield"]["units"],
         )
 
+    def siphon(self):
+        j = self.post("siphon")
+        self.update(j["data"])
+        return Item(
+            symbol=j["data"]["siphon"]["yield"]["symbol"],
+            quantity=j["data"]["siphon"]["yield"]["units"],
+        )
+
     def refuel(self, units=None):
         if units is None:
             j = self.post("refuel")
