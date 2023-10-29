@@ -48,7 +48,7 @@ class Waypoint(SpaceTradersEntity):
             self.faction = None
         self.traits = None
         if "orbits" in data:
-            self.orbits = WaypointSymbol(data["orbits"]["symbol"])
+            self.orbits = WaypointSymbol(data["orbits"])
         else:
             self.orbits = None
         self.orbitals = [
