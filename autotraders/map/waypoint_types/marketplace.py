@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import Optional
 
 from pydantic import Field
@@ -8,11 +9,33 @@ from autotraders.shared_models.item import Item
 from autotraders.shared_models.transaction import MarketTransaction
 
 
+class GoodType(str, Enum):
+    EXPORT = "EXPORT"
+    IMPORT = "IMPORT"
+    EXCHANGE = "EXCHANGE"
+
+
+class Supply(str, Enum):
+    SCARCE = "SCARCE"
+    LIMITED = "LIMITED"
+    MODERATE = "MODERATE"
+    HIGH = "HIGH"
+    ABUNDANT = "ABUNDANT"
+
+
+class Activity(str, Enum):
+    WEAK = "WEAK"
+    GROWING = "GROWING"
+    STRONG = "STRONG"
+
+
 class TradeGood(Item):
+    good_type: GoodType = Field(alias="type")
     trade_volume: int = Field(alias="tradeVolume")
-    supply: str
+    supply: Supply
     purchase_price: int = Field(alias="purchasePrice")
     sell_price: int = Field(alias="sellPrice")
+    activity: Activity
 
 
 class Marketplace(WaypointType):
@@ -22,7 +45,7 @@ class Marketplace(WaypointType):
     trade_goods: Optional[list[TradeGood]]
 
     def __init__(
-        self, waypoint: str, session: AutoTradersSession, data: Optional[dict] = None
+            self, waypoint: str, session: AutoTradersSession, data: Optional[dict] = None
     ):
         super().__init__(waypoint, "market", session, data)
 
