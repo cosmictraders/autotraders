@@ -2,6 +2,7 @@ from datetime import datetime, timezone
 from typing import Union, Optional
 
 from autotraders import AutoTradersSession
+from autotraders.map.waypoint import Waypoint
 from autotraders.shared_models.map_symbol import MapSymbol
 from autotraders.shared_models.system_symbol import SystemSymbol
 from autotraders.shared_models.waypoint_symbol import WaypointSymbol
@@ -12,9 +13,9 @@ from autotraders.time import parse_time
 
 
 class Route:
-    def __init__(self, data):
-        self.destination = WaypointSymbol(data["destination"]["symbol"])
-        self.origin = WaypointSymbol(data["origin"]["symbol"])
+    def __init__(self, data, session):
+        self.destination = Waypoint(data["destination"], session)
+        self.origin = Waypoint(data["origin"], session)
         self.departure_time = parse_time(data["departureTime"])
         self.arrival = parse_time(data["arrival"])
         self.moving = self.arrival > datetime.now(timezone.utc)
@@ -39,7 +40,7 @@ class Nav(SpaceTradersEntity):
         self.status = NavState(data["status"])
         self.location = WaypointSymbol(data["waypointSymbol"])
         self.flight_mode = FlightMode(data["flightMode"])
-        self.route = Route(data["route"])
+        self.route = Route(data["route"], self.session)
         self.moving = self.route.moving
 
     def orbit(self):
