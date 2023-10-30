@@ -14,8 +14,14 @@ from autotraders.time import parse_time
 
 class Route:
     def __init__(self, data, session):
-        self.destination = Waypoint(data["destination"], session)
-        self.origin = Waypoint(data["origin"], session)
+        self.destination = Waypoint(
+            symbol=data["destination"]["symbol"],
+            data=data["destination"],
+            session=session,
+        )
+        self.origin = Waypoint(
+            symbol=data["destination"]["symbol"], data=data["origin"], session=session
+        )
         self.departure_time = parse_time(data["departureTime"])
         self.arrival = parse_time(data["arrival"])
         self.moving = self.arrival > datetime.now(timezone.utc)
