@@ -21,8 +21,8 @@ class Construction(WaypointType):
         self.materials = [
             ItemProgress(
                 symbol=item["tradeSymbol"],
-                required=item["unitsRequired"],
-                fulfilled=item["unitsFulfilled"],
+                required=item["required"],
+                fulfilled=item["fulfilled"],
             )
             for item in data["materials"]
         ]
