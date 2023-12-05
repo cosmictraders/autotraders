@@ -188,11 +188,11 @@ class Ship(SpaceTradersEntity):
             quantity=j["data"]["siphon"]["yield"]["units"],
         )
 
-    def refuel(self, units=None):
+    def refuel(self, from_cargo=False, units=None):
         if units is None:
-            j = self.post("refuel")
+            j = self.post("refuel", data={"fromCargo": from_cargo})
         else:
-            j = self.post("refuel", data={"units": units})
+            j = self.post("refuel", data={"units": units, "fromCargo": from_cargo})
         self.update(j["data"])
         return MarketTransaction(j["data"]["transaction"])
 

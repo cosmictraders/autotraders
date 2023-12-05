@@ -27,7 +27,7 @@ class Activity(str, Enum):
     WEAK = "WEAK"
     GROWING = "GROWING"
     STRONG = "STRONG"
-
+    RESTRICTED = "RESTRICTED"
 
 class TradeGood(Item):
     good_type: GoodType = Field(alias="type")
