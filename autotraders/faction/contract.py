@@ -59,7 +59,7 @@ class Contract(SpaceTradersEntity):
             data={"shipSymbol": symbol, "tradeSymbol": cargo_symbol, "units": amount},
         )
         self.update(j["data"]["contract"])
-        return Cargo(j["data"]["cargo"], self.session)
+        return Cargo(symbol, self.session, j["data"]["cargo"])
 
     @staticmethod
     def negotiate(ship_symbol, session):
