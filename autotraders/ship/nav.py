@@ -20,7 +20,7 @@ class Route:
             session=session,
         )
         self.origin = Waypoint(
-            symbol=data["destination"]["symbol"], data=data["origin"], session=session
+            symbol=data["origin"]["symbol"], data=data["origin"], session=session
         )
         self.departure_time = parse_time(data["departureTime"])
         self.arrival = parse_time(data["arrival"])
