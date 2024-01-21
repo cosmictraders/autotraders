@@ -28,7 +28,7 @@ def test_invalid_api_key():
 
 def test_get_status():
     status = get_status()
-    assert status.version == "v2"
+    assert status.version == "v2.1.5"
 
 
 # def test_rate_limiter(session):
