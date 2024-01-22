@@ -112,23 +112,13 @@ class Ship(SpaceTradersEntity):
         return self.symbol
 
     def wait_transit(self):
-        if (
-                sleep_time := (
-                                      self.nav.route.arrival - datetime.now(timezone.utc)
-                              ).total_seconds()
-                              + 0.5
-                              > 0
-        ):
+        sleep_time = (self.nav.route.arrival - datetime.now(timezone.utc)).total_seconds() + 0.5
+        if sleep_time > 0:
             time.sleep(sleep_time)
 
     async def await_transit(self):
-        if (
-                sleep_time := (
-                                      self.nav.route.arrival - datetime.now(timezone.utc)
-                              ).total_seconds()
-                              + 0.5
-                              > 0
-        ):
+        sleep_time = (self.nav.route.arrival - datetime.now(timezone.utc)).total_seconds() + 0.5
+        if sleep_time > 0:
             await asyncio.sleep(sleep_time)
 
     def wait_cooldown(self):
