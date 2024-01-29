@@ -38,7 +38,7 @@ class PaginatedList:
 
     def all(self):
         """Gets all the pages and returns the list of all pages"""
-        for page in range(1, self.pages):
+        for page in range(1, self.pages + 1):
             self.page = page
             self.current()
         return self.stitch()
