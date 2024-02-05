@@ -6,6 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "autotraders"
 authors = [
     { name = "Ashwin Naren", email = "arihant2math@gmail.com" },
+    { name = "Rafael Sillero", email = "rafael.silnav@gmail.com" },
 ]
 description = "A powerful spacetraders API"
 readme = "README.md"

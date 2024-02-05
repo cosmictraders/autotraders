@@ -1,4 +1,93 @@
-# v2.0.0 (unreleased)
+# v2.3.4
+
+- Fix issue with Contract deliver endpoint not able to return the right… by @Rsilnav in #14
+- Fixed issue with nav.origin returning the wrong symbol
+
+# v2.3.3
+
+- UPDATED: Updated API version support to Dec. 2
+- FIXED: minor marketplace error
+
+# v2.3.2
+
+- Bugfix
+
+# v2.3.1
+
+- FIXED: Bugs
+
+# v2.3.0
+
+- BREAKING: Route.origin and Route.destination are now Waypoints
+- ADDED: Overloaders to many smaller classes
+- FIXED: many bugs
+
+# v2.2.8
+
+- FIXED: Issue where h2 wasn't being installed
+- FIXED: more api bugs
+
+# v2.2.7
+
+- More bug fixing
+
+# v2.2.6
+
+- FIXED: Issue with Activity being required
+
+# v2.2.5
+
+- BREAKING: API updated to support v2.1 (All previous API versions are now unsupported)
+- ADDED: Some enums for market trade goods
+
+# v2.2.4
+
+- FIXED: More packaging issues
+
+# v2.2.3
+
+- FIXED: More packaging issues
+
+# v2.2.2
+
+- FIXED: GitHub python package publishing
+
+# v2.2.1
+
+- UPDATED: pyrate is now 3.0+
+- FIXED: GitHub python package publishing
+
+# v2.2.0
+
+- ADDED: cooldown.active attribute
+- UPDATED: Moved version stuff to version.py and added more version info
+- UPDATED: Formatting
+
+# v2.1.0
+
+- BREAKING: The Update Ship Cooldown from the Ship class has been removed.
+- ADDED: Method to get the cost effective refuel amount to the Fuel class.
+- FIXED: Bug that limited retries to one less than what they should be
+- FIXED: Bug that caused the wait_for_transit and the equivalent async version to error if there wasn't any transit happening.
+
+# v2.0.4
+
+- UPDATED: New server changes.
+
+# v2.0.3
+
+- Releasing Update
+
+# v2.0.2
+
+- FIXED: Rogue print statement
+- FIXED: ship.nav warping instead of navigating
+
+# v2.0.1
+
+- FIXED: Various bugs
+
+# v2.0.0
 
 - BREAKING: Dropped requests as a dependency, switched to httpx
 - BREAKING: Added and enabled http2
