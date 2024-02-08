@@ -1,3 +1,7 @@
+# v2.3.5
+
+- Fix issues with sleeping 'negative or boolean' amount of seconds by @Rsilnav in https://github.com/cosmictraders/autotraders/pull/15
+
 # v2.3.4
 
 - Fix issue with Contract deliver endpoint not able to return the right… by @Rsilnav in #14
