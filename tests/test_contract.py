@@ -7,21 +7,20 @@ mock_contract = {
     "type": "PROCUREMENT",
     "terms": {
         "deadline": "2019-08-24T14:15:22Z",
-        "payment": {
-            "onAccepted": 100,
-            "onFulfilled": 5000
-        },
-        "deliver": [{
-            "tradeSymbol": "string",
-            "destinationSymbol": "X1-TEST-TEST2",
-            "unitsRequired": 0,
-            "unitsFulfilled": 0
-        }]
+        "payment": {"onAccepted": 100, "onFulfilled": 5000},
+        "deliver": [
+            {
+                "tradeSymbol": "string",
+                "destinationSymbol": "X1-TEST-TEST2",
+                "unitsRequired": 0,
+                "unitsFulfilled": 0,
+            }
+        ],
     },
     "accepted": False,
     "fulfilled": False,
     "expiration": "2019-08-24T14:15:22Z",
-    "deadlineToAccept": "2019-08-24T14:15:22Z"
+    "deadlineToAccept": "2019-08-24T14:15:22Z",
 }
 
 

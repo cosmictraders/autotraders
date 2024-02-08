@@ -81,8 +81,7 @@ class Agent(SpaceTradersEntity):
     @staticmethod
     def all(session, page: int = 1) -> PaginatedList:
         def paginated_func(p, num_per_page):
-            r = session.get("agents?limit=" + str(num_per_page) + "&page=" + str(p)
-            )
+            r = session.get("agents?limit=" + str(num_per_page) + "&page=" + str(p))
             j = r.json()
             if "error" in j:
                 raise SpaceTradersException(

@@ -29,6 +29,7 @@ class Activity(str, Enum):
     STRONG = "STRONG"
     RESTRICTED = "RESTRICTED"
 
+
 class TradeGood(Item):
     good_type: GoodType = Field(alias="type")
     trade_volume: int = Field(alias="tradeVolume")

@@ -79,7 +79,7 @@ class Ship(SpaceTradersEntity):
     cooldown: Optional[Cooldown]
 
     def __init__(
-            self, symbol, session: AutoTradersSession, data: Optional[dict] = None
+        self, symbol, session: AutoTradersSession, data: Optional[dict] = None
     ):
         if symbol is None:
             symbol = data["symbol"]
@@ -112,24 +112,32 @@ class Ship(SpaceTradersEntity):
         return self.symbol
 
     def wait_transit(self):
-        sleep_time = (self.nav.route.arrival - datetime.now(timezone.utc)).total_seconds() + 0.5
+        sleep_time = (
+            self.nav.route.arrival - datetime.now(timezone.utc)
+        ).total_seconds() + 0.5
         if sleep_time > 0:
             time.sleep(sleep_time)
 
     async def await_transit(self):
-        sleep_time = (self.nav.route.arrival - datetime.now(timezone.utc)).total_seconds() + 0.5
+        sleep_time = (
+            self.nav.route.arrival - datetime.now(timezone.utc)
+        ).total_seconds() + 0.5
         if sleep_time > 0:
             await asyncio.sleep(sleep_time)
 
     def wait_cooldown(self):
         if self.cooldown is not None:
-            time_to_sleep = (self.cooldown.expiration - datetime.now(timezone.utc)).total_seconds() + 1
+            time_to_sleep = (
+                self.cooldown.expiration - datetime.now(timezone.utc)
+            ).total_seconds() + 1
             if time_to_sleep > 0:
                 time.sleep(time_to_sleep)
 
     async def await_cooldown(self):
         if self.cooldown is not None:
-            time_to_sleep = (self.cooldown.expiration - datetime.now(timezone.utc)).total_seconds() + 1
+            time_to_sleep = (
+                self.cooldown.expiration - datetime.now(timezone.utc)
+            ).total_seconds() + 1
             if time_to_sleep > 0:
                 await asyncio.sleep(time_to_sleep)
 
