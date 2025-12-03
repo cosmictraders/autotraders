@@ -13,7 +13,7 @@ class ShipComponent(BaseModel):
     symbol: str
     name: str
     description: Optional[str] = None
-    condition: Optional[int] = None
+    condition: Optional[float] = None
     requirements: Requirements
 
 
