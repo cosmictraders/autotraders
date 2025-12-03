@@ -32,13 +32,13 @@ class SpaceTradersEntity:
         return j
 
     def post(self, action: str, data=None) -> dict:
-        if data is not None:
-            r = self.session.post(
-                self.action_url + action,
-                json=data,
-            )
-        else:
-            r = self.session.post(self.action_url + action)
+        if data is None:
+            data = dict()
+        self.session.headers["Content-Type"] = "application/json"
+        r = self.session.post(
+            self.action_url + action,
+            json=data,
+        )
         j = r.json()
         if "error" in j:
             raise SpaceTradersException(
@@ -47,14 +47,13 @@ class SpaceTradersEntity:
         return j
 
     def patch(self, action: str, data=None) -> dict:
+        if data is None:
+            data = dict()
         self.session.headers["Content-Type"] = "application/json"
-        if data is not None:
-            r = self.session.patch(
-                self.action_url + action,
-                json=data,
-            )
-        else:
-            r = self.session.patch(self.action_url + action)
+        r = self.session.patch(
+            self.action_url + action,
+            json=data,
+        )
         j = r.json()
         if "error" in j:
             raise SpaceTradersException(
